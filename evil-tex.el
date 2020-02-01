@@ -30,7 +30,7 @@
 (require 'latex)
 
 (defun evil-tex-brace-movement ()
-  "Movement similar to TAB in cdlatex.
+  "Brace movement similar to TAB in cdlatex.
 
 Example: (| symbolizes point)
 \bar{h|} => \bar{h}|
