@@ -1,0 +1,64 @@
+#+TITLE:   evil-scientist
+#+DATE:    February 1, 2020
+#+SINCE:   {replace with next tagged release version}
+#+STARTUP: inlineimages nofold
+
+* Table of Contents :TOC_3:noexport:
+- [[#description][Description]]
+  - [[#maintainers][Maintainers]]
+  - [[#module-flags][Module Flags]]
+  - [[#plugins][Plugins]]
+- [[#prerequisites][Prerequisites]]
+- [[#features][Features]]
+- [[#configuration][Configuration]]
+- [[#troubleshooting][Troubleshooting]]
+
+* Description
+# A summary of what this module does.
+
++ An emacs package meant to provide some good evil bindings to latex documents,
+  and maybe more.
+
+** Maintainers
++ Itai (Author)
++ Yoav (Author)
+
+** Module Flags
++ =+flag1= A short description of what this flag does and what it might need
+  when enabled.
++ =+flag2= A short description of what this flag does and what it might need
+  when enabled.
++ =+flag3= A short description of what this flag does and what it might need
+  when enabled.
+
+# If this module has no flags, then...
+This module provides no flags.
+
+** Plugins
+# A list of linked plugins
+Are plugins and packages the same thing?
++ [[https://orgmode.org/][org-plus-contrib]]
++ [[https://github.com/sabof/org-bullets][org-bullets]]
++ [[https://github.com/TobiasZawada/org-yt][org-yt]]
++ [[https://github.com/sebastiencs/company-box][company-box]]* (=+childframe=)
++ =:lang crystal=
+  + [[https://github.com/brantou/ob-crystal][ob-crystal]]
++ =:lang go=
+  + [[https://github.com/pope/ob-go][ob-go]]
++ =+present=
+  + [[https://github.com/anler/centered-window-mode][centered-window]]
+  + [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]
+  + [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
+
+
+* Prerequisites
+This module has no prereqisites (yet).
+
+* Features
+# An in-depth list of features, how to use them, and their dependencies.
+
+* Configuration
+# How to configure this module, including common problems and how to address them.
+
+* Troubleshooting
+# Common issues and their solution, or places to look for help.
