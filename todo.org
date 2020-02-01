@@ -2,7 +2,7 @@
 
 * Features
 ** Vimtex stuff to steal:
-- Text objects for enviornment, command, inline/display math (see
+- Text objects for environments, command, inline/display math (see
   [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]])
 - general delimiter text object, with integration to evil-surround/evil-embrace
 - csd/cse/tsd/tse commands from vimtex
