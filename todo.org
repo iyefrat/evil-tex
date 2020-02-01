@@ -1,6 +1,5 @@
 #+TITLE: todo
 
-* Argue about name
 * Vimtex stuff to steal:
 ** Text objects for enviornment, command, inline/display math (see evil-latex-textobjects)
 ** enviornment folding (see evil-vimish-fold)
