@@ -8,3 +8,7 @@
 * Suggested defaults for cdlatex?
 
 * integrated symbol folding?
+* Things to add to doom in another repository later
+** auto compilation mappings
+** view starter mappings
+** i swear there were more stuff but i can't remeber at the moment
