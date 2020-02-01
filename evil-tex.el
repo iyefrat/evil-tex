@@ -29,6 +29,23 @@
 (require 'evil)
 (require 'latex)
 
+(defun evil-tex-brace-movement ()
+  "Movement similar to TAB in cdlatex.
+
+Example: (| symbolizes point)
+\bar{h|} => \bar{h}|
+\frac{a|}{} => \frac{a}{|}
+\frac{a|}{b} => \frac{a}{b|}
+\frac{a}{b|} => \frac{a}{b}|"
+  (interactive)
+  ;; go to the closing } of the current scope
+  (search-backward "{" (line-beginning-position))
+  (forward-sexp)
+  ;; encountered a {? go to just before its terminating }
+  (when (looking-at "{")
+    (forward-sexp)
+    (backward-char)))
+
 
 ;; stolen code from https://github.com/hpdeifel/evil-latex-textobjects
 (defun evil-tex-txtobj-env-beginning ()

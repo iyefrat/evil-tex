@@ -8,7 +8,7 @@
 - csd/cse/tsd/tse commands from vimtex
 - enviornment folding (see evil-vimish-fold, outline-minor-mode)
 ** Our own
-*** cdlatex-tab-like movement (implemented already)
+*** DONE cdlatex-tab-like movement (implemented already)
 *** evil-surround like bindings which support toggling inline-outline math
 
 * Things to add to doom in another repository later
