@@ -1,4 +1,24 @@
-;;; ~/projects/evil-tex/evil-tex.el -*- lexical-binding: t; -*-
+;;; evil-tex.el --- Useful features for editing TeX in evil-mode -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2020 Yoav Marco
+;;
+;; Authors: Yoav Marco <http://github/yoavm448>, Itai Efrat <http://github/itai33>
+;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Efrat <itai3397@gmail.com>
+;; Created: February 01, 2020
+;; Modified: February 01, 2020
+;; Version: 0.0.1
+;; Keywords:
+;; Homepage: https://github.com/itai33/evil-tex
+;; Package-Requires: ((evil "1.0") (auctex "11.88"))
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+;;
+;;  Useful features for editing TeX in evil-mode
+;;
+;;; Code:
+
 
 ;; To start, let us try to define a text object for an enviornment,
 ;; although there might be a better way to do this than regex
@@ -9,7 +29,8 @@
 (require 'evil)
 (require 'latex)
 
-;; stolen mystery code
+
+;; stolen code from https://github.com/hpdeifel/evil-latex-textobjects
 (defun evil-tex-txtobj-env-beginning ()
   "Return (start . end) of the \\begin{foo} to the left of point."
   (let (beg)
@@ -26,7 +47,7 @@
       ;;   (forward-line 1))
       (cons beg (point)))))
 
-(defun evil-latex-txtobj-env-end ()
+(defun evil-tex-env-end ()
   "Return (start . end) of the \\end{foo} to the right of point."
   (let (end)
     (save-excursion
@@ -37,28 +58,29 @@
       (cons (point) end))))
 
 
-(evil-define-text-object evil-latex-txtobj-an-env (count &optional beg end type)
+(evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment"
   :extend-selection nil
-  (let ((beg (evil-latex-txtobj-env-beginning))
-        (end (evil-latex-txtobj-env-end)))
+  (let ((beg (evil-tex-env-beginning))
+        (end (evil-tex-env-end)))
     (list (car beg) (cdr end))))
 
-(evil-define-text-object evil-latex-txtobj-inner-env (count &optional beg end type)
+(evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select a LaTeX environment"
   :extend-selection nil
-  (let ((beg (evil-latex-txtobj-env-beginning))
-        (end (evil-latex-txtobj-env-end)))
+  (let ((beg (evil-tex-env-beginning))
+        (end (evil-tex-env-end)))
     (list (cdr beg) (car end))))
 
-(defvar evil-latex-txtobj-outer-map (make-sparse-keymap))
-(defvar evil-latex-txtobj-inner-map (make-sparse-keymap))
+(defvar evil-tex-outer-map (make-sparse-keymap))
+(defvar evil-tex-inner-map (make-sparse-keymap))
 
-(set-keymap-parent evil-latex-txtobj-outer-map evil-outer-text-objects-map)
-(set-keymap-parent evil-latex-txtobj-inner-map evil-inner-text-objects-map)
+(set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
+(set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
 
-(define-key evil-latex-txtobj-outer-map "e" 'evil-latex-txtobj-an-env)
-(define-key evil-latex-txtobj-inner-map "e" 'evil-latex-txtobj-inner-env)
+(define-key evil-tex-outer-map "e" 'evil-tex-an-env)
+(define-key evil-tex-inner-map "e" 'evil-tex-inner-env)
 
 (provide 'evil-tex)
-;;; evil-scientist.el ends here
+
+;;; evil-tex ends here
