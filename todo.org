@@ -1,14 +1,20 @@
 #+TITLE: todo
 
 * Vimtex stuff to steal:
-** Text objects for enviornment, command, inline/display math (see evil-latex-textobjects)
-** enviornment folding (see evil-vimish-fold)
-** good auto compilation commands (perhaps with the declaritive syntax at the top, might be a latexmk feature)
+- Text objects for enviornment, command, inline/display math (see
+  evil-latex-textobjects)
+- enviornment folding (see evil-vimish-fold, outline-minor-mode)
+- good auto compilation commands (perhaps with the declaritive syntax at the
+  top, might be a latexmk feature)
+  - No, that's auctex's job
 
 * Suggested defaults for cdlatex?
+No, configuring cdlatex is not our job. also there's not much integration to do
+with evil.
 
 * integrated symbol folding?
+No, also not our job
 * Things to add to doom in another repository later
-** auto compilation mappings
-** view starter mappings
-** i swear there were more stuff but i can't remeber at the moment
+- auto compilation mappings
+- view starter mappings
+- i swear there were more stuff but i can't remeber at the moment
