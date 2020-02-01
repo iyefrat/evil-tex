@@ -1,0 +1,11 @@
+#+TITLE: todo
+
+* Argue about name
+* Vimtex stuff to steal:
+** Text objects for enviornment, command, inline/display math (see evil-latex-textobjects)
+** enviornment folding (see evil-vimish-fold)
+** good auto compilation commands (perhaps with the declaritive syntax at the top, might be a latexmk feature)
+
+* Suggested defaults for cdlatex?
+
+* integrated symbol folding?
