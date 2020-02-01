@@ -1,14 +1,26 @@
 #+TITLE: todo
 
-* Vimtex stuff to steal:
+* Features
+** Vimtex stuff to steal:
 - Text objects for enviornment, command, inline/display math (see
-  evil-latex-textobjects)
-- enviornment folding (see evil-vimish-fold, outline-minor-mode)
+  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]])
 - general delimiter text object, with integration to evil-surround/evil-embrace
 - csd/cse/tsd/tse commands from vimtex
+- enviornment folding (see evil-vimish-fold, outline-minor-mode)
+** Our own
+*** cdlatex-tab-like movement (implemented already)
+*** evil-surround like bindings which support toggling inline-outline math
 
 * Things to add to doom in another repository later
-- auto compilation mappings
-- view starter mappings
-- "sane defaults" for cdlatex/symbol folding
-- i swear there were more stuff but i can't remeber at the moment
+** auto compilation mappings
+** =TeX-fold= flag
+would define bindings and advices for =TeX-fold=
+** =cdlatex= flag
+=cdlatex= has 4 functionalities:
+- Snippets and environment templates: =fr<TAB>= => =\frac{}{}= These are made
+obsolete by =yasnippet= and should be disabled.
+- Tab key is configured for a general useful movement inside snippets
+- Fast insertion of specific macros: =`a= => =\alpha=
+- Fast accent insertion: =a'~= => =\tilde{a}=
+
+our cdlatex config should just disable the snippets and the tab key.
