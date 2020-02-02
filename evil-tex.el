@@ -169,6 +169,30 @@ If no such macro can be found, return nil"
         (end (evil-tex-env-end)))
     (list (cdr beg) (car end))))
 
+
+(defun evil-tex--forward-brace-match ()
+  "Return (beg . end) of the brace pair proceeding point."
+  (let (beg end)
+    (search-forward "{") ;; at {
+    (setq beg (point))
+    (forward-sexp) ;; at }
+    (setq end (point))
+    (cons beg end)))
+
+(defun evil-tex--begin-braces ()
+  "Return (beg . end) of the argument given to \\begin in the current env."
+  (interactive)
+  (save-excursion
+    (LaTeX-find-matching-begin) ;; We are at \
+    (evil-tex--forward-brace-match)))
+
+(defun evil-tex--end-braces ()
+  "Return (beg . end) of the argument given to \\end in the current env."
+  (interactive)
+  (save-excursion
+    (LaTeX-find-matching-end) ;; We are at \
+    (evil-tex--forward-brace-match)))
+
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
 
