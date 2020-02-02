@@ -1,6 +1,19 @@
 #+TITLE: todo
 
 * Features
+** Keybinds
+| Mode   | Keybind      | Action                                 |
+|--------+--------------+----------------------------------------|
+| Normal | =csd=        | ?                                      |
+|        | =cse=        | Change environment                     |
+|        | =tsd=        | ?                                      |
+|        | =tse=        | ?                                      |
+|        | =dse=        | Delete environment                     |
+|        | =cie=, =cae= | Change inside/around *environment*     |
+|        | =cic=, =cac= | Change inside/around *command* (macro) |
+|        | =cim=, =cam= | Change inside/around *math*            |
+| Insert | ?            | Brace movement                         |
+
 ** Vimtex stuff to steal:
 *** Text Objects
 For environments, commands/macros, inline & display math
