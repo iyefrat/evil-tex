@@ -47,8 +47,80 @@ Example: (| symbolizes point)
     (backward-char)))
 
 
-;; stolen code from https://github.com/hpdeifel/evil-latex-textobjects
-(defun evil-tex-txtobj-env-beginning ()
+;; stolen code from https://github.com/hpdeifel/evil-tex
+(evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
+  "Select inner dollar"
+  :extend-selection nil
+  (evil-select-quote ?$ beg end type count nil))
+
+(evil-define-text-object evil-tex-a-dollar (count &optional beg end type)
+  "Select a dollar"
+  :extend-selection t
+  (evil-select-quote ?$ beg end type count t))
+
+(evil-define-text-object evil-tex-inner-math (count &optional beg end type)
+  "Select innter \\[ \\] or \\( \\)."
+  :extend-selection nil
+  (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count nil))
+
+(evil-define-text-object evil-tex-a-math (count &optional beg end type)
+  "Select a \\[ \\] or \\( \\)."
+  :extend-selection nil
+  (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count t))
+
+(defun evil-tex-macro-beginning ()
+  "Return (start . end) of the macro-beginning to the left of point.
+
+If no enclosing macro is found, return nil.
+For example for \macro{foo|bar} it returns the start and end of \"\macro{\""
+  (let ((beg (TeX-find-macro-start)))
+    (when beg
+      (save-excursion
+        (goto-char beg)
+        (forward-char)                  ; backslash
+        (skip-chars-forward "A-Za-z@*") ; macro-name
+        (when (looking-at "{\\|\\[")
+          (forward-char))                ; opening brace
+        (cons beg (point))))))
+
+(defun evil-tex-macro-end ()
+  "Return (start . end) of the end of the enclosing macro.
+
+If no such macro can be found, return nil"
+  (let ((end (TeX-find-macro-end)))
+    (when end
+      (save-excursion
+        (goto-char end)
+        (when (looking-back "}\\|\\]" (- (point) 2))
+          (backward-char))               ; closing brace
+        (cons (point) end)))))
+
+;; TODO Support visual selection
+;; TODO Support count
+
+(evil-define-text-object evil-tex-a-macro (count &optional beg end type)
+  "Select a TeX macro"
+  :extend-selection nil
+  (let ((beg (evil-tex-macro-beginning))
+        (end (evil-tex-macro-end)))
+    (if (and beg end)
+        (list (car beg) (cdr end))
+      (error "No enclosing macro found"))))
+
+(evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
+  "Select inner TeX macro"
+  :extend-selection nil
+  (let ((beg (evil-tex-macro-beginning))
+        (end (evil-tex-macro-end)))
+    (cond
+     ((or (null beg) (null end))
+      (error "No enclosing macro found"))
+     ((= (cdr beg) (car end))           ; macro has no content
+      (list (1+ (car beg))              ; return macro boundaries excluding \
+            (cdr beg)))
+     (t (list (cdr beg) (car end))))))
+
+(defun evil-tex-env-beginning ()
   "Return (start . end) of the \\begin{foo} to the left of point."
   (let (beg)
     (save-excursion
