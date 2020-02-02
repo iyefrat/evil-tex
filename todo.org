@@ -2,8 +2,11 @@
 
 * Features
 ** Vimtex stuff to steal:
-*** Text objects for environments, command/macro, inline & display math (see
-  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]])
+*** Text Objects
+For environments, commands/macros, inline & display math
+**** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
+**** TODO Merge \( \[ math text objects with $ math text objects
+
 *** General delimiter text object, with integration to evil-surround/evil-embrace
 *** =csd/cse/tsd/tse= commands from vimtex
 *** Environment & section folding (see evil-vimish-fold, outline-minor-mode)
