@@ -61,11 +61,13 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select innter \\[ \\] or \\( \\)."
   :extend-selection nil
+  ;;                  \[ or \(          \) or \]
   (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count nil))
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
   "Select a \\[ \\] or \\( \\)."
   :extend-selection nil
+  ;;                  \[ or \(          \) or \]
   (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count t))
 
 (defun evil-tex-macro-beginning ()
@@ -77,10 +79,10 @@ For example for \macro{foo|bar} it returns the start and end of \"\macro{\""
     (when beg
       (save-excursion
         (goto-char beg)
-        (forward-char)                  ; backslash
-        (skip-chars-forward "A-Za-z@*") ; macro-name
+        (forward-char)                 ;; backslash
+        (skip-chars-forward "A-Za-z@*");; macro-name
         (when (looking-at "{\\|\\[")
-          (forward-char))                ; opening brace
+          (forward-char))               ;; opening brace
         (cons beg (point))))))
 
 (defun evil-tex-macro-end ()
@@ -92,7 +94,7 @@ If no such macro can be found, return nil"
       (save-excursion
         (goto-char end)
         (when (looking-back "}\\|\\]" (- (point) 2))
-          (backward-char))               ; closing brace
+          (backward-char))              ;; closing brace
         (cons (point) end)))))
 
 ;; TODO Support visual selection
@@ -115,8 +117,8 @@ If no such macro can be found, return nil"
     (cond
      ((or (null beg) (null end))
       (error "No enclosing macro found"))
-     ((= (cdr beg) (car end))           ; macro has no content
-      (list (1+ (car beg))              ; return macro boundaries excluding \
+     ((= (cdr beg) (car end))          ;; macro has no content
+      (list (1+ (car beg))             ;; return macro boundaries excluding \
             (cdr beg)))
      (t (list (cdr beg) (car end))))))
 
@@ -124,10 +126,10 @@ If no such macro can be found, return nil"
   "Return (start . end) of the \\begin{foo} to the left of point."
   (let (beg)
     (save-excursion
-      (LaTeX-find-matching-begin)       ; we are at backslash
+      (LaTeX-find-matching-begin)      ;; we are at backslash
       (setq beg (point))
-      (skip-chars-forward "^{")         ; goto opening brace
-      (forward-sexp)                    ; goto closing brace
+      (skip-chars-forward "^{")        ;; goto opening brace
+      (forward-sexp)                   ;; goto closing brace
       ;; Count the newline after \begin{foo} to the environment header
       ;; Without this, delete-inner-env would unexpectedly move the end
       ;; to the same line as the beginning
@@ -140,10 +142,10 @@ If no such macro can be found, return nil"
   "Return (start . end) of the \\end{foo} to the right of point."
   (let (end)
     (save-excursion
-      (LaTeX-find-matching-end)         ; we are at closing brace
+      (LaTeX-find-matching-end)        ;; we are at closing brace
       (setq end (point))
-      (backward-sexp)                   ; goto opening brace
-      (search-backward "\\")            ; goto backslash
+      (backward-sexp)                  ;; goto opening brace
+      (search-backward "\\")           ;; goto backslash
       (cons (point) end))))
 
 
