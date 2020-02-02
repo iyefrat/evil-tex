@@ -61,13 +61,13 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select innter \\[ \\] or \\( \\)."
   :extend-selection nil
-  ;;                  \[ or \(          \) or \]
+  ;;                  \   [     \   (   \   )   \   ]
   (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count nil))
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
   "Select a \\[ \\] or \\( \\)."
   :extend-selection nil
-  ;;                  \[ or \(          \) or \]
+  ;;                  \   [     \   (   \   )   \   ]
   (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count t))
 
 (defun evil-tex-macro-beginning ()
@@ -110,7 +110,7 @@ If no such macro can be found, return nil"
       (error "No enclosing macro found"))))
 
 (evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
-  "Select inner TeX macro"
+  "Select inner TeX macro, i.e the argument to the macro."
   :extend-selection nil
   (let ((beg (evil-tex-macro-beginning))
         (end (evil-tex-macro-end)))
