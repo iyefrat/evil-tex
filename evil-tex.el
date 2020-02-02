@@ -123,7 +123,10 @@ If no such macro can be found, return nil"
      (t (list (cdr beg) (car end))))))
 
 (defun evil-tex-env-beginning ()
-  "Return (start . end) of the \\begin{foo} to the left of point."
+  "Return (start . end) of the \\begin{foo} of current env.
+
+\\begin{equation}
+^               ^"
   (let (beg)
     (save-excursion
       (LaTeX-find-matching-begin)      ;; we are at backslash
@@ -139,7 +142,10 @@ If no such macro can be found, return nil"
       (cons beg (point)))))
 
 (defun evil-tex-env-end ()
-  "Return (start . end) of the \\end{foo} to the right of point."
+  "Return (start . end) of the \\end{foo} of current env.
+
+\\end{equation}
+^             ^"
   (let (end)
     (save-excursion
       (LaTeX-find-matching-end)        ;; we are at closing brace
