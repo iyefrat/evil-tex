@@ -26,11 +26,12 @@ So we can have a unified math
 *** General delimiter text object, with integration to evil-surround/evil-embrace
 *** =csd/cse/tsd/tse= commands from vimtex
 **** Environment changing
-***** Vimtex way - minibuffer
-Just through a prompt. That would be through the minibuffer in Emacs.
-***** Using [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
-Test this, and if its nice than add it as an option. We don't want
-evil-multiedit as a dependency though.
+- [-] Vimtex way - minibuffer
+  - [-] Just through a prompt. That would be through the minibuffer in Emacs.
+  - [ ] Mark the environment being changed while user is in minibuffer
+- [ ] Using [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
+  Test this, and if its nice than add it as an option. We don't want
+  evil-multiedit as a dependency though.
 *** Environment & section folding (see evil-vimish-fold, outline-minor-mode)
 ** Our own
 *** DONE cdlatex-tab-like movement (implemented already)
