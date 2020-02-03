@@ -2,23 +2,24 @@
 
 * Features
 ** Keybinds
-| Mode   | Keybind      | Action                                 |
-|--------+--------------+----------------------------------------|
-| Normal | =csd=        | ?                                      |
-|        | =cse=        | Change environment                     |
-|        | =tsd=        | ?                                      |
-|        | =tse=        | ?                                      |
-|        | =dse=        | Delete environment                     |
-|        | =cie=, =cae= | Change inside/around *environment*     |
-|        | =cic=, =cac= | Change inside/around *command* (macro) |
-|        | =cim=, =cam= | Change inside/around *math*            |
-| Insert | ?            | Brace movement                         |
+| Mode         | Keybind    | Action                                 |
+|--------------+------------+----------------------------------------|
+| Normal       | =csd=      | ?                                      |
+|              | =cse=      | Change environment                     |
+|              | =tsd=      | ?                                      |
+|              | =tse=      | ?                                      |
+|              | =dse=      | Delete environment                     |
+| Text objects | =ie=, =ae= | Select inside/around *environment*     |
+|              | =ic=, =ac= | Select inside/around *command* (macro) |
+|              | =im=, =am= | Select inside/around *math*            |
+| Insert       | ?          | Brace movement                         |
 
 ** Vimtex stuff to steal:
 *** Text Objects
 For environments, commands/macros, inline & display math
 **** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
 **** TODO Merge \( \[ math text objects with $ math text objects
+So we can have a unified math
 
 *** General delimiter text object, with integration to evil-surround/evil-embrace
 *** =csd/cse/tsd/tse= commands from vimtex
