@@ -12,6 +12,7 @@
 - [[#features][Features]]
 - [[#configuration][Configuration]]
 - [[#troubleshooting][Troubleshooting]]
+- [[#tips][Tips]]
 
 * Description
 # A summary of what this module does.
@@ -62,3 +63,9 @@ This module has no prereqisites (yet).
 
 * Troubleshooting
 # Common issues and their solution, or places to look for help.
+* Tips
+ - evil (and vim itself) has some useful aliases for text objects:
+   - =ib/ab= for =(foo)=
+   - =iB/aB= for ={foo}=
+   They work with surround like you would expect.
+ - more
