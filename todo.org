@@ -50,10 +50,11 @@ Also support changing =\(= =\[= to =begin{align}= and so on. We can use
   stuff is non trivial but it would probably be ehough to just mention that the
   e,c,m,d text objects are compatible with evil-surround. We probably only need
   to give an example.
+
 - Might also be worth mentioning the built in text objects that exist, e.g. =b=
   for =()=, =B= for ={}=. This might fall under *not our job* but the intuitive
-  thing is to do =ds{= instead of dsB and that's just a shame. I think it's
-  worth one scentence.
+  thing is to do =ds{= instead of =dsB= and that's just a shame. I think it's
+  worth one sentence.
 
 * Rejected
 
