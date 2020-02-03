@@ -20,7 +20,7 @@
 *** Text Objects
 For environments, commands/macros, inline & display math
 **** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
-**** TODO Merge \( \[ math text objects with $ math text objects
+**** TODO Merge \) \] math text objects with $ math text objects
 So we can have a unified math
 
 *** General delimiter text object, with integration to evil-surround/evil-embrace
@@ -55,12 +55,13 @@ Also support changing =\(= =\[= to =begin{align}= and so on. We can use
     =begin{equation}= (It already toggles between =\(\)= and =\[\]=),
     which I find myself doing a lot. I'm a bit worried about overloading
     the =m= text object though, although it is intuitive.
-- not sure if we should have explinations for the surround stuff, the toggle
-stuff is non trivial but it would probably be ehough to just mention that the
-e,c,m,d text objects are compatible with evil-surround.
+- not sure if we should have explanations for the surround stuff, the toggle
+  stuff is non trivial but it would probably be ehough to just mention that the
+  e,c,m,d text objects are compatible with evil-surround.
 - Might also be worth mentioning the built in text objects that exist, e.g. =b=
-for =()=, =B= for ={}=. This might fall under *not our job* but the intuitive thing is
-to do =ds{= instead of dsB and that's just a shame. I think it's worth one scentence.
+  for =()=, =B= for ={}=. This might fall under *not our job* but the intuitive
+  thing is to do =ds{= instead of dsB and that's just a shame. I think it's
+  worth one scentence.
 
 * Rejected
 
