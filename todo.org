@@ -2,18 +2,20 @@
 
 * Features
 ** Keybinds
-| Mode         | Keybind    | Action                                 |
-|--------------+------------+----------------------------------------|
-| Normal       | =csd=      | ?                                      |
-|              | =cse=      | Change environment                     |
-|              | =tsd=      | ?                                      |
-|              | =tse=      | ?                                      |
-|              | =dse=      | Delete environment                     |
-| Text objects | =ie=, =ae= | Select inside/around *environment*     |
-|              | =ic=, =ac= | Select inside/around *command* (macro) |
-|              | =im=, =am= | Select inside/around *math*            |
-| Insert       | ?          | Brace movement                         |
-
+| Mode         | Keybind    | Action                                                                               |
+|--------------+------------+--------------------------------------------------------------------------------------|
+| Normal       | =csd=      | Change surrounding delimiter (see id/ad)                                             |
+|              | =cse=      | Change environment                                                                   |
+|              | =csc=      | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)              |
+|              | =tsd=      | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=                |
+|              | =tse=      | For surrounding environment, equation <==> equation*, or align <==> align*           |
+|              | =tsm=      | For surrounding math, =\(\)= <==> =\[\]=                                             |
+|              | =dse=      | Delete environment                                                                   |
+| Text objects | =ie=, =ae= | Select inside/around *environment*                                                   |
+|              | =ic=, =ac= | Select inside/around *command* (macro)                                               |
+|              | =im=, =am= | Select inside/around *math*                                                          |
+|              | =id=, =ad= | Select inside/around delimiter (math parenteses), e.g. =()=, =[]=, =\left[\right]=.  |
+| Insert       | ?          | Brace movement                                                                       |
 ** Vimtex stuff to steal:
 *** Text Objects
 For environments, commands/macros, inline & display math
@@ -39,7 +41,27 @@ Also support changing =\(= =\[= to =begin{align}= and so on. We can use
 * Proposed
 - change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
+  - I'm not sure how this fits with the idea of a text object, would the inside
+    be the subscript or the thing that has the subscript? Also, evil-surround,
+    like vim-surround, is bould around surrounding pairs. This is stretched a bit
+    with the =sc= commands, but there is still a =}= on the right to complete the
+    surround. How would we define the left boundary? what we want in essence is
+    an easy way to do =f_lxi= that knows to be =f_2lci{= if there is a ={}=
+    instead of a single character. There might be a way to do this that "groks
+    vi" better, but this doesn't feel line a surroundy thing. Would be a good
+    binding though.
 - Support math environments (=begin{align}=...) with our math text objects
+  - Might be good. We could also use =tsm= to toggle between =begin{align}= and
+    =begin{equation}= (It already toggles between =\(\)= and =\[\]=),
+    which I find myself doing a lot. I'm a bit worried about overloading
+    the =m= text object though, although it is intuitive.
+- not sure if we should have explinations for the surround stuff, the toggle
+stuff is non trivial but it would probably be ehough to just mention that the
+e,c,m,d text objects are compatible with evil-surround.
+- Might also be worth mentioning the built in text objects that exist, e.g. =b=
+for =()=, =B= for ={}=. This might fall under *not our job* but the intuitive thing is
+to do =ds{= instead of dsB and that's just a shame. I think it's worth one scentence.
+
 * Rejected
 
 * Things to add to Doom in another repo later
