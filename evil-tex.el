@@ -29,6 +29,15 @@
 (require 'evil)
 (require 'latex)
 
+(defun evil-tex--replace-region (region string)
+  "Replace the region between REGION with STRING.
+REGION should be a (beg . end) cons."
+  (save-excursion
+    (delete-region (car region) (cdr region))
+    (goto-char (car region))
+    (insert string)))
+
+
 (defun evil-tex-brace-movement ()
   "Brace movement similar to TAB in cdlatex.
 
@@ -193,6 +202,19 @@ If no such macro can be found, return nil"
       (search-backward "{") ;; at {
       (setq beg (1+ (point)))
       (cons beg end))))
+
+(defun evil-tex-change-env (new-env)
+  "Change current env to NEW-ENV."
+  (evil-tex--replace-region (evil-tex--begin-braces) new-env)
+  (evil-tex--replace-region (evil-tex--end-braces) new-env))
+
+(defun evil-tex-change-evn-interactive ()
+  "Like `evil-tex-change-env' but prompts you for NEW-ENV."
+  (interactive)
+  (evil-tex-change-env (read-from-minibuffer
+                        (concat "Change '"
+                                (LaTeX-current-environment)
+                                "' to: "))))
 
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
