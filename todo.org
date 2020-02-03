@@ -33,10 +33,13 @@ evil-multiedit as a dependency though.
 ** Our own
 *** DONE cdlatex-tab-like movement (implemented already)
 *** evil-surround like bindings which support toggling inline-outline math
+Also support changing =\(= =\[= to =begin{align}= and so on. We can use
+~texmathp-environments~ for selection.
 
 * Proposed
 - change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
+- Support math environments (=begin{align}=...) with our math text objects
 * Rejected
 
 * Things to add to Doom in another repo later
