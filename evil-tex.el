@@ -83,7 +83,7 @@ Example: (| symbolizes point)
   "Return (start . end) of the macro-beginning to the left of point.
 
 If no enclosing macro is found, return nil.
-For example for \macro{foo|bar} it returns the start and end of \"\macro{\""
+For example for \\macro{foo|bar} it returns the start and end of \"\\macro{\""
   (let ((beg (TeX-find-macro-start)))
     (when beg
       (save-excursion
