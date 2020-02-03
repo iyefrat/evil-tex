@@ -46,6 +46,11 @@ Also support changing =\(= =\[= to =begin{align}= and so on. We can use
 - Support math environments (=begin{align}=...) with our math text objects
   - Use =tsm= to toggle between =begin{align}= and =begin{equation}= (It already
     toggles between =\(\)= and =\[\]=)
+
+    I don't use =begin{equation}= at all, only =\[\]=. In amsmath, =\[\]= are
+    defined just to yield a =begin{equation*}...=. If we support toggling
+    only =equation= and =align=, getting from =\[\]= to =align= wouldn't be nice.
+
 - not sure if we should have explanations for the surround stuff, the toggle
   stuff is non trivial but it would probably be ehough to just mention that the
   e,c,m,d text objects are compatible with evil-surround. We probably only need
