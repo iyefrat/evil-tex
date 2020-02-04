@@ -2,21 +2,21 @@
 
 * Features
 ** Keybinds
-| Mode         | Keybind    | Action                                                                              |
-|--------------+------------+-------------------------------------------------------------------------------------|
-| Normal       | =csd=      | Change surrounding delimiter (see id/ad)                                            |
-|              | =cse=      | Change environment                                                                  |
-|              | =csc=      | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)             |
-|              | =tsd=      | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=               |
-|              | =tse=      | For surrounding environment, equation <==> equation*, or align <==> align*          |
-|              | =tsm=      | For surrounding math, =\(\)= <==> =\[\]=                                            |
-|              | =dse=      | Delete surrounding environment                                                      |
-|              | =dsc=      | Delete surrounding command, =\tilde{a}= => =a=                                      |
-| Text objects | =ie=, =ae= | Select inside/around *environment*                                                  |
-|              | =ic=, =ac= | Select inside/around *command* (macro)                                              |
-|              | =im=, =am= | Select inside/around *math*                                                         |
-|              | =id=, =ad= | Select inside/around delimiter (math parenteses), e.g. =()=, =[]=, =\left[\right]=. |
-| Insert       | ?          | Brace movement                                                                      |
+| Mode         | Keybind    | Action                                                                               |
+|--------------+------------+--------------------------------------------------------------------------------------|
+| Normal       | =csd=      | Change surrounding delimiter (see id/ad)                                             |
+|              | =cse=      | Change environment                                                                   |
+|              | =csc=      | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)              |
+|              | =tsd=      | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=                |
+|              | =tse=      | For surrounding environment, equation <==> equation*, or align <==> align*           |
+|              | =tsm=      | For surrounding math, =\(\)= <==> =\[\]=                                             |
+|              | =dse=      | Delete surrounding environment                                                       |
+|              | =dsc=      | Delete surrounding command, =\tilde{a}= => =a=                                       |
+| Text objects | =ie=, =ae= | Select inside/around *environment*                                                   |
+|              | =ic=, =ac= | Select inside/around *command* (macro)                                               |
+|              | =im=, =am= | Select inside/around *math*                                                          |
+|              | =id=, =ad= | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
+| Insert       | ?          | Brace movement                                                                       |
 ** Vimtex stuff to steal:
 *** Text Objects
 For environments, commands/macros, inline & display math
