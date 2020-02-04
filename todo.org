@@ -120,34 +120,35 @@ Our cdlatex config should just disable the snippets and the tab key.
 |                 | remark     |           |
 |                 | theorem    |           |
 ** CDLaTeX accent & key list
-| Macro | key               | is style ({\displaystyle ...}) |
-|-------+-------------------+--------------------------------|
-| .     | dot               |                                |
-| :     | ddot              |                                |
-| ~     | tilde             |                                |
-| N     | widetilde         |                                |
-| ^     | hat               |                                |
-| H     | widehat           |                                |
-| -     | bar               |                                |
-| T     | overline          |                                |
-| _     | underline         |                                |
-| {     | overbrace         |                                |
-| }     | underbrace        |                                |
-| >     | vec               |                                |
-| /     | grave             |                                |
-| \     | acute             |                                |
-| v     | check             |                                |
-| u     | breve             |                                |
-| m     | mbox              |                                |
-| c     | mathcal           |                                |
-| r     | mathrm/textrm     |                                |
-| i     | mathit/textit     |                                |
-| l     | NONE!!/textsl     |                                |
-| b     | mathbf/textbf     |                                |
-| e     | mathem/emph"      |                                |
-| y     | mathtt/texttt     |                                |
-| f     | mathsf/textsf     |                                |
-| 0     | textstyle         |                                |
-| 1     | displaystyle      | yes                            |
-| 2     | scriptstyle       |yes                             |
-| 3     | scriptscriptstyle |yes                             |
+is style means that the braces come before the macro, e.g {\displaystyle ...}
+| Macro | key               | is style |
+|-------+-------------------+----------|
+| .     | dot               |          |
+| :     | ddot              |          |
+| ~     | tilde             |          |
+| N     | widetilde         |          |
+| ^     | hat               |          |
+| H     | widehat           |          |
+| -     | bar               |          |
+| T     | overline          |          |
+| _     | underline         |          |
+| {     | overbrace         |          |
+| }     | underbrace        |          |
+| >     | vec               |          |
+| /     | grave             |          |
+| \     | acute             |          |
+| v     | check             |          |
+| u     | breve             |          |
+| m     | mbox              |          |
+| c     | mathcal           |          |
+| r     | mathrm/textrm     |          |
+| i     | mathit/textit     |          |
+| l     | NONE!!/textsl     |          |
+| b     | mathbf/textbf     |          |
+| e     | mathem/emph"      |          |
+| y     | mathtt/texttt     |          |
+| f     | mathsf/textsf     |          |
+| 0     | textstyle         |          |
+| 1     | displaystyle      | yes      |
+| 2     | scriptstyle       | yes      |
+| 3     | scriptscriptstyle | yes      |
