@@ -1,23 +1,6 @@
 #+TITLE: todo
 
 * Features
-** Keybinds
-| Mode         | Keybind    | Action                                                                               |
-|--------------+------------+--------------------------------------------------------------------------------------|
-| Normal       | =csd=      | Change surrounding delimiter (see id/ad)                                             |
-|              | =cse=      | Change environment                                                                   |
-|              | =csc=      | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)              |
-|              | =tsd=      | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=                |
-|              | =tse=      | For surrounding environment, equation <==> equation*, or align <==> align*           |
-|              | =tsm=      | For surrounding math, =\(\)= <==> =\[\]=                                             |
-|              | =dse=      | Delete surrounding environment                                                       |
-|              | =dsc=      | Delete surrounding command, =\tilde{a}= => =a=                                       |
-| Text objects | =ie=, =ae= | Select inside/around *environment*                                                   |
-|              | =ic=, =ac= | Select inside/around *command* (macro)                                               |
-|              | =im=, =am= | Select inside/around *math*                                                          |
-|              | =id=, =ad= | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
-| Insert       | ?          | Brace movement                                                                       |
-** Vimtex stuff to steal:
 *** Text Objects
 For environments, commands/macros, inline & display math
 **** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
@@ -25,36 +8,28 @@ For environments, commands/macros, inline & display math
 So we can have a unified math
 
 *** General delimiter text object, with integration to evil-surround/evil-embrace
-*** =csd/cse/tsd/tse= commands from vimtex
-**** Environment changing
-- [-] Vimtex way - minibuffer
-  - [-] Just through a prompt. That would be through the minibuffer in Emacs.
-  - [ ] Mark the environment being changed while user is in minibuffer
-- [ ] Using [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
-  Test this, and if its nice than add it as an option. We don't want
-  evil-multiedit as a dependency though.
-*** Environment & section folding (see evil-vimish-fold, outline-minor-mode)
-** Our own
-*** DONE cdlatex-tab-like movement (implemented already)
-*** evil-surround like bindings which support toggling inline-outline math
-Also support changing =\(= =\[= to =begin{align}= and so on. We can use
+*** Environment changing
+This is the =csd/cse/tsd/tse= commands from vimtex
+**** DONE Semtex way - minibuffer
+Just through a prompt. That would be through the minibuffer in Emacs.
+**** TODO Using an alias table
+  After doing =cse= you would will be able to enter one letter aliases to
+  immediately change the enviornment, e.g. =csea= for changing to =align=, or
+  =cseE= for changing to =equation*=.
+  - One mapping, e.g. =csez=, will be reserved for *entering a prompt* so you can
+    fully type out the thing.
+  - This is a very vimish way: i.e =csea= would be mapped to ~align~ environment
+  - Aliases would be *customizable*
+  - Have a *Menu for an overview* of the aliases
+** Folding
+- Environments
+- Sections, subsections...
+- Have an org-like cycle functionality
+
+** DONE CDLaTeX-tab-like movement (implemented already)
+** evil-surround like bindings which support toggling inline-outline math
+Also support changing =\)= =\]= to =begin{align}= and so on. We can use
 ~texmathp-environments~ for selection.
-*** For the enviornemnt and command text objects, add aliases in the prompt
-- after doing =cse= you would will be able to enter one letter aliases to
-  immediately change the enviornment, e.g. =csea= for changing to align, or
-  =cseE= for changing to =equation*=. One mapping, e.g. =csez=, will be reserved
-  for entering a prompt so you can fully type out the thing.
-- the aliases should be listed in some sort of menu, like the command
-  options after you do =<SPC> f= in doom.
-- there sould be a good way for the user to define their own aliase in
-  their config with a function, e.g. =evil-tex-define-env-alias=
-- for commands maybe go straight to the prompt?
-*** Create accent insertion mechanism in normal mode that plays nice with cdlatex
-- Meaning that it shares the same aliases. Overlaps a lot with the command
-  textobj, might be a good idea to just have the alias be the same thing exactly
-  as in insert mode, but with the a prefix for accents, since the =c= alias for
-  =mathcal= might be more usufull somewhere else. or maybe this is exactly what
-  it sould be, who knows.
 
 * Proposed
 - change inside/around sub/superscript =ci^ ci_= which would jump to the closest
@@ -74,24 +49,34 @@ Also support changing =\(= =\[= to =begin{align}= and so on. We can use
   e,c,m,d text objects are compatible with evil-surround. We probably only need
   to give an example.
 
-- [X] Add README tip for =b/B= text objects
-
+* Far Future
+** Mark the environment being changed while user changing it
+This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] does. We can either:
+- Just add a similar functionality to our plugin
+- Add an optional integration to evil-goggles in this repo
+- Add an integration with goggles in the goggles plugin (this sounds odd but
+  goggles has built-in integration with evil-surround and other plugins)
 * Rejected
+** Using [[https://github.com/hlissner/evil-multiedit][evil-multiedit]] to change environments
+Would be slow compared to aliases.
 
-* Things to add to Doom in another repo later
-** auto compilation mappings
-** =TeX-fold= flag
-would define bindings and advices for =TeX-fold=
-** =cdlatex= flag
-=cdlatex= has 4 functionalities:
-- Snippets and environment templates: =fr<TAB>= => =\frac{}{}= These are made
-obsolete by =yasnippet= and should be disabled.
-- Tab key is configured for a general useful movement inside snippets
-- Fast insertion of specific macros: =`a= => =\alpha=
-- Fast accent insertion: =a'~= => =\tilde{a}=
-
-Our cdlatex config should just disable the snippets and the tab key.
 * Appendix
+** Keybinds
+| Mode         | Keybind    | Action                                                                               |
+|--------------+------------+--------------------------------------------------------------------------------------|
+| Normal       | =csd=      | Change surrounding delimiter (see id/ad)                                             |
+|              | =cse=      | Change environment                                                                   |
+|              | =csc=      | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)              |
+|              | =tsd=      | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=                |
+|              | =tse=      | For surrounding environment, equation <==> equation*, or align <==> align*           |
+|              | =tsm=      | For surrounding math, =\(\)= <==> =\[\]=                                             |
+|              | =dse=      | Delete surrounding environment                                                       |
+|              | =dsc=      | Delete surrounding command, =\tilde{a}= => =a=                                       |
+| Text objects | =ie=, =ae= | Select inside/around *environment*                                                   |
+|              | =ic=, =ac= | Select inside/around *command* (macro)                                               |
+|              | =im=, =am= | Select inside/around *math*                                                          |
+|              | =id=, =ad= | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
+| Insert       | ?          | Brace movement                                                                       |
 ** Environments list with proposed key aliases
 | Category        | env        | key alias |
 |-----------------+------------+-----------|
@@ -154,3 +139,16 @@ Our cdlatex config should just disable the snippets and the tab key.
 | 1   | displaystyle      | yes      |
 | 2   | scriptstyle       | yes      |
 | 3   | scriptscriptstyle | yes      |
+** Things to add to Doom in another repo later
+*** auto compilation mappings
+*** =TeX-fold= flag
+would define bindings and advices for =TeX-fold=
+*** =cdlatex= flag
+=cdlatex= has 4 functionalities:
+- Snippets and environment templates: =fr<TAB>= => =\frac{}{}= These are made
+obsolete by =yasnippet= and should be disabled.
+- Tab key is configured for a general useful movement inside snippets
+- Fast insertion of specific macros: =`a= => =\alpha=
+- Fast accent insertion: =a'~= => =\tilde{a}=
+
+Our cdlatex config should just disable the snippets and the tab key.
