@@ -131,7 +131,7 @@ If no such macro can be found, return nil"
             (cdr beg)))
      (t (list (cdr beg) (car end))))))
 
-(defun evil-tex-env-beginning ()
+(defun evil-tex-env-beginning-begend ()
   "Return (start . end) of the \\begin{foo} of current env.
 
 \\begin{equation}
@@ -150,7 +150,7 @@ If no such macro can be found, return nil"
       ;;   (forward-line 1))
       (cons beg (point)))))
 
-(defun evil-tex-env-end ()
+(defun evil-tex-env-end-begend ()
   "Return (start . end) of the \\end{foo} of current env.
 
 \\end{equation}
@@ -167,15 +167,15 @@ If no such macro can be found, return nil"
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment"
   :extend-selection nil
-  (let ((beg (evil-tex-env-beginning))
-        (end (evil-tex-env-end)))
+  (let ((beg (evil-tex-env-beginning-begend))
+        (end (evil-tex-env-end-begend)))
     (list (car beg) (cdr end))))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select a LaTeX environment"
   :extend-selection nil
-  (let ((beg (evil-tex-env-beginning))
-        (end (evil-tex-env-end)))
+  (let ((beg (evil-tex-env-beginning-begend))
+        (end (evil-tex-env-end-begend)))
     (list (cdr beg) (car end))))
 
 (defun evil-tex--re-search-backwards-unless-already (str)
@@ -202,7 +202,7 @@ If no such macro can be found, return nil"
     (LaTeX-find-matching-begin)
     (evil-tex--get-macro-braces-begend)))
 
-(defun evil-tex--end-braces ()
+(defun evil-tex--end-braces-begend ()
   "Return (beg . end) of the argument given to \\end in the current env."
   (interactive)
   (save-excursion
@@ -212,7 +212,7 @@ If no such macro can be found, return nil"
 (defun evil-tex-change-env (new-env)
   "Change current env to NEW-ENV."
   (evil-tex--replace-region (evil-tex--begin-braces-begend-begend) new-env)
-  (evil-tex--replace-region (evil-tex--end-braces) new-env))
+  (evil-tex--replace-region (evil-tex--end-braces-begend) new-env))
 
 (defun evil-tex-change-env-interactive ()
   "Like `evil-tex-change-env' but prompts you for NEW-ENV."
