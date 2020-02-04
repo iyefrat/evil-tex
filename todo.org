@@ -51,7 +51,7 @@ Also support changing =\(= =\[= to =begin{align}= and so on. We can use
 - for commands maybe go straight to the prompt?
 *** Create accent insertion mechanism in normal mode that plays nice with cdlatex
 - Meaning that it shares the same aliases. Overlaps a lot with the command
-  textobj, might be agood idea to just have the alias be the same thing exactly
+  textobj, might be a good idea to just have the alias be the same thing exactly
   as in insert mode, but with the a prefix for accents, since the =c= alias for
   =mathcal= might be more usufull somewhere else. or maybe this is exactly what
   it sould be, who knows.
