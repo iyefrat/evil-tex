@@ -89,7 +89,7 @@ obsolete by =yasnippet= and should be disabled.
 - Fast accent insertion: =a'~= => =\tilde{a}=
 
 Our cdlatex config should just disable the snippets and the tab key.
-* Notes
+* Appendix
 ** Environments list with proposed key aliases
 | Category        | env        | key alias |
 |-----------------+------------+-----------|
