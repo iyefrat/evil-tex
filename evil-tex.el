@@ -217,9 +217,10 @@ If no such macro can be found, return nil"
 (defun evil-tex-change-env-interactive ()
   "Like `evil-tex-change-env' but prompts you for NEW-ENV."
   (interactive)
-  (evil-tex-change-env (read-string (concat "Change '"
-                                            (LaTeX-current-environment)
-                                            "' to: "))))
+  (evil-tex-change-env
+   (read-string (concat "Change '"
+                        (LaTeX-current-environment)
+                        "' to: "))))
 
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
