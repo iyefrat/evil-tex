@@ -79,7 +79,7 @@ Example: (| symbolizes point)
   ;;                  \   [     \   (   \   )   \   ]
   (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count t))
 
-(defun evil-tex-macro-beginning ()
+(defun evil-tex-macro-beginning-begend ()
   "Return (start . end) of the macro-beginning to the left of point.
 
 If no enclosing macro is found, return nil.
@@ -94,7 +94,7 @@ For example for \\macro{foo|bar} it returns the start and end of \"\\macro{\""
           (forward-char))               ;; opening brace
         (cons beg (point))))))
 
-(defun evil-tex-macro-end ()
+(defun evil-tex-macro-end-begend ()
   "Return (start . end) of the end of the enclosing macro.
 
 If no such macro can be found, return nil"
@@ -112,8 +112,8 @@ If no such macro can be found, return nil"
 (evil-define-text-object evil-tex-a-macro (count &optional beg end type)
   "Select a TeX macro"
   :extend-selection nil
-  (let ((beg (evil-tex-macro-beginning))
-        (end (evil-tex-macro-end)))
+  (let ((beg (evil-tex-macro-beginning-begend))
+        (end (evil-tex-macro-end-begend)))
     (if (and beg end)
         (list (car beg) (cdr end))
       (error "No enclosing macro found"))))
@@ -121,8 +121,8 @@ If no such macro can be found, return nil"
 (evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
   "Select inner TeX macro, i.e the argument to the macro."
   :extend-selection nil
-  (let ((beg (evil-tex-macro-beginning))
-        (end (evil-tex-macro-end)))
+  (let ((beg (evil-tex-macro-beginning-begend))
+        (end (evil-tex-macro-end-begend)))
     (cond
      ((or (null beg) (null end))
       (error "No enclosing macro found"))
