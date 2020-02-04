@@ -39,6 +39,14 @@ So we can have a unified math
 *** evil-surround like bindings which support toggling inline-outline math
 Also support changing =\(= =\[= to =begin{align}= and so on. We can use
 ~texmathp-environments~ for selection.
+*** For the enviornemnt and command text objects, add aliases in the prompt
+- e.g. after =cse= you should be able to type =e<RET>= to get =equation=
+  and =E<RET>= for =equation*=
+- the aliases should be listed in some sort of menu, like the command
+  options after you do =<SPC> f= in doom.
+- there sould be a good way for the user to define their own aliase in
+  their config with a function, e.g. =evil-tex-define-env-alias=
+- This should also work exactly the same for commands
 
 * Proposed
 - change inside/around sub/superscript =ci^ ci_= which would jump to the closest
