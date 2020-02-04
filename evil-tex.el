@@ -178,43 +178,48 @@ If no such macro can be found, return nil"
         (end (evil-tex-env-end)))
     (list (cdr beg) (car end))))
 
+(defun evil-tex--re-search-backwards-unless-already (str)
+  "Search backward for STR unless point is already on it."
+  (unless (looking-at str)
+    (re-search-backward str)))
+
+(defun evil-tex--get-macro-braces-begend ()
+  "Return (beg . end) of the macro braces currently active."
+  (let (beg end)
+    (save-excursion
+      (evil-tex--re-search-backwards-unless-already "\\\\")
+      (search-forward "{")
+      (setq beg (point))
+      (forward-sexp)
+      (setq end (point)))
+    (cons beg end)))
 
 
-(defun evil-tex--begin-braces ()
+(defun evil-tex--begin-braces-begend-begend ()
   "Return (beg . end) of the argument given to \\begin in the current env."
   (interactive)
   (save-excursion
-    (let (beg end)
-      (LaTeX-find-matching-begin) ;; We are at \
-      (search-forward "{") ;; at {
-      (setq beg (point))
-      (forward-sexp) ;; at }
-      (setq end (point))
-      (cons beg end))))
+    (LaTeX-find-matching-begin)
+    (evil-tex--get-macro-braces-begend)))
 
 (defun evil-tex--end-braces ()
   "Return (beg . end) of the argument given to \\end in the current env."
   (interactive)
   (save-excursion
-    (let (beg end)
-      (LaTeX-find-matching-end) ;; We are at }
-      (setq end (1- (point)))
-      (search-backward "{") ;; at {
-      (setq beg (1+ (point)))
-      (cons beg end))))
+    (LaTeX-find-matching-end)
+    (evil-tex--get-macro-braces-begend)))
 
 (defun evil-tex-change-env (new-env)
   "Change current env to NEW-ENV."
-  (evil-tex--replace-region (evil-tex--begin-braces) new-env)
+  (evil-tex--replace-region (evil-tex--begin-braces-begend-begend) new-env)
   (evil-tex--replace-region (evil-tex--end-braces) new-env))
 
-(defun evil-tex-change-evn-interactive ()
+(defun evil-tex-change-env-interactive ()
   "Like `evil-tex-change-env' but prompts you for NEW-ENV."
   (interactive)
-  (evil-tex-change-env (read-from-minibuffer
-                        (concat "Change '"
-                                (LaTeX-current-environment)
-                                "' to: "))))
+  (evil-tex-change-env (read-string (concat "Change '"
+                                            (LaTeX-current-environment)
+                                            "' to: "))))
 
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
