@@ -89,3 +89,33 @@ obsolete by =yasnippet= and should be disabled.
 - Fast accent insertion: =a'~= => =\tilde{a}=
 
 Our cdlatex config should just disable the snippets and the tab key.
+* Notes
+** Environments list with proposed key aliases
+| Category        | env        | key alias |
+|-----------------+------------+-----------|
+| built in        | equation   | e         |
+|                 | equation*  | E         |
+|                 | figure     | f         |
+|                 | itemize    |           |
+|                 | enumerate  |           |
+| amsmath         | align      | a         |
+|                 | align*     | A         |
+|                 | alignat    |           |
+|                 | alignat*   |           |
+|                 | eqnarray   |           |
+|                 | flalign    |           |
+|                 | flalign*   |           |
+|                 | gather     |           |
+|                 | gather*    |           |
+|                 | multline   |           |
+|                 | multline*  |           |
+| common theorems | axiom      |           |
+|                 | corollary  |           |
+|                 | definition |           |
+|                 | examples   |           |
+|                 | exercise   |           |
+|                 | lemma      |           |
+|                 | proof      |           |
+|                 | question   |           |
+|                 | remark     |           |
+|                 | theorem    |           |
