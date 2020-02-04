@@ -9,7 +9,7 @@
 ;; Version: 0.0.1
 ;; Keywords:
 ;; Homepage: https://github.com/itai33/evil-tex
-;; Package-Requires: ((evil "1.0") (auctex "11.88"))
+;; Package-Requires: ((evil "1.0") (auctex "11.88") (dash "2.14.1"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -28,6 +28,7 @@
 
 (require 'evil)
 (require 'latex)
+(require 'dash)
 
 (defun evil-tex--replace-region (region string)
   "Replace the region between REGION with STRING.
@@ -217,10 +218,11 @@ If no such macro can be found, return nil"
 (defun evil-tex-change-env-interactive ()
   "Like `evil-tex-change-env' but prompts you for NEW-ENV."
   (interactive)
-  (evil-tex-change-env
-   (read-string (concat "Change '"
-                        (LaTeX-current-environment)
-                        "' to: "))))
+  (-> (LaTeX-current-environment)
+      (format "Change %s to: ")
+      (read-string)
+      (evil-tex-change-env)))
+
 
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
