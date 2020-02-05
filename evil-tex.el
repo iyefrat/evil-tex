@@ -157,7 +157,8 @@ Installs the following additional text objects:
   \\[evil-tex-a-macro]  TeX macro         \\foo{..}
   \\[evil-tex-an-env]   LaTeX environment \\begin{foo}..\\end{foo}"
   :keymap (make-sparse-keymap)
-  (evil-normalize-keymaps))
+  (evil-normalize-keymaps)
+  (evil-tex--define-embrace-pairs-h))
 
 
 ;;;###autoload
