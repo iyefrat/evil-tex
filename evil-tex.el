@@ -27,6 +27,7 @@
 ;;; Code:
 
 (require 'evil)
+(require 'evil-embrace)
 
 ;; FIXME how to better load local files
 (load "evil-tex-util")
@@ -128,14 +129,14 @@ Example: (| symbolizes point)
 (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
 (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
 
-(define-key evil-tex-inner-map "e"  'evil-tex-inner-env)
-(define-key evil-tex-inner-map "$"  'evil-tex-inner-dollar) ;; TODO merge with normal math
-(define-key evil-tex-inner-map "c"  'evil-tex-inner-macro)
+(define-key evil-tex-inner-map "e" 'evil-tex-inner-env)
+(define-key evil-tex-inner-map "$" 'evil-tex-inner-dollar) ;; TODO merge with normal math
+(define-key evil-tex-inner-map "c" 'evil-tex-inner-macro)
 (define-key evil-tex-inner-map "m" 'evil-tex-inner-math)
 
-(define-key evil-tex-outer-map "e"  'evil-tex-an-env)
-(define-key evil-tex-outer-map "$"  'evil-tex-a-dollar) ;; TODO merge with normal math
-(define-key evil-tex-outer-map "c"  'evil-tex-a-macro)
+(define-key evil-tex-outer-map "e" 'evil-tex-an-env)
+(define-key evil-tex-outer-map "$" 'evil-tex-a-dollar) ;; TODO merge with normal math
+(define-key evil-tex-outer-map "c" 'evil-tex-a-macro)
 (define-key evil-tex-outer-map "m" 'evil-tex-a-math)
 
 (evil-define-key 'operator evil-tex-mode-map
