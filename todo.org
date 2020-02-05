@@ -4,19 +4,18 @@
 ** Text Objects
 For environments, commands/macros, inline & display math
 *** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
-*** Make text obj work with surround
-Maybe with evil-embrace?
-#+BEGIN_SRC emacs-lisp
+*** Make Text Objects Work with Surround
+Embrace doesn't work as we'd like it to; its REGEX doesn't recognize nested structures
+correctly.
 
-(defun evil-tex-TEST ()
-  "LaTeX command support for embrace."
-  (cons (format "\\%s{" (read-string "\\")) "}"))
-
-(embrace-add-pair-regexp ?m
-                         (rx (or "\\(" "\\["))
-                         (rx (or "\\)" "\\]"))
-                         #'evil-tex-TEST)
-#+END_SRC
+Our options, sorted:
+1. Make surround work with our text objects
+2. Just do what embrace does ourselves
+3. Ditch surround and define the behavior of =cse= ourselves. We do need
+   surround to work with other text objects though, so its not a real solution.
+   However, if we define =cse= ourselves we can have fancy features, like
+   highlighting the environment being worked on.
+4. Re-define embrace to work with ~begend~ functions
 
 ** General delimiter text object, with integration to evil-surround/evil-embrace
 Doing these seems tough. I couldn't merge \) \] with $.
