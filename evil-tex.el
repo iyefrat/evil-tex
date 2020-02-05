@@ -126,8 +126,50 @@ Example: (| symbolizes point)
 (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
 (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
 
-(define-key evil-tex-outer-map "e" 'evil-tex-an-env)
-(define-key evil-tex-inner-map "e" 'evil-tex-inner-env)
+(define-key evil-tex-inner-map "e"  'evil-tex-inner-env)
+(define-key evil-tex-inner-map "$"  'evil-tex-inner-dollar) ;; TODO merge with normal math
+(define-key evil-tex-inner-map "c"  'evil-tex-inner-macro)
+(define-key evil-tex-inner-map "m" 'evil-tex-inner-math)
+
+(define-key evil-tex-outer-map "e"  'evil-tex-an-env)
+(define-key evil-tex-outer-map "$"  'evil-tex-a-dollar) ;; TODO merge with normal math
+(define-key evil-tex-outer-map "c"  'evil-tex-a-macro)
+(define-key evil-tex-outer-map "m" 'evil-tex-a-math)
+
+(evil-define-key 'operator evil-tex-mode-map
+  "a" evil-tex-outer-map
+  "i" evil-tex-inner-map)
+
+(evil-define-key 'visual evil-tex-mode-map
+  "a" evil-tex-outer-map
+  "i" evil-tex-inner-map)
+
+(define-minor-mode evil-tex-mode
+  "Minor mode for latex-specific text objects in evil.
+
+Installs the following additional text objects:
+\\<evil-tex-outer-map>
+  \\[evil-tex-a-math]   Display math      \\=\\[ .. \\=\\]
+  \\[evil-tex-a-dollar] Inline math       $ .. $ TODO Merge with normal math
+  \\[evil-tex-a-macro]  TeX macro         \\foo{..}
+  \\[evil-tex-an-env]   LaTeX environment \\begin{foo}..\\end{foo}"
+  :keymap (make-sparse-keymap)
+  (evil-normalize-keymaps))
+
+
+;;;###autoload
+(defun turn-on-evil-tex-mode ()
+  "Enable evil-tex-mode in current buffer."
+  (interactive)
+  (evil-tex-mode 1))
+
+;;;###autoload
+(defun turn-off-evil-tex-mode ()
+  "Disable evil-tex-mode in current buffer."
+  (interactive)
+  (evil-tex-mode -1))
+
+
 
 (provide 'evil-tex)
 
