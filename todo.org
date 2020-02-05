@@ -4,19 +4,23 @@
 ** Text Objects
 For environments, commands/macros, inline & display math
 *** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
-*** TODO Merge \) \] math text objects with $ math text objects
-So we can have a unified math
 *** Make text obj work with surround
 Maybe with evil-embrace?
 #+BEGIN_SRC emacs-lisp
+
+(defun evil-tex-TEST ()
+  "LaTeX command support for embrace."
+  (cons (format "\\%s{" (read-string "\\")) "}"))
+
 (embrace-add-pair-regexp ?m
-                         (rx (and "\\" (any "([$")))
-                         (rx (and "\\" (any ")]$")))
-                         (lambda () ("\\(" . "\\)")))
+                         (rx (or "\\(" "\\["))
+                         (rx (or "\\)" "\\]"))
+                         #'evil-tex-TEST)
 #+END_SRC
 
-
 ** General delimiter text object, with integration to evil-surround/evil-embrace
+Doing these seems tough. I couldn't merge \) \] with $.
+However, just matching a regex to =\left[...] \right[...]= probably wouldn't be hard.
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex
 *** DONE Vimtex way - minibuffer
@@ -57,6 +61,10 @@ Also support changing =\)= =\]= to =begin{align}= and so on. We can use
   e,c,m,d text objects are compatible with evil-surround. We probably only need
   to give an example.
 
+* Rejected
+** Merge \) \] math text objects with $ math text objects
+I can't make it work. Anyway using $$ is supposed to be bad practice anyway.
+https://tex.stackexchange.com/q/510/
 * Far Future
 ** Mark the environment being changed while user changing it
 This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] does. We can either:
@@ -65,7 +73,6 @@ This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] d
 - Add an integration with goggles in the goggles plugin (this sounds odd but
   goggles has built-in integration with evil-surround and other plugins)
 
-* Rejected
 ** Using [[https://github.com/hlissner/evil-multiedit][evil-multiedit]] to change environments
 Would be slow compared to aliases.
 
