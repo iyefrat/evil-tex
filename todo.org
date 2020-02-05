@@ -6,6 +6,15 @@ For environments, commands/macros, inline & display math
 *** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
 *** TODO Merge \) \] math text objects with $ math text objects
 So we can have a unified math
+*** Make text obj work with surround
+Maybe with evil-embrace?
+#+BEGIN_SRC emacs-lisp
+(embrace-add-pair-regexp ?m
+                         (rx (and "\\" (any "([$")))
+                         (rx (and "\\" (any ")]$")))
+                         (lambda () ("\\(" . "\\)")))
+#+END_SRC
+
 
 ** General delimiter text object, with integration to evil-surround/evil-embrace
 ** Environment changing
