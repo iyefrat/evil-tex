@@ -63,14 +63,16 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select innter \\[ \\] or \\( \\)."
   :extend-selection nil
-  ;;                  \   [     \   (   \   )   \   ]
-  (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count nil))
+  (evil-select-paren (rx (or "\\(" "\\["))
+                     (rx (or "\\)" "\\]"))
+                     beg end type count nil))
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
   "Select a \\[ \\] or \\( \\)."
   :extend-selection nil
-  ;;                  \   [     \   (   \   )   \   ]
-  (evil-select-paren "\\\\\\[\\|\\\\(" "\\\\)\\|\\\\\\]" beg end type count t))
+  (evil-select-paren (rx (or "\\(" "\\["))
+                     (rx (or "\\)" "\\]"))
+                     beg end type count t))
 
 
 (evil-define-text-object evil-tex-a-macro (count &optional beg end type)
