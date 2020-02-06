@@ -20,16 +20,10 @@
 ;;; Code:
 
 
-;; To start, let us try to define a text object for an enviornment,
-;; although there might be a better way to do this than regex
-
-
-;;; Code:
-
 (require 'evil)
 (require 'evil-embrace)
 
-;; FIXME how to better load local files
+;; TODO how to better load local files
 (load "evil-tex-util")
 
 (defun evil-tex-brace-movement ()

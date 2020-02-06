@@ -1,6 +1,8 @@
-;;; ~/projects/evil-tex/evil-tex-util.el -*- lexical-binding: t; -*-
+;;; evil-tex-util.el -- Functions to be used by evil-texi -*- lexical-binding: t; -*-
+;;; Commentary:
+;; This file is part of evil-tex, which provides license
+;; information.
 ;;; Code:
-
 
 (require 'latex)
 (require 'dash)
