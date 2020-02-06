@@ -15,8 +15,34 @@ Our options, sorted:
    surround to work with other text objects though, so its not a real solution.
    However, if we define =cse= ourselves we can have fancy features, like
    highlighting the environment being worked on.
-4. Re-define embrace to work with ~begend~ functions
 
+** Math
+*** Behavior of \] vs begin{equation*}
+Our options:
+**** With a flag
+Add a flag that if true, would advice all env-insertion commands to replace
+equation* with \]. If using this, \] would need to behave like any other
+environment.
+**** Treat as distinct objects
+\] would respond to 'math' objects, and equation* to env objects.
+*** Surrounding math: inline or display?
+**** =m= is only for inline; use [[*With a flag][the flag]].
+=m= would only insert /inline/, for display insert an *equation* env*, and with
+[[*With a flag][the flag]] it would result in a \].
+**** Add a new txt obj =M= only for display math
+=m= would still match \], but when changing
+something to a math env =m= would be for /inline/ math and =M= for /display/.
+**** Auto-detect display math
+Use a predicate to decide whether to insert inline or display. We would have
+these built-in predicates:
+- Insert /display/ math when selection consists of multiple lines, or when
+  selection is big. Otherwise /inline/.
+- Always /inline/
+- Always /display/
+*** evil-surround like bindings for toggling inline|display math
+Redundant with:
+- The =M= txt obj: user would just press =csmM=
+- The =equation* is \]= flag; user would just change math to an equation* env.
 ** General delimiter text object, with integration to evil-surround/evil-embrace
 Doing these seems tough. I couldn't merge \) \] with $.
 However, just matching a regex to =\left[...] \right[...]= probably wouldn't be hard.
@@ -37,8 +63,6 @@ Just through a prompt. That would be through the minibuffer in Emacs.
 - Environments
 - Sections, subsections...
 - Have an org-like cycle functionality
-** evil-surround like bindings which support toggling inline-outline math
-Also support changing =\)= =\]= to =begin{align}= and so on. We can use
 ~texmathp-environments~ for selection.
 ** DONE CDLaTeX-tab-like movement (implemented already)
 
