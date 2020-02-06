@@ -21,7 +21,6 @@
 
 
 (require 'evil)
-(require 'evil-embrace)
 
 ;; TODO how to better load local files
 (load "evil-tex-util")
