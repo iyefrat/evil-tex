@@ -17,7 +17,6 @@ Our options, sorted:
    highlighting the environment being worked on.
 *** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
 It would be useful, you could use =cio= to change commands
-
 ** Math
 *** Behavior of \] vs begin{equation*}
 Our options:
@@ -181,10 +180,10 @@ Would be slow compared to aliases.
 | 2   | scriptstyle       | yes      |
 | 3   | scriptscriptstyle | yes      |
 ** Things to add to Doom in another repo later
-*** auto compilation mappings
-*** =TeX-fold= flag
+*** TODO auto compilation mappings
+*** TODO =TeX-fold= flag
 would define bindings and advices for =TeX-fold=
-*** =cdlatex= flag
+*** DONE =cdlatex= flag
 =cdlatex= has 4 functionalities:
 - Snippets and environment templates: =fr<TAB>= => =\frac{}{}= These are made
 obsolete by =yasnippet= and should be disabled.
