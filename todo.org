@@ -15,6 +15,8 @@ Our options, sorted:
    surround to work with other text objects though, so its not a real solution.
    However, if we define =cse= ourselves we can have fancy features, like
    highlighting the environment being worked on.
+*** Add stuff to ~thing-at-point~ so what a backslash is considered part of a symbol
+It would be useful, you could use =cio= to change commands
 
 ** Math
 *** Behavior of \] vs begin{equation*}
