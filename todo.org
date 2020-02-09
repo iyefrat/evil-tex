@@ -27,12 +27,12 @@ environment.
 **** Treat as distinct objects
 \] would respond to 'math' objects, and equation* to env objects.
 *** Surrounding math: inline or display?
-**** =m= is only for inline; use [[*With a flag][the flag]].
-=m= would only insert /inline/, for display insert an *equation* env*, and with
-[[*With a flag][the flag]] it would result in a \].
 **** Add a new txt obj =M= only for display math
 =m= would still match \], but when changing
 something to a math env =m= would be for /inline/ math and =M= for /display/.
+**** =m= is only for inline; use [[*With a flag][the flag]].
+=m= would only insert /inline/, for display insert an *equation* env*, and with
+[[*With a flag][the flag]] it would result in a \].
 **** Auto-detect display math
 Use a predicate to decide whether to insert inline or display. We would have
 these built-in predicates:
