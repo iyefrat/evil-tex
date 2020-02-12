@@ -1,4 +1,5 @@
 #+TITLE: todo
+#+MACRO: kbd @@html:<kbd>$1</kbd>@@@@latex:\fbox{$1}@@
 
 * Features
 ** Text Objects
