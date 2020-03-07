@@ -119,9 +119,6 @@ Example: (| symbolizes point)
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
 
-(set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
-(set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
-
 (define-key evil-tex-inner-map "e" 'evil-tex-inner-env)
 (define-key evil-tex-inner-map "$" 'evil-tex-inner-dollar) ;; TODO merge with normal math
 (define-key evil-tex-inner-map "c" 'evil-tex-inner-macro)
@@ -150,9 +147,11 @@ Installs the following additional text objects:
   \\[evil-tex-a-macro]  TeX macro         \\foo{..}
   \\[evil-tex-an-env]   LaTeX environment \\begin{foo}..\\end{foo}"
   :keymap (make-sparse-keymap)
-  (evil-normalize-keymaps)
+  (when evil-tex-mode
+    (evil-normalize-keymaps)
+    (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
+    (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)))
 
 
 (provide 'evil-tex)
-
 ;;; evil-tex ends here
