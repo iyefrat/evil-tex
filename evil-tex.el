@@ -154,20 +154,6 @@ Installs the following additional text objects:
   (evil-tex--define-embrace-pairs-h))
 
 
-;;;###autoload
-(defun turn-on-evil-tex-mode ()
-  "Enable evil-tex-mode in current buffer."
-  (interactive)
-  (evil-tex-mode 1))
-
-;;;###autoload
-(defun turn-off-evil-tex-mode ()
-  "Disable evil-tex-mode in current buffer."
-  (interactive)
-  (evil-tex-mode -1))
-
-
-
 (provide 'evil-tex)
 
 ;;; evil-tex ends here
