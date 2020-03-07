@@ -137,6 +137,7 @@ Example: (| symbolizes point)
   "a" evil-tex-outer-map
   "i" evil-tex-inner-map)
 
+;;;###autoload
 (define-minor-mode evil-tex-mode
   "Minor mode for latex-specific text objects in evil.
 
