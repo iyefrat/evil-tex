@@ -86,8 +86,8 @@ Example: (| symbolizes point)
     (cond
      ((or (null beg) (null end))
       (error "No enclosing macro found"))
-     ((= (cdr beg) (car end))          ;; macro has no content
-      (list (1+ (car beg))             ;; return macro boundaries excluding \
+     ((= (cdr beg) (car end))          ; macro has no content
+      (list (1+ (car beg))             ; return macro boundaries excluding \
             (cdr beg)))
      (t (list (cdr beg) (car end))))))
 
@@ -120,12 +120,12 @@ Example: (| symbolizes point)
 (defvar evil-tex-inner-map (make-sparse-keymap))
 
 (define-key evil-tex-inner-map "e" 'evil-tex-inner-env)
-(define-key evil-tex-inner-map "$" 'evil-tex-inner-dollar) ;; TODO merge with normal math
+(define-key evil-tex-inner-map "$" 'evil-tex-inner-dollar) ; TODO merge with normal math
 (define-key evil-tex-inner-map "c" 'evil-tex-inner-macro)
 (define-key evil-tex-inner-map "m" 'evil-tex-inner-math)
 
 (define-key evil-tex-outer-map "e" 'evil-tex-an-env)
-(define-key evil-tex-outer-map "$" 'evil-tex-a-dollar) ;; TODO merge with normal math
+(define-key evil-tex-outer-map "$" 'evil-tex-a-dollar) ; TODO merge with normal math
 (define-key evil-tex-outer-map "c" 'evil-tex-a-macro)
 (define-key evil-tex-outer-map "m" 'evil-tex-a-math)
 

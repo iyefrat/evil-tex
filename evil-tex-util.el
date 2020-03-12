@@ -18,10 +18,10 @@ For example for \\macro{foo|bar} it returns the start and end of \"\\macro{\""
     (when beg
       (save-excursion
         (goto-char beg)
-        (forward-char)                 ;; backslash
-        (skip-chars-forward "A-Za-z@*");; macro-name
+        (forward-char)                  ; backslash
+        (skip-chars-forward "A-Za-z@*") ; macro-name
         (when (looking-at "{\\|\\[")
-          (forward-char))               ;; opening brace
+          (forward-char))               ; opening brace
         (cons beg (point))))))
 
 (defun evil-tex-macro-end-begend ()
@@ -33,7 +33,7 @@ If no such macro can be found, return nil"
       (save-excursion
         (goto-char end)
         (when (looking-back "}\\|\\]" (- (point) 2))
-          (backward-char))              ;; closing brace
+          (backward-char))              ; closing brace
         (cons (point) end)))))
 
 ;; TODO Support visual selection
@@ -72,10 +72,10 @@ REGION should be a (beg . end) cons."
 ^               ^"
   (let (beg)
     (save-excursion
-      (LaTeX-find-matching-begin)      ;; we are at backslash
+      (LaTeX-find-matching-begin)      ; we are at backslash
       (setq beg (point))
-      (skip-chars-forward "^{")        ;; goto opening brace
-      (forward-sexp)                   ;; goto closing brace
+      (skip-chars-forward "^{")        ; goto opening brace
+      (forward-sexp)                   ; goto closing brace
       ;; Count the newline after \begin{foo} to the environment header
       ;; Without this, delete-inner-env would unexpectedly move the end
       ;; to the same line as the beginning
@@ -91,10 +91,10 @@ REGION should be a (beg . end) cons."
 ^             ^"
   (let (end)
     (save-excursion
-      (LaTeX-find-matching-end)        ;; we are at closing brace
+      (LaTeX-find-matching-end)        ; we are at closing brace
       (setq end (point))
-      (backward-sexp)                  ;; goto opening brace
-      (search-backward "\\")           ;; goto backslash
+      (backward-sexp)                  ; goto opening brace
+      (search-backward "\\")           ; goto backslash
       (cons (point) end))))
 
 
