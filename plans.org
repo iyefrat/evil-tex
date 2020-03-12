@@ -1,11 +1,10 @@
 #+TITLE: Plans
-#+MACRO: kbd @@html:<kbd>$1</kbd>@@@@latex:\fbox{$1}@@
 
 * Features
 ** Text Objects
 For environments, commands/macros, inline & display math
 *** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
-*** Make Text Objects Work with Surround
+*** TODO Make Text Objects Work with Surround
 Embrace doesn't work as we'd like it to; its REGEX doesn't recognize nested structures
 correctly.
 
@@ -19,7 +18,7 @@ Our options, sorted:
 *** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
 It would be useful, you could use =cio= to change commands
 ** Math
-*** Behavior of \] vs begin{equation*}
+*** TODO Define behavior of \] vs begin{equation*}
 Our options:
 **** With a flag
 Add a flag that if true, would advice all env-insertion commands to replace
@@ -27,10 +26,10 @@ equation* with \]. If using this, \] would need to behave like any other
 environment.
 **** Treat as distinct objects
 \] would respond to 'math' objects, and equation* to env objects.
-*** Surrounding math: inline or display?
+*** TODO Define math surrounding behavior: inline or display?
 **** Add a new txt obj =M= only for display math
-=m= would still match \], but when changing
-something to a math env =m= would be for /inline/ math and =M= for /display/.
+=m= would still match \], but when changing something to a math env =m= would be for
+/inline/ math and =M= for /display/.
 **** =m= is only for inline; use [[*With a flag][the flag]].
 =m= would only insert /inline/, for display insert an *equation* env*, and with
 [[*With a flag][the flag]] it would result in a \].
@@ -41,12 +40,12 @@ these built-in predicates:
   selection is big. Otherwise /inline/.
 - Always /inline/
 - Always /display/
-*** evil-surround like bindings for toggling inline|display math
+*** TODO evil-surround like bindings for toggling inline/display math
 Redundant with:
 - The =M= txt obj: user would just press =csmM=
 - The =equation* is \]= flag; user would just change math to an equation* env.
-** General delimiter text object, with integration to evil-surround/evil-embrace
-Doing these seems tough. I couldn't merge \) \] with $.
+** TODO General delimiter text object, with integration to evil-surround
+Doing these seems tough. I couldn't even merge \) \] with $.
 However, just matching a regex to =\left[...] \right[...]= probably wouldn't be hard.
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex
@@ -98,9 +97,6 @@ This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] d
 - Add an integration with goggles in the goggles plugin (this sounds odd but
   goggles has built-in integration with evil-surround and other plugins)
 
-** Using [[https://github.com/hlissner/evil-multiedit][evil-multiedit]] to change environments
-Would be slow compared to aliases.
-
 * Appendix
 ** Keybinds
 | Mode         | Keybind | Action                                                                         |
@@ -148,48 +144,39 @@ Would be slow compared to aliases.
 |                 | remark     |           |
 |                 | theorem    |           |
 ** CDLaTeX accent & key list
-"is style" means that the braces come before the macro, e.g {\displaystyle ...}
-| key | macro             | is style |
-|-----+-------------------+----------|
-| .   | dot               |          |
-| :   | ddot              |          |
-| ~   | tilde             |          |
-| N   | widetilde         |          |
-| ^   | hat               |          |
-| H   | widehat           |          |
-| -   | bar               |          |
-| T   | overline          |          |
-| _   | underline         |          |
-| {   | overbrace         |          |
-| }   | underbrace        |          |
-| >   | vec               |          |
-| /   | grave             |          |
-| \   | acute             |          |
-| v   | check             |          |
-| u   | breve             |          |
-| m   | mbox              |          |
-| c   | mathcal           |          |
-| r   | mathrm/textrm     |          |
-| i   | mathit/textit     |          |
-| l   | NONE!!/textsl     |          |
-| b   | mathbf/textbf     |          |
-| e   | mathem/emph"      |          |
-| y   | mathtt/texttt     |          |
-| f   | mathsf/textsf     |          |
-| 0   | textstyle         |          |
-| 1   | displaystyle      | yes      |
-| 2   | scriptstyle       | yes      |
-| 3   | scriptscriptstyle | yes      |
+"style?" means that the braces come before the macro, e.g {\displaystyle ...}
+| key | macro             | style? |
+|-----+-------------------+--------|
+| .   | dot               |        |
+| :   | ddot              |        |
+| ~   | tilde             |        |
+| N   | widetilde         |        |
+| ^   | hat               |        |
+| H   | widehat           |        |
+| -   | bar               |        |
+| T   | overline          |        |
+| _   | underline         |        |
+| {   | overbrace         |        |
+| }   | underbrace        |        |
+| >   | vec               |        |
+| /   | grave             |        |
+| \   | acute             |        |
+| v   | check             |        |
+| u   | breve             |        |
+| m   | mbox              |        |
+| c   | mathcal           |        |
+| r   | mathrm/textrm     |        |
+| i   | mathit/textit     |        |
+| l   | NONE!!/textsl     |        |
+| b   | mathbf/textbf     |        |
+| e   | mathem/emph"      |        |
+| y   | mathtt/texttt     |        |
+| f   | mathsf/textsf     |        |
+| 0   | textstyle         |        |
+| 1   | displaystyle      | yes    |
+| 2   | scriptstyle       | yes    |
+| 3   | scriptscriptstyle | yes    |
 ** Things to add to Doom in another repo later
 *** TODO auto compilation mappings
 *** TODO =TeX-fold= flag
 would define bindings and advices for =TeX-fold=
-*** DONE =cdlatex= flag
-=cdlatex= has 4 functionalities:
-- Snippets and environment templates: =fr<TAB>= => =\frac{}{}= These are made
-obsolete by =yasnippet= and should be disabled.
-- Tab key is configured for a general useful movement inside snippets
-- Fast insertion of specific macros: =`a= => =\alpha=
-- Fast accent insertion: =a'~= => =\tilde{a}=
-
-Our cdlatex config should just disable the snippets and the tab key.
