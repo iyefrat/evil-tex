@@ -15,8 +15,6 @@ Our options, sorted:
    surround to work with other text objects though, so its not a real solution.
    However, if we define =cse= ourselves we can have fancy features, like
    highlighting the environment being worked on.
-*** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
-It would be useful, you could use =cio= to change commands
 ** Math
 *** TODO Define behavior of \] vs begin{equation*}
 Our options:
@@ -60,19 +58,31 @@ Just through a prompt. That would be through the minibuffer in Emacs.
   - This is a very vimish way: i.e =csea= would be mapped to ~align~ environment
   - Aliases would be *customizable*
   - Have a *Menu for an overview* of the aliases
-** Folding
+** TODO Folding
 - Environments
 - Sections, subsections...
 - Have an org-like cycle functionality
 ~texmathp-environments~ for selection.
+Look into ~outline-mode~ for the actual folding. I heard that AUCTeX already
+defines some stuff for outline, we should look into that.
 ** DONE CDLaTeX-tab-like movement (implemented already)
 
 * Proposed
-- change inside/around sub/superscript =ci^ ci_= which would jump to the closest
+Not sure if we should have explanations for the surround stuff, the toggle
+stuff is non trivial but it would probably be ehough to just mention that the
+e,c,m,d text objects are compatible with evil-surround. We probably only need
+to give an example.
+*** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
+I'm not so sure of the interactive use of this, as =cio= (change inner symbol)
+would be the same as =csm= (change surrounding macro). However, there are other
+things that use ~symbol-at-point~ (such as project search), which is why it might
+be useful
+*** Sub/superscript text objects
+change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
   - Would not work with surround-stuff, only =c/d= commands. Just thought it
     might be useful (Say you quickly want to change a sigma index...)
-- Support math environments (=begin{align}=...) with our math text objects
+*** Support math envs (=begin{align}=...) with math text objects
   - Use =tsm= to toggle between =begin{align}= and =begin{equation}= (It already
     toggles between =\(\)= and =\[\]=)
 
@@ -80,10 +90,6 @@ Just through a prompt. That would be through the minibuffer in Emacs.
     defined just to yield a =begin{equation*}...=. If we support toggling
     only =equation= and =align=, getting from =\[\]= to =align= wouldn't be nice.
 
-- not sure if we should have explanations for the surround stuff, the toggle
-  stuff is non trivial but it would probably be ehough to just mention that the
-  e,c,m,d text objects are compatible with evil-surround. We probably only need
-  to give an example.
 
 * Rejected
 ** Merge \) \] math text objects with $ math text objects
