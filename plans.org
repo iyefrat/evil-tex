@@ -72,6 +72,8 @@ Not sure if we should have explanations for the surround stuff, the toggle
 stuff is non trivial but it would probably be ehough to just mention that the
 e,c,m,d text objects are compatible with evil-surround. We probably only need
 to give an example.
+Itai: I think that as long as we explain what the inner and around parts of the
+text objects are it's enough.
 *** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
 I'm not so sure of the interactive use of this, as =cio= (change inner symbol)
 would be the same as =csm= (change surrounding macro). However, there are other
@@ -82,6 +84,7 @@ change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
   - Would not work with surround-stuff, only =c/d= commands. Just thought it
     might be useful (Say you quickly want to change a sigma index...)
+Itai: sounds good
 *** Support math envs (=begin{align}=...) with math text objects
   - Use =tsm= to toggle between =begin{align}= and =begin{equation}= (It already
     toggles between =\(\)= and =\[\]=)
@@ -89,7 +92,8 @@ change inside/around sub/superscript =ci^ ci_= which would jump to the closest
     I don't use =begin{equation}= at all, only =\[\]=. In amsmath, =\[\]= are
     defined just to yield a =begin{equation*}...=. If we support toggling
     only =equation= and =align=, getting from =\[\]= to =align= wouldn't be nice.
-
+Itai: I thought we agreed that it would be best to just have a way for the user
+to decide how this acts because there is no good universal option.
 
 * Rejected
 ** Merge \) \] math text objects with $ math text objects
