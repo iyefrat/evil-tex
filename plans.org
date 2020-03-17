@@ -59,12 +59,17 @@ fully type out the thing.
 - Aliases would be *customizable*
 - Have a *Menu for an overview* of the aliases
 ** TODO Folding
-- Environments
-- Sections, subsections...
-- Have an org-like cycle functionality
-~texmathp-environments~ for selection.
-Look into ~outline-mode~ for the actual folding. I heard that AUCTeX already
-defines some stuff for outline, we should look into that.
+Doom has its own folding module, which tries ~hideshow~, ~outline-minor-mode~, and
+~vimish-fold~. We should probably override its keybinds, as we know whats best for
+LaTeX.
+- [ ] Show labels on folds
+*** Sections, subsections
+Auctex configure ~outline-minor-mode~ (which is part of Emacs). We just need to
+hook outline and set a keybind to try to fold using outline.
+*** Environments
+Done by ~TeX-fold-env~. It might be smart to configure outline for it instead.
+*** Have an org-like cycle functionality, start the buffer folded
+[[https://github.com/Malabarba/latex-extra][latex-extra]] does it, but it only uses outline for section folding (not env).
 ** DONE CDLaTeX-tab-like movement (implemented already)
 
 * Proposed
