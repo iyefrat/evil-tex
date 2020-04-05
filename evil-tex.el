@@ -135,6 +135,28 @@ Example: (| symbolizes point)
   "a" evil-tex-outer-map
   "i" evil-tex-inner-map)
 
+
+(defvar evil-tex-surround-delimiters
+  '((?m "\\(" . "\\)")
+    (?M "\\[" . "\\]")
+    (?e "\\begin{envPlaceholder}" . "\\end{envPlaceholder}")
+    (?c "commandBeginPlaceholder" . "CommandEndPlaceholder"))
+  "Mappings to be used in evil-surround as an interface to evil-tex.
+
+Every item is in the form of (char beg-delimiter . end-delimiter).")
+
+(defun evil-tex-set-up-surround ()
+  "Configure evil-surround so things like 'csm' would work."
+  (setq-local evil-surround-pairs-alist
+              (append evil-tex-surround-delimiters evil-surround-pairs-alist)))
+(defun evil-tex-set-up-embrace ()
+  "Configure evil-embrace not to steal our evil-surround keybinds."
+  (setq-local evil-embrace-evil-surround-keys
+              (append
+               ;; embrace only needs the key chars, not the whole delimiters
+               (mapcar #'car evil-tex-surround-delimiters)
+               evil-embrace-evil-surround-keys)))
+
 ;;;###autoload
 (define-minor-mode evil-tex-mode
   "Minor mode for latex-specific text objects in evil.
@@ -146,6 +168,14 @@ Installs the following additional text objects:
   \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
   \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
   :init-value nil
+  (when evil-tex-mode
+    (evil-normalize-keymaps)
+    ;; (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
+    ;; (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
+    (when (boundp 'evil-surround-pairs-alist)
+      (evil-tex-set-up-surround))
+    (when (boundp 'evil-embrace-evil-surround-keys)
+      (evil-tex-set-up-embrace))))
 
 
 (provide 'evil-tex)
