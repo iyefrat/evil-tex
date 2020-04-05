@@ -23,7 +23,7 @@
 (require 'evil)
 
 ;; TODO how to better load local files
-(load "evil-tex-util")
+(require 'evil-tex-util)
 
 (defun evil-tex-brace-movement ()
   "Brace movement similar to TAB in cdlatex.
