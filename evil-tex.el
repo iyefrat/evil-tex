@@ -143,15 +143,11 @@ Example: (| symbolizes point)
 
 Installs the following additional text objects:
 \\<evil-tex-outer-map>
-  \\[evil-tex-a-math]   Display math      \\=\\[ .. \\=\\]
-  \\[evil-tex-a-dollar] Inline math       $ .. $ TODO Merge with normal math
-  \\[evil-tex-a-macro]  TeX macro         \\foo{..}
-  \\[evil-tex-an-env]   LaTeX environment \\begin{foo}..\\end{foo}"
-  :keymap (make-sparse-keymap)
-  (when evil-tex-mode
-    (evil-normalize-keymaps)
-    (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
-    (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)))
+  \\[evil-tex-a-math] latex math: \\\\[ \\\\], \\( \\)
+  \\[evil-tex-a-dollar] TeX math: $ .. $ TODO Merge with normal math
+  \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
+  \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
+  :init-value nil
 
 
 (provide 'evil-tex)
