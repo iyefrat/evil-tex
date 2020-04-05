@@ -91,7 +91,6 @@ Example: (| symbolizes point)
             (cdr beg)))
      (t (list (cdr beg) (car end))))))
 
-
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment"
   :extend-selection nil
@@ -105,7 +104,6 @@ Example: (| symbolizes point)
   (let ((beg (evil-tex-env-beginning-begend))
         (end (evil-tex-env-end-begend)))
     (list (cdr beg) (car end))))
-
 
 (defun evil-tex-change-env-interactive ()
   "Like `evil-tex-change-env' but prompts you for NEW-ENV."
