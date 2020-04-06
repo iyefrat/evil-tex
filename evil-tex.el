@@ -105,14 +105,6 @@ Example: (| symbolizes point)
         (end (evil-tex-env-end-begend)))
     (list (cdr beg) (car end))))
 
-(defun evil-tex-change-env-interactive ()
-  "Like `evil-tex-change-env' but prompts you for NEW-ENV."
-  (interactive)
-  (-> (LaTeX-current-environment)
-      (format "Change %s to: ")
-      (read-string)
-      (evil-tex-change-env)))
-
 
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))

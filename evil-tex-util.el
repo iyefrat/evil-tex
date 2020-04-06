@@ -98,24 +98,5 @@ REGION should be a (beg . end) cons."
       (cons (point) end))))
 
 
-(defun evil-tex--begin-braces-begend-begend ()
-  "Return (beg . end) of the argument given to \\begin in the current env."
-  (interactive)
-  (save-excursion
-    (LaTeX-find-matching-begin)
-    (evil-tex--get-macro-braces-begend)))
-
-(defun evil-tex--end-braces-begend ()
-  "Return (beg . end) of the argument given to \\end in the current env."
-  (interactive)
-  (save-excursion
-    (LaTeX-find-matching-end)
-    (evil-tex--get-macro-braces-begend)))
-
-(defun evil-tex-change-env (new-env)
-  "Change current env to NEW-ENV."
-  (evil-tex--replace-region (evil-tex--begin-braces-begend-begend) new-env)
-  (evil-tex--replace-region (evil-tex--end-braces-begend) new-env))
-
 (provide 'evil-tex-util)
 ;;; evil-tex-util.el ends here
