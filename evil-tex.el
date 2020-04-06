@@ -135,15 +135,27 @@ Example: (| symbolizes point)
   "a" evil-tex-outer-map
   "i" evil-tex-inner-map)
 
+(defun evil-tex-surround-command-prompt ()
+  "Ask the user for the macro they'd like to surround with."
+  (cons (format "\\%s{" (read-string "macro: \\"))
+        "}"))
+
+(defun evil-tex-surround-env-prompt ()
+  "Ask the user for the environment they'd like to surround with."
+  ;; TODO some fancy keymap things here
+  (let ((env (read-string "env: ")))
+    (cons (format "\\begin{%s}" env)
+          (format "\\end{%s}" env))))
 
 (defvar evil-tex-surround-delimiters
-  '((?m "\\(" . "\\)")
+  `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
-    (?e "\\begin{envPlaceholder}" . "\\end{envPlaceholder}")
-    (?c "commandBeginPlaceholder" . "CommandEndPlaceholder"))
+    (?c . ,#'evil-tex-surround-command-prompt)
+    (?e . ,#'evil-tex-surround-env-prompt))
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
-Every item is in the form of (char beg-delimiter . end-delimiter).")
+Every item is in the form of either (char beg-delimiter . end-delimiter),
+or (char . function) when a prompt function is needed.")
 
 (defun evil-tex-set-up-surround ()
   "Configure evil-surround so things like 'csm' would work."
