@@ -93,7 +93,6 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment"
-  :extend-selection nil
   (let ((beg (evil-tex-env-beginning-begend))
         (end (evil-tex-env-end-begend)))
     (list (car beg) (cdr end))))
@@ -109,15 +108,15 @@ Example: (| symbolizes point)
 (defvar evil-tex-outer-map (make-sparse-keymap))
 (defvar evil-tex-inner-map (make-sparse-keymap))
 
-(define-key evil-tex-inner-map "e" 'evil-tex-inner-env)
-(define-key evil-tex-inner-map "$" 'evil-tex-inner-dollar) ; TODO merge with normal math
-(define-key evil-tex-inner-map "c" 'evil-tex-inner-macro)
-(define-key evil-tex-inner-map "m" 'evil-tex-inner-math)
+(define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
+(define-key evil-inner-text-objects-map "$" 'evil-tex-inner-dollar) ; TODO merge with normal math
+(define-key evil-inner-text-objects-map "c" 'evil-tex-inner-macro)
+(define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
 
-(define-key evil-tex-outer-map "e" 'evil-tex-an-env)
-(define-key evil-tex-outer-map "$" 'evil-tex-a-dollar) ; TODO merge with normal math
-(define-key evil-tex-outer-map "c" 'evil-tex-a-macro)
-(define-key evil-tex-outer-map "m" 'evil-tex-a-math)
+(define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
+(define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar) ; TODO merge with normal math
+(define-key evil-outer-text-objects-map "c" 'evil-tex-a-macro)
+(define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
 
 (evil-define-key 'operator evil-tex-mode-map
   "a" evil-tex-outer-map
