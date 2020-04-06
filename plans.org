@@ -111,34 +111,38 @@ This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] d
 |              | =id=, =ad=  | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
 | Insert       | ?       | Brace movement                                                                 |
 ** Environments list with proposed key aliases
-| Category        | env        | key alias |
-|-----------------+------------+-----------|
-| built in        | equation   | e         |
-|                 | equation*  | E         |
-|                 | figure     | f         |
-|                 | itemize    |           |
-|                 | enumerate  |           |
-| amsmath         | align      | a         |
-|                 | align*     | A         |
-|                 | alignat    |           |
-|                 | alignat*   |           |
-|                 | eqnarray   |           |
-|                 | flalign    |           |
-|                 | flalign*   |           |
-|                 | gather     |           |
-|                 | gather*    |           |
-|                 | multline   |           |
-|                 | multline*  |           |
-| common theorems | axiom      |           |
-|                 | corollary  |           |
-|                 | definition |           |
-|                 | examples   |           |
-|                 | exercise   |           |
-|                 | lemma      |           |
-|                 | proof      |           |
-|                 | question   |           |
-|                 | remark     |           |
-|                 | theorem    |           |
+Giving a prefix argument would prompt for options.
+| Category        | env         | key alias |
+|-----------------+-------------+-----------|
+| generic         | prompt user | x         |
+|-----------------+-------------+-----------|
+| built in        | equation    | e         |
+|                 | equation*   | E         |
+|                 | figure      | f         |
+|                 | itemize     | i         |
+|                 | enumerate   | I         |
+| amsmath         | align       | a         |
+|                 | align*      | A         |
+|                 | alignat     | n         |
+|                 | alignat*    | N         |
+|                 | eqnarray    | r         |
+|                 | flalign     | l         |
+|                 | flalign*    | L         |
+|                 | gather      | g         |
+|                 | gather*     | G         |
+|                 | multline    | m         |
+|                 | multline*   | M         |
+|                 | cases       | c         |
+| common theorems | axiom       | ta        |
+| prefix t        | corollary   | tc        |
+|                 | definition  | td        |
+|                 | examples    | te        |
+|                 | exercise    | ts        |
+|                 | lemma       | tl        |
+|                 | proof       | tp        |
+|                 | question    | tq        |
+|                 | remark      | tr        |
+|                 | theorem     | tt        |
 ** CDLaTeX accent & key list
 "style?" means that the braces come before the macro, e.g {\displaystyle ...}
 | key | macro             | style? |
