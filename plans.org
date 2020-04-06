@@ -65,6 +65,7 @@ I'm not so sure of the interactive use of this, as =cio= (change inner symbol)
 would be the same as =csm= (change surrounding macro). However, there are other
 things that use ~symbol-at-point~ (such as project search), which is why it might
 be useful
+*** Add beamer or other envs to the env keymap
 *** Sub/superscript text objects
 change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
