@@ -5,7 +5,6 @@
 ;;; Code:
 
 (require 'latex)
-(require 'dash)
 
 ;; Stuff from evil-latex-textobjects
 

@@ -9,7 +9,7 @@
 ;; Version: 0.0.1
 ;; Keywords:
 ;; Homepage: https://github.com/itai33/evil-tex
-;; Package-Requires: ((evil "1.0") (auctex "11.88") (dash "2.14.1"))
+;; Package-Requires: ((evil "1.0") (auctex "11.88"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
