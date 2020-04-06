@@ -36,7 +36,6 @@ Redundant with:
 - The =M= txt obj: user would just press =csmM=
 - The =equation* is \]= flag; user would just change math to an equation* env.
 ** TODO General delimiter text object, with integration to evil-surround
-Doing these seems tough. I couldn't even merge \) \] with $.
 However, just matching a regex to =\left[...] \right[...]= probably wouldn't be hard.
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex
@@ -83,9 +82,6 @@ Itai: I thought we agreed that it would be best to just have a way for the user
 to decide how this acts because there is no good universal option.
 
 * Rejected
-** Merge \) \] math text objects with $ math text objects
-I can't make it work. Anyway using $$ is supposed to be bad practice anyway.
-https://tex.stackexchange.com/q/510/
 * Far Future
 ** Mark the environment being changed while user changing it
 This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] does. We can either:

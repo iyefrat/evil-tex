@@ -5,6 +5,43 @@
 ;;; Code:
 
 (require 'latex)
+(require 'evil-common)
+
+
+(defun evil-tex-max-key (seq fn)
+  "Return the element of SEQ for which FN gives the biggest result.
+
+Comparison is done with `>'.
+(evil-tex-max-key '(1 2 -4) (lambda (x) (* x x))) => -4"
+  (let* ((res (car seq))
+         (res-val (funcall fn res)))
+    (dolist (cur (cdr seq))
+      (let ((cur-val (funcall fn cur)))
+        (when (> cur-val res-val)
+          (setq res-val cur-val
+                res cur))))
+    res))
+
+(defun evil-tex--select-math (&rest args)
+  "Return (beg . end) of best math match.
+
+ARGS passed to evil-select-(paren|quote)."
+  (evil-tex-max-key
+   (list
+    (ignore-errors (apply #'evil-select-paren
+                          (regexp-quote "\\(") (regexp-quote "\\)") args))
+    (ignore-errors (apply #'evil-select-paren
+                          (regexp-quote "\\[") (regexp-quote "\\]") args))
+    (ignore-errors (apply #'evil-select-quote ?$ args)))
+   (lambda (arg) (if (and (consp arg) ; selection succeeded
+                          ;; Selection is close enough to point.
+                          ;; evil-select-quote can select things further down in
+                          ;; the buffer.
+                          (<= (- (car arg) 2) (point))
+                          (>= (+ (cadr arg) 3) (point)))
+                     (car arg)
+                   most-negative-fixnum))))
+
 
 ;; Stuff from evil-latex-textobjects
 
