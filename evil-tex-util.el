@@ -77,14 +77,6 @@ If no such macro can be found, return nil"
 
 ;; Now ours
 
-(defun evil-tex--replace-region (region string)
-  "Replace the region between REGION with STRING.
-REGION should be a (beg . end) cons."
-  (save-excursion
-    (delete-region (car region) (cdr region))
-    (goto-char (car region))
-    (insert string)))
-
 (defun evil-tex--re-search-backwards-unless-already (str)
   "Search backward for STR unless point is already on it."
   (unless (looking-at str)
