@@ -307,9 +307,9 @@ Installs the following additional text objects:
     (evil-normalize-keymaps)
     ;; (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
     ;; (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
-    (when (boundp 'evil-surround-pairs-alist)
+    (when (require 'evil-surround nil t)
       (evil-tex-set-up-surround))
-    (when (boundp 'evil-embrace-evil-surround-keys)
+    (when (require 'evil-embrace nil t)
       (evil-tex-set-up-embrace))))
 
 
