@@ -5,7 +5,7 @@
 For environments, commands/macros, inline & display math
 *** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
 *** DONE Make Text Objects Work with Surround
-**** TODO Make the env newline rational
+*** TODO Make the env newline rational
 Currently the newline behavior is erratic. \begin{...} \end{...} should always
 appear in lines of their own.
 ** Math
@@ -59,37 +59,37 @@ e,c,m,d text objects are compatible with evil-surround. We probably only need
 to give an example.
 Itai: I think that as long as we explain what the inner and around parts of the
 text objects are it's enough.
-*** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
-I'm not so sure of the interactive use of this, as =cio= (change inner symbol)
-would be the same as =csm= (change surrounding macro). However, there are other
-things that use ~symbol-at-point~ (such as project search), which is why it might
-be useful
-*** Add beamer or other envs to the env keymap
-*** Sub/superscript text objects
+** Add beamer or other envs to the env keymap
+** Sub/superscript text objects
 change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
   - Would not work with surround-stuff, only =c/d= commands. Just thought it
     might be useful (Say you quickly want to change a sigma index...)
 Itai: sounds good
-*** Support math envs (=begin{align}=...) with math text objects
-  - Use =tsm= to toggle between =begin{align}= and =begin{equation}= (It already
-    toggles between =\(\)= and =\[\]=)
+* Rejected
+** Support math envs (=begin{align}=...) with math text objects
+- Use =tsm= to toggle between =begin{align}= and =begin{equation}= (It already
+  toggles between =\(\)= and =\[\]=)
 
-    I don't use =begin{equation}= at all, only =\[\]=. In amsmath, =\[\]= are
-    defined just to yield a =begin{equation*}...=. If we support toggling
-    only =equation= and =align=, getting from =\[\]= to =align= wouldn't be nice.
+  I don't use =begin{equation}= at all, only =\[\]=. In amsmath, =\[\]= are
+  defined just to yield a =begin{equation*}...=. If we support toggling
+  only =equation= and =align=, getting from =\[\]= to =align= wouldn't be nice.
 Itai: I thought we agreed that it would be best to just have a way for the user
 to decide how this acts because there is no good universal option.
-
-* Rejected
-* Far Future
 ** Mark the environment being changed while user changing it
+Would be hard as currently it's implemented with surround which deletes the
+surrounding delimiters (doesn't mark them).
 This is exactly what [[https://github.com/edkolev/evil-goggles][evil-goggles]] does. We can either:
 - Just add a similar functionality to our plugin
 - Add an optional integration to evil-goggles in this repo
 - Add an integration with goggles in the goggles plugin (this sounds odd but
   goggles has built-in integration with evil-surround and other plugins)
-
+** Add stuff to ~thing-at-point~ so a backslash is considered part of a symbol
+I'm not so sure of the interactive use of this, as =cio= (change inner symbol)
+would be the same as =csm= (change surrounding macro). However, there are other
+things that use ~symbol-at-point~ (such as project search), which is why it might
+be useful
+* Far Future
 * Appendix
 ** Keybinds
 | Mode         | Keybind | Action                                                                         |
