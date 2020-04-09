@@ -9,6 +9,7 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 - [[#installation][Installation]]
 - [[#complete-info][Complete info]]
   - [[#text-objects][Text Objects]]
+  - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
 - [[#appendix][Appendix]]
   - [[#environment-keymap][Environment keymap]]
   - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
@@ -33,16 +34,34 @@ Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)¯\_
 * Complete info
 ** Text Objects
-This package defines 6 text objects. All of them work with =evil-surround=.
+This package defines 6 text objects:
 | Key | Abbrevation     | Text Object Target                                         | Surround behavior                          |
 |-----+-----------------+------------------------------------------------------------+--------------------------------------------|
-| =c=   | command         | TeX macros.                                                | Prompts you for a macro                    |
-| =e=   | environmnt      | =\begin{}...\end{}= blocks                                   | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
-| =m=   | math            | Both inline =\( \)= and display =\[ \]=.                       | Surrounds with =\( \)=                       |
-| =M=   | Display math    | N/A                                                        | Surrounds with =\[ \]=                       |
-| =$=   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. | Surrounds with =$=                           |
-| =d=   | delimiters      | =\right* \left*= parentheses types                           | TODO @itay                                 |
-| =;=   | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                        | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
+| ~c~ | command         | TeX marcos: \foo{...}                                     | Prompts you for a macro                    |
+| ~e~ | environmnt      | \begin{...} \end{...} blocks                         | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
+| ~m~ | math            | Both inline ~\( \)~ and display ~\[ \]~.                   | Surrounds with ~\( \)~                     |
+| ~M~ | Display math    | N/A                                                        | Surrounds with ~\[ \]~                     |
+| ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. | Surrounds with ~$~                         |
+| ~d~ | delimiters      | TODO @itay                                           | TODO @itay                                 |
+| ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                        | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
+#+TBLFM: $3=\begin{}...\end{}= blocks
+** Binding new envs/accents to the keymaps
+Set ~evil-tex-user-env-map-generator-alist~ or
+~evil-tex-user-cdlatex-accents-map-generator-alist~. For example, to add default
+position for figures:
+#+BEGIN_SRC emacs-lisp
+(setq evil-tex-user-env-map-generator-alist
+      '(("f" "\\begin{figure}[!ht]" . "\\end{figure}")))
+#+END_SRC
+To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
+#+BEGIN_SRC emacs-lisp
+(setq evil-tex-user-cdlatex-accents-map-generator-alist
+      '(("b" "mathbb")))
+#+END_SRC
+Same for ~evil-tex-user-cdlatex-accents-map-generator-alist~. The exact format
+is documented under the variable ~evil-tex-user-env-map-generator-alist~
+
+*Make sure to set these variables before evil-TeX is loaded!*
 * Appendix
 ** Environment keymap
 Giving a prefix argument would prompt for options.

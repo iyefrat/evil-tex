@@ -44,12 +44,12 @@ ARGS passed to evil-select-(paren|quote)."
 
 
 (defun evil-tex-format-env-for-surrounding (env-name)
-  "Format ENV-NAME for surrounding: return a cons containing \\\\begin{ENV-NAME} . \\\end{ENV-NAME}."
+  "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
   (cons (format "\\begin{%s}" env-name)
         (format "\\end{%s}" env-name)))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
-  "Format ACCENT for surrounding: return a cons containing \\\\begin{ACCENT} . \\\end{ACCENT}."
+  "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
   (cons (concat "\\" accent "{") "}"))
 
 (defun evil-tex-prompt-for-env ()
@@ -85,7 +85,7 @@ Return KEYMAP."
         (setq name (intern (concat prefix (car env))))
         (fset name (lambda () (interactive) env))
         (define-key keymap key name))
-       ((functionp env)
+       ((or (functionp env) (not env))
         (define-key keymap key env)))))
   keymap)
 
