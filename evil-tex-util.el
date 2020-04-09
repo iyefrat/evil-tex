@@ -83,7 +83,9 @@ If no such macro can be found, return nil"
     (re-search-backward str)))
 
 (defun evil-tex--get-macro-braces-begend ()
-  "Return (beg . end) of the macro braces currently active."
+  "Return (beg . end) of the macro braces currently active.
+\foo{bar}
+    ^   ^"
   (let (beg end)
     (save-excursion
       (evil-tex--re-search-backwards-unless-already "\\\\")
