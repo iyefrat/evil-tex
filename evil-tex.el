@@ -128,13 +128,15 @@ Example: (| symbolizes point)
 
 (defun evil-tex-surround-command-prompt ()
   "Ask the user for the macro they'd like to surround with."
-  (cons (format "\\%s{" (read-string "macro: \\"))
+  (cons (format "\\%s{" (read-from-minibuffer
+                         "macro: \\" nil minibuffer-local-ns-map))
         "}"))
 
 (defun evil-tex-surround-env-prompt ()
   "Ask the user for the environment they'd like to surround with."
   ;; TODO some fancy keymap things here
-  (let ((env (read-string "env: ")))
+  (let ((env (read-from-minibuffer
+              "env: " nil minibuffer-local-ns-map)))
     (cons (format "\\begin{%s}" env)
           (format "\\end{%s}" env))))
 
