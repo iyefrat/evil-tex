@@ -31,14 +31,14 @@ TODO the right/left delimiters when implemented
 * Complete info
 ** Text Objects
 This package defines 6 text objects. All of them work with =evil-surround=.
-| Key | Abbrevation      | Target                                                     |
-|-----+------------------+------------------------------------------------------------|
-| =c= | command          | TeX macros.                                                |
-| =e= | environmnt       | =\begin{}...\end{}= blocks                                 |
-| =m= | math             | Both inline =\( \)= and display =\[ \]=.                   |
-| =$= | dollar           | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. |
-| =d= | delimiters       | =\right* \left*= parentheses types                         |
-| '   | [[*cdlatex accent & key list][CDLaTeX accents ]] | Only for surrounding, when cdlatex is active               |
+| Key | Abbrevation     | Target                                                     |
+|-----+-----------------+------------------------------------------------------------|
+| =c=   | command         | TeX macros.                                                |
+| =e=   | environmnt      | =\begin{}...\end{}= blocks                                   |
+| =m=   | math            | Both inline =\( \)= and display =\[ \]=.                       |
+| =$=   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. |
+| =d=   | delimiters      | =\right* \left*= parentheses types                           |
+| '   | [[#cdlatex-accent-key-list][CDLaTeX accents]] | Only for surrounding, when cdlatex is active               |
 ** Surround notes
 =evil-surround= should work with all of these text objects.
 
@@ -46,11 +46,11 @@ This package defines 6 text objects. All of them work with =evil-surround=.
 
  Surrounding with =c= would prompt you for the macro name.
 
- For =e=, there's [[*Environment keymap][a keymap]] for common environments. It should balso e displayed
+ For =e=, there's [[#Environment-keymap][a keymap]] for common environments. It should balso e displayed
  with a delay after pressing =cs*e=. Use =x= in the keymap to input an env
  manually.
 
- ' only works for surrounding, and uses [[*cdlatex accent key list][this keymap]]. For normal text-object
+ ' only works for surrounding, and uses [[#cdlatex-accent-key-list][this keymap]]. For normal text-object
  operations, use the generic =c=.
 * Appendix
 ** Environment keymap
