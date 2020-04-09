@@ -143,12 +143,12 @@ Example: (| symbolizes point)
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
+    (?$ "$" . "$")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt))
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
-Every item is in the form of either (char beg-delimiter . end-delimiter),
-or (char . function) when a prompt function is needed.")
+See `evil-surround-pairs-alist' for the format.")
 
 (defun evil-tex-set-up-surround ()
   "Configure evil-surround so things like 'csm' would work."
