@@ -38,7 +38,7 @@ This package defines 6 text objects. All of them work with =evil-surround=.
 | =m=   | math            | Both inline =\( \)= and display =\[ \]=.                       |
 | =$=   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. |
 | =d=   | delimiters      | =\right* \left*= parentheses types                           |
-| '   | [[#cdlatex-accent-key-list][CDLaTeX accents]] | Only for surrounding, when cdlatex is active               |
+| =;=   | [[#cdlatex-accent-key-list][CDLaTeX accents]] | Only for surrounding, when cdlatex is active               |
 ** Surround notes
 =evil-surround= should work with all of these text objects.
 

@@ -43,6 +43,77 @@ ARGS passed to evil-select-(paren|quote)."
                    most-negative-fixnum))))
 
 
+(defun evil-tex-format-env-for-surrounding (env-name)
+  "Format ENV-NAME for surrounding: return a cons containing \\\\begin{ENV-NAME} . \\\end{ENV-NAME}."
+  (cons (format "\\begin{%s}" env-name)
+        (format "\\end{%s}" env-name)))
+
+(defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
+  "Format ACCENT for surrounding: return a cons containing \\\\begin{ACCENT} . \\\end{ACCENT}."
+  (cons (concat "\\" accent "{") "}"))
+
+(defun evil-tex-prompt-for-env ()
+  "Prompt the user for an env to insert."
+  (evil-tex-format-env-for-surrounding
+   (read-from-minibuffer "env: " nil minibuffer-local-ns-map)))
+
+(defvar evil-tex--env-function-prefix "evil-tex-envs:"
+  "Prefix used when generating env functions from `evil-tex-env-map-generator-alist'.")
+
+(defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents:"
+  "Prefix used when generating accent functions from `evil-tex-cdlatex-accent-map-generator-alist'.")
+
+(defun evil-tex--populate-surround-kemap (keymap generator-alist prefix
+                                                 single-strings-fn)
+  "Populate KEYMAP with keys and callbacks from GENERATOR-ALIST.
+see `evil-tex-env-map-generator-alist' the the alist fromat.
+PREFIX is the prefix to give the generated functions created
+by (lambda () (interactive) (SINGLE-STRINGS-FN env)).
+Return KEYMAP."
+
+  (dolist (pair generator-alist)
+    (message "pair: %s" pair)
+    (let* ((key (car pair))
+           (env (cdr pair))
+           name)
+      (cond
+       ((stringp env)
+        (setq name (intern (concat prefix env)))
+        (fset name (lambda () (interactive) (funcall single-strings-fn env)))
+        (define-key keymap key name))
+       ((consp env)
+        (setq name (intern (concat prefix (car env))))
+        (fset name (lambda () (interactive) env))
+        (define-key keymap key name))
+       ((functionp env)
+        (define-key keymap key env)))))
+  keymap)
+
+(defun evil-tex-read-with-keymap (keymap)
+  "Prompt the user to press a key from KEYMAP.
+
+Return the result of tha called function, or error if the key
+pressed isn't found."
+  (let (key map-result)
+    (when (and (require 'which-key nil t))
+      (run-with-idle-timer
+       which-key-idle-delay nil
+       (lambda () (unless key
+                    (which-key--show-keymap nil keymap nil nil t)))))
+    (setq key (string (read-char)))
+    (when (functionp 'which-key--hide-popup)
+      (which-key--hide-popup))
+    (message "read it! %s" key)
+    (setq map-result (lookup-key keymap key))
+    (cond
+     ((or (not map-result) (numberp map-result))
+      (user-error "%s not found in keymap" key))
+     ((functionp map-result)
+      (funcall map-result))
+     ((keymapp map-result)
+      (evil-tex-read-with-keymap map-result)))))
+
+
 ;; Stuff from evil-latex-textobjects
 
 (defun evil-tex-macro-beginning-begend ()

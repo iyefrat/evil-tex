@@ -105,47 +105,159 @@ Example: (| symbolizes point)
     (list (cdr beg) (car end))))
 
 
-(defvar evil-tex-outer-map (make-sparse-keymap))
-(defvar evil-tex-inner-map (make-sparse-keymap))
+;; (defvar evil-tex-outer-map (make-sparse-keymap))
+;; (defvar evil-tex-inner-map (make-sparse-keymap))
+
+(defvar evil-tex-env-map-generator-alist
+  `(("x"  . ,#'evil-tex-prompt-for-env)
+    ("e"  . "equation")
+    ("E"  . "equation*")
+    ("f"  . "figure")
+    ("i"  . "itemize")
+    ("I"  . "enumerate")
+    ("a"  . "align")
+    ("A"  . "align*")
+    ("n"  . "alignat")
+    ("N"  . "alignat*")
+    ("r"  . "eqnarray")
+    ("l"  . "flalign")
+    ("L"  . "flalign*")
+    ("g"  . "gather")
+    ("G"  . "gather*")
+    ("m"  . "multline")
+    ("M"  . "multline*")
+    ("c"  . "cases")
+    ;; prefix t - theorems
+    ("ta" . "axiom")
+    ("tc" . "corollary")
+    ("td" . "definition")
+    ("te" . "examples")
+    ("ts" . "exercise")
+    ("tl" . "lemma")
+    ("tp" . "proof")
+    ("tq" . "question")
+    ("tr" . "remark")
+    ("tt" . "theorem"))
+  "Alist used to generate `evil-tex-env-map'.
+Each item is a cons. The car is the key (a string) to the keymap.
+The cdr can be:
+
+A string: then the inserted env would be an env
+with that name
+
+A cons: then the text would be wrapped between the car and the
+cdr. For example, you can set it to (\\begin{figure}[!ht] .
+\\end{figure}) to have default placements for the figure.
+
+A function: then the function would be called, and the result is
+assumed to be a cons. The text is wrapped in the resulted cons.")
+
+(defvar evil-tex-cdlatex-accents-map-generator-alist
+  `(("." . "dot")
+    (":" . "ddot")
+    ("~" . "tilde")
+    ("N" . "widetilde")
+    ("^" . "hat")
+    ("H" . "widehat")
+    ("-" . "bar")
+    ("T" . "overline")
+    ("_" . "underline")
+    ("{" . "overbrace")
+    ("}" . "underbrace")
+    (">" . "vec")
+    ("/" . "grave")
+    ("\"". "acute")
+    ("v" . "check")
+    ("u" . "breve")
+    ("m" . "mbox")
+    ("c" . "mathcal")
+    ("r" . ,#'evil-tex-cdlatex-accents:rm)
+    ("i" . ,#'evil-tex-cdlatex-accents:it)
+    ("l" . ,#'evil-tex-cdlatex-accents:sl)
+    ("b" . ,#'evil-tex-cdlatex-accents:bold)
+    ("e" . ,#'evil-tex-cdlatex-accents:emph)
+    ("y" . ,#'evil-tex-cdlatex-accents:tt)
+    ("f" . ,#'evil-tex-cdlatex-accents:sf)
+    ("0"   "{\\textstyle " . "}")
+    ("1"   "{\\displaystyle " . "}")
+    ("2"   "{\\scriptstyle " . "}")
+    ("3"   "{\\scriptscriptstyle " . "}")))
+
+(defun evil-tex-cdlatex-accents:rm ()  "TODO."
+       (cons (if (texmathp) "\\mathrm{" "\\textrm{")) "}")
+(defun evil-tex-cdlatex-accents:it () "TODO."
+       (cons (if (texmathp) "\\mathit{" "\\textit{")) "}")
+(defun evil-tex-cdlatex-accents:sl () "TODO."
+       (unless (texmathp) '("\\textsl{" . "}")))
+(defun evil-tex-cdlatex-accents:bold () "TODO."
+       (cons (if (texmathp) "\\mathbf{" "\\textbf{") "}"))
+(defun evil-tex-cdlatex-accents:emph () "TODO."
+       (cons (if (texmathp) "\\mathem{" "\\emph{") "}"))
+(defun evil-tex-cdlatex-accents:tt () "TODO."
+       (cons (if (texmathp) "\\mathtt{" "\\texttt{") "}"))
+(defun evil-tex-cdlatex-accents:sf () "TODO."
+       (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
+
+(defvar evil-tex-env-map
+  (evil-tex--populate-surround-kemap
+   (make-sparse-keymap) evil-tex-env-map-generator-alist
+   evil-tex--env-function-prefix #'evil-tex-format-env-for-surrounding)
+  "Keymap for surrounding with environments.")
+
+(defvar evil-tex-cdlatex-accents-map
+  (evil-tex--populate-surround-kemap
+   (make-sparse-keymap)
+   evil-tex-cdlatex-accents-map-generator-alist
+   evil-tex--cdlatex-accents-function-prefix
+   #'evil-tex-format-cdlatex-accent-for-surrounding)
+  "Keymap for surrounding with environments.")
+
+(defun evil-tex-surround-env-prompt ()
+  "Prompt user for an env to surround with using `evil-tex-env-map'."
+  (evil-tex-read-with-keymap evil-tex-env-map))
+
+(defun evil-tex-surround-cdlatex-accents-prompt ()
+  "Prompt user for an env to surround with using `evil-tex-cdlatex-accents-map'."
+  (evil-tex-read-with-keymap evil-tex-cdlatex-accents-map))
+
+(when (require 'which-key nil t)
+  (push
+   '(("\\`." . "evil-tex-.*:\\(.*\\)") . (nil . "\\1"))
+   which-key-replacement-alist))
 
 (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
-(define-key evil-inner-text-objects-map "$" 'evil-tex-inner-dollar) ; TODO merge with normal math
+(define-key evil-inner-text-objects-map "$" 'evil-tex-inner-dollar)
 (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-macro)
 (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
-(define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar) ; TODO merge with normal math
+(define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar)
 (define-key evil-outer-text-objects-map "c" 'evil-tex-a-macro)
 (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
 
-(evil-define-key 'operator evil-tex-mode-map
-  "a" evil-tex-outer-map
-  "i" evil-tex-inner-map)
+;; (evil-define-key 'operator evil-tex-mode-map
+;;   "a" evil-tex-outer-map
+;;   "i" evil-tex-inner-map)
 
-(evil-define-key 'visual evil-tex-mode-map
-  "a" evil-tex-outer-map
-  "i" evil-tex-inner-map)
+;; (evil-define-key 'visual evil-tex-mode-map
+;;   "a" evil-tex-outer-map
+;;   "i" evil-tex-inner-map)
 
 (defun evil-tex-surround-command-prompt ()
   "Ask the user for the macro they'd like to surround with."
-  (cons (format "\\%s{" (read-from-minibuffer
-                         "macro: \\" nil minibuffer-local-ns-map))
+  (cons (format "\\%s{"
+                (read-from-minibuffer
+                 "macro: \\" nil minibuffer-local-ns-map))
         "}"))
 
-(defun evil-tex-surround-env-prompt ()
-  "Ask the user for the environment they'd like to surround with."
-  ;; TODO some fancy keymap things here
-  (let ((env (read-from-minibuffer
-              "env: " nil minibuffer-local-ns-map)))
-    (cons (format "\\begin{%s}" env)
-          (format "\\end{%s}" env))))
 
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
     (?$ "$" . "$")
     (?c . ,#'evil-tex-surround-command-prompt)
-    (?e . ,#'evil-tex-surround-env-prompt))
+    (?e . ,#'evil-tex-surround-env-prompt)
+    (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt) )
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
 See `evil-surround-pairs-alist' for the format.")
