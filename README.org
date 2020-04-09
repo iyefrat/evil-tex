@@ -11,7 +11,7 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
   - [[#surround-notes][Surround notes]]
 - [[#appendix][Appendix]]
   - [[#environment-keymap][Environment keymap]]
-  - [[#cdlatex-accent--key-list][cdlatex accent & key list]]
+  - [[#cdlatex-accent-key-list][cdlatex accent key list]]
 
 * Incomplete Showcase
 =|= marks point.
@@ -38,7 +38,7 @@ This package defines 6 text objects. All of them work with =evil-surround=.
 | =m= | math             | Both inline =\( \)= and display =\[ \]=.                   |
 | =$= | dollar           | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. |
 | =d= | delimiters       | =\right* \left*= parentheses types                         |
-| ='= | [[*cdlatex accent & key list][CDLaTeX accents ]] | Only for surrounding, when cdlatex is active               |
+| '   | [[*cdlatex accent & key list][CDLaTeX accents ]] | Only for surrounding, when cdlatex is active               |
 ** Surround notes
 =evil-surround= should work with all of these text objects.
 
@@ -50,8 +50,8 @@ This package defines 6 text objects. All of them work with =evil-surround=.
  with a delay after pressing =cs*e=. Use =x= in the keymap to input an env
  manually.
 
- ~'~ only works for surrounding. For other text-object operations, use the
- generic =c=.
+ ' only works for surrounding, and uses [[*cdlatex accent key list][this keymap]]. For normal text-object
+ operations, use the generic =c=.
 * Appendix
 ** Environment keymap
 Giving a prefix argument would prompt for options.
@@ -86,7 +86,7 @@ Giving a prefix argument would prompt for options.
 |                 | question    | tq        |
 |                 | remark      | tr        |
 |                 | theorem     | tt        |
-** cdlatex accent & key list
+** cdlatex accent key list
 See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlatex]]. "style?" implies that the braces come before the macro, e.g
 ={\displaystyle ...}=
 | key | macro             | style? |
