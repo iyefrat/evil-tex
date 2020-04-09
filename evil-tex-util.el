@@ -174,10 +174,8 @@ If no such macro can be found, return nil"
   (let (beg)
     (save-excursion
       ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
-      (if (save-excursion
-            (search-backward "\\" (line-beginning-position) t)
-            (looking-at (regexp-quote "\\begin{")))
-          (goto-char (match-beginning 0))
+      (search-backward "\\" (line-beginning-position) t)
+      (unless (looking-at (regexp-quote "\\begin{"))
         (LaTeX-find-matching-begin))
                                         ; we are at backslash
       (setq beg (point))
