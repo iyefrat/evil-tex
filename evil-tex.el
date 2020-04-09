@@ -21,8 +21,6 @@
 
 
 (require 'evil)
-
-;; TODO how to better load local files
 (require 'evil-tex-util)
 
 (defun evil-tex-brace-movement ()
@@ -299,7 +297,7 @@ See `evil-surround-pairs-alist' for the format.")
 Installs the following additional text objects:
 \\<evil-tex-outer-map>
   \\[evil-tex-a-math] latex math: \\\\[ \\\\], \\( \\)
-  \\[evil-tex-a-dollar] TeX math: $ .. $ TODO Merge with normal math
+  \\[evil-tex-a-dollar] TeX math: $ .. $
   \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
   \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
   :init-value nil
