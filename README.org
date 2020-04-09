@@ -1,71 +1,122 @@
 #+TITLE:   evil-tex
 #+DATE:    February 1, 2020
-#+SINCE:   {replace with next tagged release version}
 #+STARTUP: inlineimages nofold
 
+LaTeX text objects for =evil-mode= that work well with =evil-surround=.
+Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
 * Table of Contents :TOC_3:noexport:
-- [[#description][Description]]
-  - [[#maintainers][Maintainers]]
-  - [[#module-flags][Module Flags]]
-  - [[#plugins][Plugins]]
-- [[#prerequisites][Prerequisites]]
-- [[#features][Features]]
-- [[#configuration][Configuration]]
-- [[#troubleshooting][Troubleshooting]]
-- [[#tips][Tips]]
+- [[#incomplete-showcase][Incomplete Showcase]]
+- [[#complete-info][Complete info]]
+  - [[#text-objects][Text Objects]]
+  - [[#surround-notes][Surround notes]]
+- [[#appendix][Appendix]]
+  - [[#environment-keymap][Environment keymap]]
+  - [[#cdlatex-accent--key-list][cdlatex accent & key list]]
 
-* Description
-# A summary of what this module does.
+* Incomplete Showcase
+=|= marks point.
 
-+ An emacs package meant to provide some good evil bindings to latex documents,
-  and maybe more.
+=\ti|lde{h}= -> cic /(change inner command)/ -> =\tilde{|}=
 
-** Maintainers
-+ Itai (Author)
-+ Yoav (Author)
+=\tilde{h|}= -> cscc bar SPC /(change surrounding command to =bar=)/ -> =\bar{h}=
 
-** Module Flags
-+ =+flag1= A short description of what this flag does and what it might need
-  when enabled.
-+ =+flag2= A short description of what this flag does and what it might need
-  when enabled.
-+ =+flag3= A short description of what this flag does and what it might need
-  when enabled.
+=\(\sum_{i=1}^{n} i^2|\)= -> cim /(change inner math)/ -> =\(|\)=
 
-# If this module has no flags, then...
-This module provides no flags.
+=\(\sum_{i=1}^{n} i^2|\)= -> csmM /(change surrounding math to display)/ -> =\[\sum_{i=1}^{n} i^2|\]=
 
-** Plugins
-# A list of linked plugins
-Are plugins and packages the same thing?
-+ [[https://orgmode.org/][org-plus-contrib]]
-+ [[https://github.com/sabof/org-bullets][org-bullets]]
-+ [[https://github.com/TobiasZawada/org-yt][org-yt]]
-+ [[https://github.com/sebastiencs/company-box][company-box]]* (=+childframe=)
-+ =:lang crystal=
-  + [[https://github.com/brantou/ob-crystal][ob-crystal]]
-+ =:lang go=
-  + [[https://github.com/pope/ob-go][ob-go]]
-+ =+present=
-  + [[https://github.com/anler/centered-window-mode][centered-window]]
-  + [[https://github.com/takaxp/org-tree-slide][org-tree-slide]]
-  + [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
+=\[a^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
+=\begin{align*} a^2 \end{align}=
 
+TODO the right/left delimiters when implemented
+* Complete info
+** Text Objects
+This package defines 6 text objects. All of them work with =evil-surround=.
+| Key | Abbrevation      | Target                                                     |
+|-----+------------------+------------------------------------------------------------|
+| =c= | command          | TeX macros.                                                |
+| =e= | environmnt       | =\begin{}...\end{}= blocks                                 |
+| =m= | math             | Both inline =\( \)= and display =\[ \]=.                   |
+| =$= | dollar           | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. |
+| =d= | delimiters       | =\right* \left*= parentheses types                         |
+| ='= | [[*cdlatex accent & key list][CDLaTeX accents ]] | Only for surrounding, when cdlatex is active               |
+** Surround notes
+=evil-surround= should work with all of these text objects.
 
-* Prerequisites
-This module has no prereqisites (yet).
+ Surrounding with =m= would give inline math. Use =M= for display.
 
-* Features
-# An in-depth list of features, how to use them, and their dependencies.
+ Surrounding with =c= would prompt you for the macro name.
 
-* Configuration
-# How to configure this module, including common problems and how to address them.
+ For =e=, there's [[*Environment keymap][a keymap]] for common environments. It should balso e displayed
+ with a delay after pressing =cs*e=. Use =x= in the keymap to input an env
+ manually.
 
-* Troubleshooting
-# Common issues and their solution, or places to look for help.
-* Tips
- - evil (and vim itself) has some useful aliases for text objects:
-   - =ib/ab= for =(foo)=
-   - =iB/aB= for ={foo}=
-   They work with surround like you would expect.
- - more
+ ~'~ only works for surrounding. For other text-object operations, use the
+ generic =c=.
+* Appendix
+** Environment keymap
+Giving a prefix argument would prompt for options.
+| Category        | env         | key alias |
+|-----------------+-------------+-----------|
+| Generic         | prompt user | x         |
+|-----------------+-------------+-----------|
+| Built In        | equation    | e         |
+|                 | equation*   | E         |
+|                 | figure      | f         |
+|                 | itemize     | i         |
+|                 | enumerate   | I         |
+| AmsMath         | align       | a         |
+|                 | align*      | A         |
+|                 | alignat     | n         |
+|                 | alignat*    | N         |
+|                 | eqnarray    | r         |
+|                 | flalign     | l         |
+|                 | flalign*    | L         |
+|                 | gather      | g         |
+|                 | gather*     | G         |
+|                 | multline    | m         |
+|                 | multline*   | M         |
+|                 | cases       | c         |
+| Common Theorems | axiom       | ta        |
+| prefix t        | corollary   | tc        |
+|                 | definition  | td        |
+|                 | examples    | te        |
+|                 | exercise    | ts        |
+|                 | lemma       | tl        |
+|                 | proof       | tp        |
+|                 | question    | tq        |
+|                 | remark      | tr        |
+|                 | theorem     | tt        |
+** cdlatex accent & key list
+See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlatex]]. "style?" implies that the braces come before the macro, e.g
+={\displaystyle ...}=
+| key | macro             | style? |
+|-----+-------------------+--------|
+| .   | dot               |        |
+| :   | ddot              |        |
+| ~   | tilde             |        |
+| N   | widetilde         |        |
+| ^   | hat               |        |
+| H   | widehat           |        |
+| -   | bar               |        |
+| T   | overline          |        |
+| _   | underline         |        |
+| {   | overbrace         |        |
+| }   | underbrace        |        |
+| >   | vec               |        |
+| /   | grave             |        |
+| \   | acute             |        |
+| v   | check             |        |
+| u   | breve             |        |
+| m   | mbox              |        |
+| c   | mathcal           |        |
+| r   | mathrm/textrm     |        |
+| i   | mathit/textit     |        |
+| l   | NONE!!/textsl     |        |
+| b   | mathbf/textbf     |        |
+| e   | mathem/emph"      |        |
+| y   | mathtt/texttt     |        |
+| f   | mathsf/textsf     |        |
+| 0   | textstyle         |        |
+| 1   | displaystyle      | yes    |
+| 2   | scriptstyle       | yes    |
+| 3   | scriptscriptstyle | yes    |

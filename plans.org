@@ -107,75 +107,9 @@ be useful
 |              | =im=, =am=  | Select inside/around *math*                                                      |
 |              | =id=, =ad=  | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
 | Insert       | ?       | Brace movement                                                                 |
-** Environments list with proposed key aliases
-Giving a prefix argument would prompt for options.
-| Category        | env         | key alias |
-|-----------------+-------------+-----------|
-| generic         | prompt user | x         |
-|-----------------+-------------+-----------|
-| built in        | equation    | e         |
-|                 | equation*   | E         |
-|                 | figure      | f         |
-|                 | itemize     | i         |
-|                 | enumerate   | I         |
-| amsmath         | align       | a         |
-|                 | align*      | A         |
-|                 | alignat     | n         |
-|                 | alignat*    | N         |
-|                 | eqnarray    | r         |
-|                 | flalign     | l         |
-|                 | flalign*    | L         |
-|                 | gather      | g         |
-|                 | gather*     | G         |
-|                 | multline    | m         |
-|                 | multline*   | M         |
-|                 | cases       | c         |
-| common theorems | axiom       | ta        |
-| prefix t        | corollary   | tc        |
-|                 | definition  | td        |
-|                 | examples    | te        |
-|                 | exercise    | ts        |
-|                 | lemma       | tl        |
-|                 | proof       | tp        |
-|                 | question    | tq        |
-|                 | remark      | tr        |
-|                 | theorem     | tt        |
-** CDLaTeX accent & key list
-"style?" means that the braces come before the macro, e.g {\displaystyle ...}
-| key | macro             | style? |
-|-----+-------------------+--------|
-| .   | dot               |        |
-| :   | ddot              |        |
-| ~   | tilde             |        |
-| N   | widetilde         |        |
-| ^   | hat               |        |
-| H   | widehat           |        |
-| -   | bar               |        |
-| T   | overline          |        |
-| _   | underline         |        |
-| {   | overbrace         |        |
-| }   | underbrace        |        |
-| >   | vec               |        |
-| /   | grave             |        |
-| \   | acute             |        |
-| v   | check             |        |
-| u   | breve             |        |
-| m   | mbox              |        |
-| c   | mathcal           |        |
-| r   | mathrm/textrm     |        |
-| i   | mathit/textit     |        |
-| l   | NONE!!/textsl     |        |
-| b   | mathbf/textbf     |        |
-| e   | mathem/emph"      |        |
-| y   | mathtt/texttt     |        |
-| f   | mathsf/textsf     |        |
-| 0   | textstyle         |        |
-| 1   | displaystyle      | yes    |
-| 2   | scriptstyle       | yes    |
-| 3   | scriptscriptstyle | yes    |
 ** Things to add to Doom in another repo later
 *** TODO auto compilation mappings
-*** TODO =TeX-fold= flag
+*** DONE =TeX-fold= flag
 would define bindings and advices for =TeX-fold=
 *** DONE Folding
 Doom has its own folding module, which tries ~hideshow~, ~outline-minor-mode~, and
