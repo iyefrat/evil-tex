@@ -6,6 +6,7 @@ LaTeX text objects for =evil-mode= that work well with =evil-surround=.
 Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
 * Table of Contents :TOC_3:noexport:
 - [[#incomplete-showcase][Incomplete Showcase]]
+- [[#installation][Installation]]
 - [[#complete-info][Complete info]]
   - [[#text-objects][Text Objects]]
 - [[#appendix][Appendix]]
@@ -27,6 +28,9 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 =\begin{align*} a^2 \end{align}=
 
 TODO the right/left delimiters when implemented
+* Installation
+Until this package's on MELPA, clone it and put it in your load path and hook it
+to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)¯\_
 * Complete info
 ** Text Objects
 This package defines 6 text objects. All of them work with =evil-surround=.
