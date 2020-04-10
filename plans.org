@@ -5,7 +5,7 @@
 For environments, commands/macros, inline & display math
 *** DONE Steal [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
 *** DONE Make Text Objects Work with Surround
-*** TODO Make the env newline rational
+*** DONE Make the env newline rational
 Currently the newline behavior is erratic. \begin{...} \end{...} should always
 appear in lines of their own.
 ** Math

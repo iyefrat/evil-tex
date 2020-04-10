@@ -12,7 +12,7 @@
   "Return the element of SEQ for which FN gives the biggest result.
 
 Comparison is done with `>'.
-(evil-tex-max-key '(1 2 -4) (lambda (x) (* x x))) => -4"
+\(evil-tex-max-key '(1 2 -4) (lambda (x) (* x x))) => -4"
   (let* ((res (car seq))
          (res-val (funcall fn res)))
     (dolist (cur (cdr seq))
@@ -42,11 +42,17 @@ ARGS passed to evil-select-(paren|quote)."
                      (car arg)
                    most-negative-fixnum))))
 
+(defvar evil-tex-include-newlines-in-envs t
+  "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
 
 (defun evil-tex-format-env-for-surrounding (env-name)
   "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
-  (cons (format "\\begin{%s}" env-name)
-        (format "\\end{%s}" env-name)))
+  (cons (format "\\begin{%s}%s"
+                env-name
+                (when evil-tex-include-newlines-in-envs "\n"))
+        (format "%s\\end{%s}"
+                (when evil-tex-include-newlines-in-envs "\n")
+                env-name)))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
   "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
@@ -166,6 +172,9 @@ If no such macro can be found, return nil"
       (setq end (point)))
     (cons beg end)))
 
+(defvar evil-tex-select-newlines-with-envs t
+  "Whether to select and insert newlines with env commands.")
+
 (defun evil-tex-env-beginning-begend ()
   "Return (start . end) of the \\begin{foo} of current env.
 
@@ -177,16 +186,13 @@ If no such macro can be found, return nil"
       (search-backward "\\" (line-beginning-position) t)
       (unless (looking-at (regexp-quote "\\begin{"))
         (LaTeX-find-matching-begin))
-                                        ; we are at backslash
+      ;; We are at backslash
       (setq beg (point))
       (skip-chars-forward "^{")        ; goto opening brace
       (forward-sexp)                   ; goto closing brace
-      ;; Count the newline after \begin{foo} to the environment header
-      ;; Without this, delete-inner-env would unexpectedly move the end
-      ;; to the same line as the beginning
-      ;; (when (looking-at "[[:blank:]]*$")
-      ;;   (message "Newline")
-      ;;   (forward-line 1))
+      (when (and evil-tex-select-newlines-with-envs
+                 (looking-at "\n"))
+        (forward-line 1))
       (cons beg (point)))))
 
 (defun evil-tex-env-end-begend ()
@@ -206,6 +212,9 @@ If no such macro can be found, return nil"
       (setq end (point))
       (backward-sexp)                  ; goto opening brace
       (search-backward "\\")           ; goto backslash
+      (when (and evil-tex-select-newlines-with-envs
+                 (looking-back "\n" (1- (point))))
+        (backward-char))
       (cons (point) end))))
 
 
