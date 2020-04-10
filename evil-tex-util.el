@@ -173,7 +173,13 @@ If no such macro can be found, return nil"
     (cons beg end)))
 
 (defvar evil-tex-select-newlines-with-envs t
-  "Whether to select and insert newlines with env commands.")
+  "Whether to select and insert newlines with env commands.
+
+By default, the newline proceeding \begin{...} and preceding
+\end{...} is selected as part of the delimiter. This way, when
+doing =cie= you're placed on a separate line, and surrounding
+with envs would force separate lines for \begin, inner text, and
+\end.")
 
 (defun evil-tex-env-beginning-begend ()
   "Return (start . end) of the \\begin{foo} of current env.

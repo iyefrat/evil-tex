@@ -10,7 +10,7 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 - [[#complete-info][Complete info]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
-  - [[#disabling-newline-selection-with-envs][Disabling newline selection with envs]]
+  - [[#disabling-newline-forcing-with-envs][Disabling newline forcing with envs]]
 - [[#appendix][Appendix]]
   - [[#environment-keymap][Environment keymap]]
   - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
@@ -27,7 +27,7 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 =\(\sum_{i=1}^{n} i^2|\)= -> csmM /(change surrounding math to display)/ -> =\[\sum_{i=1}^{n} i^2|\]=
 
 =\[a^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
-=\begin{align*} a^2 \end{align}=
+=\begin{align*}\n a^2 \n\end{align}=
 
 TODO the right/left delimiters when implemented
 * Installation
@@ -38,7 +38,7 @@ This package defines 6 text objects:
 | Key | Abbrevation     | Text Object Target                                         | Surround behavior                          |
 |-----+-----------------+------------------------------------------------------------+--------------------------------------------|
 | ~c~   | command         | TeX marcos: \foo{...}                                      | Prompts you for a macro                    |
-| ~e~   | environmnt      | \begin{...} \end{...} blocks                               | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
+| ~e~   | environment      | \begin{...} \end{...} blocks                               | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
 | ~m~   | math            | Both inline ~\( \)~ and display ~\[ \]~.                       | Surrounds with ~\( \)~                       |
 | ~M~   | Display math    | N/A                                                        | Surrounds with ~\[ \]~                       |
 | ~$~   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. | Surrounds with ~$~                           |
@@ -63,11 +63,11 @@ Same for ~evil-tex-user-cdlatex-accents-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
 
 *Make sure to set these variables before evil-TeX is loaded!*
-** Disabling newline selection with envs
-By default, the newline proceeding ~\begin~ and preceding ~\end~ is selected as part
-of the delimiter. This way, when doing =cie= you're placed on a separate line, and
-surrounding with envs would force separate lines for ~\begin~, inner text, and
-~\end~.
+** Disabling newline forcing with envs
+By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
+selected as part of the delimiter. This way, when doing =cie= you're placed on a
+separate line, and surrounding with envs would force separate lines for ~\begin~,
+inner text, and ~\end~.
 
 If you do not want this, just set ~evil-tex-select-newlines-with-envs~ to ~nil~.
 * Appendix
