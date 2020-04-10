@@ -196,6 +196,12 @@ If no such macro can be found, return nil"
 ^             ^"
   (let (end)
     (save-excursion
+      ;; LaTeX-find-matching-end doesn't work if on the \begin itself
+      (search-backward "\\" (line-beginning-position) t)
+      (when (looking-at (regexp-quote "\\begin{"))
+        (skip-chars-forward "^{")      ; goto opening brace
+        (forward-sexp))                ; goto closing brace
+      ;; Now definitely inside the env
       (LaTeX-find-matching-end)        ; we are at closing brace
       (setq end (point))
       (backward-sexp)                  ; goto opening brace
