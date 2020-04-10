@@ -16,18 +16,18 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
   - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
 
 * Incomplete Showcase
-=|= marks point.
+=⃒= marks point.
 
-=\ti|lde{h}= -> cic /(change inner command)/ -> =\tilde{|}=
+=\ti⃒lde{h}= -> cic /(change inner command)/ -> =\tilde{⃒}=
 
-=\tilde{h|}= -> cscc bar SPC /(change surrounding command to =bar=)/ -> =\bar{h}=
+=\tilde{h⃒}= -> cscc bar SPC /(change surrounding command to =bar=)/ -> =\bar{h}=
 
-=\(\sum_{i=1}^{n} i^2|\)= -> cim /(change inner math)/ -> =\(|\)=
+=\(\sum_{i=1}^{n} i^2⃒\)= -> cim /(change inner math)/ -> =\(⃒\)=
 
-=\(\sum_{i=1}^{n} i^2|\)= -> csmM /(change surrounding math to display)/ -> =\[\sum_{i=1}^{n} i^2|\]=
+=\(\sum_{i=1}^{n} i^2⃒\)= -> csmM /(change surrounding math to display)/ -> =\[\sum_{i=1}^{n} i^2⃒\]=
 
-=\[a^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
-=\begin{align*}\n a^2 \n\end{align}=
+=\[⃒a^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
+=\begin{align*}\n ⃒a^2 \n\end{align}=
 
 TODO the right/left delimiters when implemented
 * Installation
