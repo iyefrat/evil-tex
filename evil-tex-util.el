@@ -72,6 +72,19 @@ and the _'s are unimportant."
      (b-lr                          (if (= a-beg b-beg) nil (> a-beg b-beg)))
      (t                             nil))))
 
+(defun evil-tex--delim-finder (lr deliml delimr args)
+  "Return delimiter location (and more) for evil-tex--delim-finder.
+LR is t for e.g. \\left( and nil for e.g. (.
+DELIML and DELIMR is a string containing the non \\left part of the delimiter.
+ARGS is the information about the text object needed for the functions to work."
+
+  (cond (lr (if (ignore-errors (apply #'evil-select-paren (regexp-quote (concat "\\left(" deliml)) (regexp-quote (concat "\\right)" delimr)) args))
+        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
+                                                              (regexp-quote (concat "\\left(" deliml)) (regexp-quote (concat "\\right)" delimr)) args)))) (identity nil)))
+      ((not lr) (if (ignore-errors (apply #'evil-select-paren (regexp-quote deliml) (regexp-quote delimr) args))
+        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
+                                                                (regexp-quote deliml) (regexp-quote delimr) args)))) (identity nil)))))
+
 (defun evil-tex--select-delim (&rest args)
   "Return (beg . end) of best math match.
 
@@ -90,6 +103,8 @@ ARGS passed to evil-select-(paren|quote)."
     (if (ignore-errors (apply #'evil-select-paren (regexp-quote "[") (regexp-quote "]") args))
         (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
                                                                 (regexp-quote "[") (regexp-quote "]") args)))) (identity nil))
+    (evil-tex--delim-finder nil "\\{" "\\}" args)
+    (evil-tex--delim-finder t "\\{" "\\}" args)
     )
    (lambda (arg) (if (and (consp arg)) ; selection succeeded
                           ;; Selection is close enough to point.
