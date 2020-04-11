@@ -72,7 +72,7 @@ Example: (| symbolizes point)
   (evil-tex--select-delim beg end type count t))
 
 (evil-define-text-object evil-tex-inner-delim (count &optional beg end type)
-  "Select nner delimiter, e.g. (foo) or \left[bar\right]."
+  "Select inner delimiter, e.g. (foo) or \left[bar\right]."
   :extend-selection nil
   (evil-tex--select-delim beg end type count nil))
 

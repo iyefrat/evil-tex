@@ -52,7 +52,7 @@ where LR is t for e.g. \\left( and nil for e.g. (,
 BEG and END are the coordinates for the begining and end of the potential delim,
 and the _'s are unimportant.
 Compares between the delimiters to find which one has the largest BEG, while
-making sure to choose [[\\left(]] over the \\left[[(]]"
+making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim finds"
 
   (let ((a-lr (nth 0 a))
         (b-lr (nth 0 b))
@@ -162,7 +162,7 @@ Return KEYMAP."
 (defun evil-tex-read-with-keymap (keymap)
   "Prompt the user to press a key from KEYMAP.
 
-Return the result of tha called function, or error if the key
+Return the result of the called function, or error if the key
 pressed isn't found."
   (let (key map-result)
     (when (and (require 'which-key nil t))
