@@ -78,9 +78,9 @@ LR is t for e.g. \\left( and nil for e.g. (.
 DELIML and DELIMR is a string containing the non \\left part of the delimiter.
 ARGS is the information about the text object needed for the functions to work."
 
-  (cond (lr (if (ignore-errors (apply #'evil-select-paren (regexp-quote (concat "\\left(" deliml)) (regexp-quote (concat "\\right)" delimr)) args))
+  (cond (lr (if (ignore-errors (apply #'evil-select-paren (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args))
         (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                              (regexp-quote (concat "\\left(" deliml)) (regexp-quote (concat "\\right)" delimr)) args)))) (identity nil)))
+                                                              (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args)))) (identity nil)))
       ((not lr) (if (ignore-errors (apply #'evil-select-paren (regexp-quote deliml) (regexp-quote delimr) args))
         (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
                                                                 (regexp-quote deliml) (regexp-quote delimr) args)))) (identity nil)))))
@@ -91,20 +91,14 @@ ARGS is the information about the text object needed for the functions to work."
 ARGS passed to evil-select-(paren|quote)."
   (cddr (evil-tex-max-key
    (list
-    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "\\left(") (regexp-quote "\\right)") args))
-        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                              (regexp-quote "\\left(") (regexp-quote "\\right)") args)))) (identity nil))
-    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "(") (regexp-quote ")") args))
-        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                                (regexp-quote "(") (regexp-quote ")") args)))) (identity nil))
-    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "\\left[") (regexp-quote "\\right]") args))
-        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                              (regexp-quote "\\left[") (regexp-quote "\\right]") args)))) (identity nil))
-    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "[") (regexp-quote "]") args))
-        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                                (regexp-quote "[") (regexp-quote "]") args)))) (identity nil))
+    (evil-tex--delim-finder nil "(" ")" args)
+    (evil-tex--delim-finder t "(" ")" args)
+    (evil-tex--delim-finder nil "[" "]" args)
+    (evil-tex--delim-finder t "[" "]" args)
     (evil-tex--delim-finder nil "\\{" "\\}" args)
     (evil-tex--delim-finder t "\\{" "\\}" args)
+    (evil-tex--delim-finder nil "\langle" "\rangle" args)
+    (evil-tex--delim-finder t "\langle" "\rangle" args)
     )
    (lambda (arg) (if (and (consp arg)) ; selection succeeded
                           ;; Selection is close enough to point.
