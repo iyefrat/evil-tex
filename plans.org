@@ -21,7 +21,7 @@ Redundant with:
 - The =M= txt obj: user would just press =csmM=
 ** General delimiter text object, with integration to evil-surround
 *** DONE create delimiter text object
-*** TODO integrate with surround
+*** DONE integrate with surround
 *** TODO add toggle
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex

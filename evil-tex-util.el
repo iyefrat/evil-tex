@@ -50,9 +50,10 @@ ARGS passed to evil-select-(paren|quote)."
 where LR is t for e.g. \\left( and nil for e.g. (,
  IA is t for -an- text objects and nil for -inner-,
 BEG and END are the coordinates for the begining and end of the potential delim,
-and the _'s are unimportant."
+and the _'s are unimportant.
+Compares between the delimiters to find which one has the largest BEG, while
+making sure to choose [[\\left(]] over the \\left[[(]]"
 
-;; IDEA: simplify the millions of conds to just chained and statements, it will be very long but you can copy paste
   (let ((a-lr (nth 0 a))
         (b-lr (nth 0 b))
         (ia (nth 1 a))
@@ -75,8 +76,11 @@ and the _'s are unimportant."
   "Return delimiter location (and more) for evil-tex--delim-finder.
 LR is t for e.g. \\left( and nil for e.g. (.
 DELIML and DELIMR is a string containing the non \\left part of the delimiter.
-ARGS is the information about the text object needed for the functions to work."
+ARGS is the information about the text object needed for the functions to work,
+such as wether the delimiter is an \\left( type or a ( type,
+and if the text object is an -an- or an -inner-"
 
+  ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
   (cond (lr (if (ignore-errors (apply #'evil-select-paren (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args))
         (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
                                                               (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args)))) (identity nil)))
@@ -99,11 +103,8 @@ ARGS passed to evil-select-(paren|quote)."
     (evil-tex--delim-finder nil "\langle" "\rangle" args)
     (evil-tex--delim-finder t "\langle" "\rangle" args)
     )
-   (lambda (arg) (if (and (consp arg)) ; selection succeeded
-                          ;; Selection is close enough to point.
-                          ;; evil-select-quote can select things further down in
-                          ;; the buffer. [[REWORKING]]
-                          (progn (identity arg))
+   (lambda (arg) (if (consp arg) ; selection succeeded
+                         arg
                    nil )) 'evil-tex--delim-compare )))
 (defvar evil-tex-include-newlines-in-envs t
   "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
