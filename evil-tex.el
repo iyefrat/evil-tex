@@ -285,6 +285,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     (?$ "$" . "$")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
+    (?d "\\left(" . "\\right)")
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt) )
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
