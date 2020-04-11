@@ -41,7 +41,7 @@ Example: (| symbolizes point)
     (backward-char)))
 
 
-;; stolen code from https://github.com/hpdeifel/evil-tex
+;; stolen code from https://github.com/hpdeifel/evil-latex-textobjects
 (evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
   "Select inner dollar"
   :extend-selection nil
