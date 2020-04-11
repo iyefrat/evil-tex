@@ -238,7 +238,8 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   "Prompt user for an env to surround with using `evil-tex-cdlatex-accents-map'."
   (evil-tex-read-with-keymap evil-tex-cdlatex-accents-map))
 
-(when (require 'which-key nil t)
+;; Shorten which-key descriptions in auto-generated keymaps
+(with-eval-after-load 'which-key
   (push
    '(("\\`." . "evil-tex-.*:\\(.*\\)") . (nil . "\\1"))
    which-key-replacement-alist))
@@ -305,10 +306,10 @@ Installs the following additional text objects:
     (evil-normalize-keymaps)
     ;; (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
     ;; (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
-    (when (require 'evil-surround nil t)
-      (evil-tex-set-up-surround))
-    (when (require 'evil-embrace nil t)
-      (evil-tex-set-up-embrace))))
+    (eval-after-load 'evil-surround
+      #'evil-tex-set-up-surround)
+    (eval-after-load 'evil-embrace
+      #'evil-tex-set-up-embrace)))
 
 
 (provide 'evil-tex)
