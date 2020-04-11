@@ -207,19 +207,19 @@ Don't modify this directly; use `evil-tex-user-env-map-generator-alist'")
   "Your alist for modifications of `evil-tex-cdlatex-accents-map'.
 See `evil-tex-user-env-map-generator-alist' for format specification.")
 
-(defun evil-tex-cdlatex-accents:rm ()  "TODO."
+(defun evil-tex-cdlatex-accents:rm ()  "Return the (beg . end) that would make text rm style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathrm{" "\\textrm{")) "}")
-(defun evil-tex-cdlatex-accents:it () "TODO."
+(defun evil-tex-cdlatex-accents:it () "Return the (beg . end) that would make text it style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathit{" "\\textit{")) "}")
-(defun evil-tex-cdlatex-accents:sl () "TODO."
+(defun evil-tex-cdlatex-accents:sl () "Return the (beg . end) that would make text sl style if wrapped between the car and cdr."
        (unless (texmathp) '("\\textsl{" . "}")))
-(defun evil-tex-cdlatex-accents:bold () "TODO."
+(defun evil-tex-cdlatex-accents:bold () "Return the (beg . end) that would make text bold style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathbf{" "\\textbf{") "}"))
-(defun evil-tex-cdlatex-accents:emph () "TODO."
+(defun evil-tex-cdlatex-accents:emph () "Return the (beg . end) that would make text emph style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathem{" "\\emph{") "}"))
-(defun evil-tex-cdlatex-accents:tt () "TODO."
+(defun evil-tex-cdlatex-accents:tt () "Return the (beg . end) that would make text tt style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathtt{" "\\texttt{") "}"))
-(defun evil-tex-cdlatex-accents:sf () "TODO."
+(defun evil-tex-cdlatex-accents:sf () "Return the (beg . end) that would make text sf style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
 (defvar evil-tex-env-map
