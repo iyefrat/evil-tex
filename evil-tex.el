@@ -68,6 +68,15 @@ Example: (| symbolizes point)
                      (rx (or "\\)" "\\]"))
                      beg end type count t))
 
+(evil-define-text-object evil-tex-a-delim (count &optional beg end type)
+  "Select a delimiter, e.g. (foo) or \left[bar\right]."
+  :extend-selection nil
+  (evil-tex--select-delim beg end type count t))
+
+(evil-define-text-object evil-tex-inner-delim (count &optional beg end type)
+  "Select nner delimiter, e.g. (foo) or \left[bar\right]."
+  :extend-selection nil
+  (evil-tex--select-delim beg end type count nil))
 
 (evil-define-text-object evil-tex-a-macro (count &optional beg end type)
   "Select a TeX macro"
@@ -229,11 +238,13 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
 (define-key evil-inner-text-objects-map "$" 'evil-tex-inner-dollar)
 (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-macro)
 (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
+(define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
 (define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar)
 (define-key evil-outer-text-objects-map "c" 'evil-tex-a-macro)
 (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
+(define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)
 
 ;; (evil-define-key 'operator evil-tex-mode-map
 ;;   "a" evil-tex-outer-map
@@ -250,7 +261,7 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
                  "macro: \\" nil minibuffer-local-ns-map))
         "}"))
 
-
+;; TODO add surround delimiters
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")

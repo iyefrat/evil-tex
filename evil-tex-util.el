@@ -1,4 +1,5 @@
-;;; evil-tex-util.el -- Functions to be used by evil-texi -*- lexical-binding: t; -*-
+;;
+evil-tex-util.el -- Functions to be used by evil-texi -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; This file is part of evil-tex, which provides license
 ;; information.
@@ -8,18 +9,21 @@
 (require 'evil-common)
 
 
-(defun evil-tex-max-key (seq fn)
+(defun evil-tex-max-key (seq fn &optional compare-fn)
   "Return the element of SEQ for which FN gives the biggest result.
 
-Comparison is done with `>'.
-(evil-tex-max-key '(1 2 -4) (lambda (x) (* x x))) => -4"
+Comparison is done with COMPARE-FN if defined, and with `>' if not.
+\(evil-tex-max-key '(1 2 -4) (lambda (x) (* x x))) => -4"
   (let* ((res (car seq))
-         (res-val (funcall fn res)))
+         (res-val (funcall fn res))
+         (compare-fn (or compare-fn #'>)))
     (dolist (cur (cdr seq))
       (let ((cur-val (funcall fn cur)))
-        (when (> cur-val res-val)
+        (print cur-val)
+        (when (funcall compare-fn cur-val res-val)
           (setq res-val cur-val
                 res cur))))
+    (print res)
     res))
 
 (defun evil-tex--select-math (&rest args)
@@ -42,6 +46,57 @@ ARGS passed to evil-select-(paren|quote)."
                      (car arg)
                    most-negative-fixnum))))
 
+(defun evil-tex--delim-compare (a b)
+  "Recieves two cons' A B of structure (LR IA BEG END ...).
+where LR is t for e.g. \\left( and nil for e.g. (,
+ IA is t for -an- text objects and nil for -inner-,
+BEG and END are the coordinates for the begining and end of the potential delim,
+and the _'s are unimportant."
+
+;; IDEA: simplify the millions of conds to just chained and statements, it will be very long but you can copy paste
+  (let ((a-lr (nth 0 a))
+        (b-lr (nth 0 b))
+        (ia (nth 1 a))
+        (a-beg (nth 2 a))
+        (b-beg (nth 2 b)))
+     (cond
+     ((not a)                       nil)
+     ((not b)                       t)
+     ((and ia (not (or a-lr b-lr))) (> a-beg b-beg))
+     ((and ia (and a-lr b-lr))       (> a-beg b-beg))
+     ((and ia a-lr)                 (> (+ a-beg 6) b-beg))
+     ((and ia b-lr)                 (> a-beg (+ b-beg 6)))
+     ((not (or a-lr b-lr))          (> a-beg b-beg))
+     ((and a-lr b-lr)                (> a-beg b-beg))
+     (a-lr                          (if (= a-beg b-beg) t (> a-beg b-beg)))
+     (b-lr                          (if (= a-beg b-beg) nil (> a-beg b-beg)))
+     (t                             nil))))
+
+(defun evil-tex--select-delim (&rest args)
+  "Return (beg . end) of best math match.
+
+ARGS passed to evil-select-(paren|quote)."
+  (cddr (evil-tex-max-key
+   (list
+    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "\\left(") (regexp-quote "\\right)") args))
+        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
+                                                              (regexp-quote "\\left(") (regexp-quote "\\right)") args)))) (identity nil))
+    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "(") (regexp-quote ")") args))
+        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
+                                                                (regexp-quote "(") (regexp-quote ")") args)))) (identity nil))
+    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "\\left[") (regexp-quote "\\right]") args))
+        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
+                                                              (regexp-quote "\\left[") (regexp-quote "\\right]") args)))) (identity nil))
+    (if (ignore-errors (apply #'evil-select-paren (regexp-quote "[") (regexp-quote "]") args))
+        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
+                                                                (regexp-quote "[") (regexp-quote "]") args)))) (identity nil))
+    )
+   (lambda (arg) (if (and (consp arg)) ; selection succeeded
+                          ;; Selection is close enough to point.
+                          ;; evil-select-quote can select things further down in
+                          ;; the buffer. [[REWORKING]]
+                          (progn (identity arg))
+                   nil )) 'evil-tex--delim-compare )))
 
 (defun evil-tex-format-env-for-surrounding (env-name)
   "Format ENV-NAME for surrounding: return a cons containing \\\\begin{ENV-NAME} . \\\end{ENV-NAME}."
