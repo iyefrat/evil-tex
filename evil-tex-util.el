@@ -46,7 +46,7 @@ ARGS passed to evil-select-(paren|quote)."
                    most-negative-fixnum))))
 
 (defun evil-tex--delim-compare (a b)
-  "Recieves two cons' A B of structure (LR IA BEG END ...).
+  "Recieve two cons' A B of structure (LR IA BEG END ...).
 where LR is t for e.g. \\left( and nil for e.g. (,
  IA is t for -an- text objects and nil for -inner-,
 BEG and END are the coordinates for the begining and end of the potential delim,

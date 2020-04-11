@@ -278,7 +278,6 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   (evil-tex-format-cdlatex-accent-for-surrounding
    (read-from-minibuffer "macro: \\" nil minibuffer-local-ns-map)))
 
-;; TODO add surround delimiters
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
