@@ -1,5 +1,4 @@
-;;
-evil-tex-util.el -- Functions to be used by evil-texi -*- lexical-binding: t; -*-
+;;; evil-tex-util.el -- Functions to be used by evil-texi -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; This file is part of evil-tex, which provides license
 ;; information.
@@ -106,14 +105,20 @@ ARGS passed to evil-select-(paren|quote)."
                           ;; the buffer. [[REWORKING]]
                           (progn (identity arg))
                    nil )) 'evil-tex--delim-compare )))
+(defvar evil-tex-include-newlines-in-envs t
+  "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
 
 (defun evil-tex-format-env-for-surrounding (env-name)
-  "Format ENV-NAME for surrounding: return a cons containing \\\\begin{ENV-NAME} . \\\end{ENV-NAME}."
-  (cons (format "\\begin{%s}" env-name)
-        (format "\\end{%s}" env-name)))
+  "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
+  (cons (format "\\begin{%s}%s"
+                env-name
+                (when evil-tex-include-newlines-in-envs "\n"))
+        (format "%s\\end{%s}"
+                (when evil-tex-include-newlines-in-envs "\n")
+                env-name)))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
-  "Format ACCENT for surrounding: return a cons containing \\\\begin{ACCENT} . \\\end{ACCENT}."
+  "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
   (cons (concat "\\" accent "{") "}"))
 
 (defun evil-tex-prompt-for-env ()
@@ -149,7 +154,7 @@ Return KEYMAP."
         (setq name (intern (concat prefix (car env))))
         (fset name (lambda () (interactive) env))
         (define-key keymap key name))
-       ((functionp env)
+       ((or (functionp env) (not env))
         (define-key keymap key env)))))
   keymap)
 
@@ -230,6 +235,15 @@ If no such macro can be found, return nil"
       (setq end (point)))
     (cons beg end)))
 
+(defvar evil-tex-select-newlines-with-envs t
+  "Whether to select and insert newlines with env commands.
+
+By default, the newline proceeding \begin{...} and preceding
+\end{...} is selected as part of the delimiter. This way, when
+doing =cie= you're placed on a separate line, and surrounding
+with envs would force separate lines for \begin, inner text, and
+\end.")
+
 (defun evil-tex-env-beginning-begend ()
   "Return (start . end) of the \\begin{foo} of current env.
 
@@ -237,16 +251,17 @@ If no such macro can be found, return nil"
 ^               ^"
   (let (beg)
     (save-excursion
-      (LaTeX-find-matching-begin)      ; we are at backslash
+      ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
+      (search-backward "\\" (line-beginning-position) t)
+      (unless (looking-at (regexp-quote "\\begin{"))
+        (LaTeX-find-matching-begin))
+      ;; We are at backslash
       (setq beg (point))
       (skip-chars-forward "^{")        ; goto opening brace
       (forward-sexp)                   ; goto closing brace
-      ;; Count the newline after \begin{foo} to the environment header
-      ;; Without this, delete-inner-env would unexpectedly move the end
-      ;; to the same line as the beginning
-      ;; (when (looking-at "[[:blank:]]*$")
-      ;;   (message "Newline")
-      ;;   (forward-line 1))
+      (when (and evil-tex-select-newlines-with-envs
+                 (looking-at "\n"))
+        (forward-line 1))
       (cons beg (point)))))
 
 (defun evil-tex-env-end-begend ()
@@ -256,10 +271,19 @@ If no such macro can be found, return nil"
 ^             ^"
   (let (end)
     (save-excursion
+      ;; LaTeX-find-matching-end doesn't work if on the \begin itself
+      (search-backward "\\" (line-beginning-position) t)
+      (when (looking-at (regexp-quote "\\begin{"))
+        (skip-chars-forward "^{")      ; goto opening brace
+        (forward-sexp))                ; goto closing brace
+      ;; Now definitely inside the env
       (LaTeX-find-matching-end)        ; we are at closing brace
       (setq end (point))
       (backward-sexp)                  ; goto opening brace
       (search-backward "\\")           ; goto backslash
+      (when (and evil-tex-select-newlines-with-envs
+                 (looking-back "\n" (1- (point))))
+        (backward-char))
       (cons (point) end))))
 
 

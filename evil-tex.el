@@ -21,8 +21,6 @@
 
 
 (require 'evil)
-
-;; TODO how to better load local files
 (require 'evil-tex-util)
 
 (defun evil-tex-brace-movement ()
@@ -147,16 +145,26 @@ Example: (| symbolizes point)
     ("tq" . "question")
     ("tr" . "remark")
     ("tt" . "theorem"))
-  "Alist used to generate `evil-tex-env-map'.
-Each item is a cons. The car is the key (a string) to the keymap.
-The cdr can be:
+  "Initial alist used to generate `evil-tex-env-map'.
+
+Don't modify this directly; use `evil-tex-user-env-map-generator-alist'")
+
+(defvar evil-tex-user-env-map-generator-alist nil
+  "Your alist for modifications of `evil-tex-env-map'.
+
+See `evil-tex-cdlatex-accents-map-generator-alist' for what it
+should look like.
+
+Each item is a cons. The car is the key (a string) to the
+keymap. The cdr can be:
 
 A string: then the inserted env would be an env
 with that name
 
 A cons: then the text would be wrapped between the car and the
-cdr. For example, you can set it to (\\begin{figure}[!ht] .
-\\end{figure}) to have default placements for the figure.
+cdr. For example, you can make a cons of
+'(\\begin{figure}[!ht] . \\end{figure})
+to have default placements for the figure.
 
 A function: then the function would be called, and the result is
 assumed to be a cons. The text is wrapped in the resulted cons.")
@@ -190,7 +198,14 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
     ("0"   "{\\textstyle " . "}")
     ("1"   "{\\displaystyle " . "}")
     ("2"   "{\\scriptstyle " . "}")
-    ("3"   "{\\scriptscriptstyle " . "}")))
+    ("3"   "{\\scriptscriptstyle " . "}"))
+  "Initial alist used to generate `evil-tex-cdlatex-accents-map'.
+
+Don't modify this directly; use `evil-tex-user-env-map-generator-alist'")
+
+(defvar evil-tex-user-cdlatex-accents-map-generator-alist nil
+  "Your alist for modifications of `evil-tex-cdlatex-accents-map'.
+See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defun evil-tex-cdlatex-accents:rm ()  "TODO."
        (cons (if (texmathp) "\\mathrm{" "\\textrm{")) "}")
@@ -209,14 +224,17 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
 
 (defvar evil-tex-env-map
   (evil-tex--populate-surround-kemap
-   (make-sparse-keymap) evil-tex-env-map-generator-alist
+   (make-sparse-keymap)
+   (append evil-tex-env-map-generator-alist
+           evil-tex-user-env-map-generator-alist)
    evil-tex--env-function-prefix #'evil-tex-format-env-for-surrounding)
   "Keymap for surrounding with environments.")
 
 (defvar evil-tex-cdlatex-accents-map
   (evil-tex--populate-surround-kemap
    (make-sparse-keymap)
-   evil-tex-cdlatex-accents-map-generator-alist
+   (append evil-tex-cdlatex-accents-map-generator-alist
+           evil-tex-user-cdlatex-accents-map-generator-alist)
    evil-tex--cdlatex-accents-function-prefix
    #'evil-tex-format-cdlatex-accent-for-surrounding)
   "Keymap for surrounding with environments.")
@@ -229,7 +247,8 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
   "Prompt user for an env to surround with using `evil-tex-cdlatex-accents-map'."
   (evil-tex-read-with-keymap evil-tex-cdlatex-accents-map))
 
-(when (require 'which-key nil t)
+;; Shorten which-key descriptions in auto-generated keymaps
+(with-eval-after-load 'which-key
   (push
    '(("\\`." . "evil-tex-.*:\\(.*\\)") . (nil . "\\1"))
    which-key-replacement-alist))
@@ -256,10 +275,8 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
 
 (defun evil-tex-surround-command-prompt ()
   "Ask the user for the macro they'd like to surround with."
-  (cons (format "\\%s{"
-                (read-from-minibuffer
-                 "macro: \\" nil minibuffer-local-ns-map))
-        "}"))
+  (evil-tex-format-cdlatex-accent-for-surrounding
+   (read-from-minibuffer "macro: \\" nil minibuffer-local-ns-map)))
 
 ;; TODO add surround delimiters
 (defvar evil-tex-surround-delimiters
@@ -292,7 +309,7 @@ See `evil-surround-pairs-alist' for the format.")
 Installs the following additional text objects:
 \\<evil-tex-outer-map>
   \\[evil-tex-a-math] latex math: \\\\[ \\\\], \\( \\)
-  \\[evil-tex-a-dollar] TeX math: $ .. $ TODO Merge with normal math
+  \\[evil-tex-a-dollar] TeX math: $ .. $
   \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
   \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
   :init-value nil
@@ -300,10 +317,10 @@ Installs the following additional text objects:
     (evil-normalize-keymaps)
     ;; (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
     ;; (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
-    (when (boundp 'evil-surround-pairs-alist)
-      (evil-tex-set-up-surround))
-    (when (boundp 'evil-embrace-evil-surround-keys)
-      (evil-tex-set-up-embrace))))
+    (eval-after-load 'evil-surround
+      #'evil-tex-set-up-surround)
+    (eval-after-load 'evil-embrace
+      #'evil-tex-set-up-embrace)))
 
 
 (provide 'evil-tex)
