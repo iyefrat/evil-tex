@@ -112,8 +112,8 @@ ARGS passed to evil-select-(paren|quote)."
     (evil-tex--delim-finder t "[" "]" args)
     (evil-tex--delim-finder nil "\\{" "\\}" args)
     (evil-tex--delim-finder t "\\{" "\\}" args)
-    (evil-tex--delim-finder nil "\langle" "\rangle" args)
-    (evil-tex--delim-finder t "\langle" "\rangle" args)
+    (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
+    (evil-tex--delim-finder t "\\langle" "\\rangle" args)
     )
    (lambda (arg) (if (consp arg) ; selection succeeded
                          arg
