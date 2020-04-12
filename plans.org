@@ -1,5 +1,7 @@
 #+TITLE: Plans
 
+* Bugfixes
+** TODO when doint =csc= on say =\ep|silon=, and entering =c\mu=, it surrounds the command in =\mu= rather than changing it
 * Features
 ** Text Objects
 For environments, commands/macros, inline & display math

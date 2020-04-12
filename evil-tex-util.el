@@ -81,24 +81,21 @@ such as wether the delimiter is an \\left( type or a ( type,
 and if the text object is an -an- or an -inner-"
 
   ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
-  (cond (lr
-         (if (ignore-errors
-                  (apply #'evil-select-paren
-                         (regexp-quote (concat "\\left" deliml))
-                         (regexp-quote (concat "\\right" delimr)) args))
+  (let ((delim-pair-lr (ignore-errors
+                         (apply #'evil-select-paren
+                                (regexp-quote (concat "\\left" deliml))
+                                (regexp-quote (concat "\\right" delimr)) args)))
+        (delim-pair-not-lr (ignore-errors
+                             (apply #'evil-select-paren
+                                    (regexp-quote deliml)
+                                    (regexp-quote delimr) args))))
+    (if lr
+         (when delim-pair-lr
                 (cons t (cons (car (last args))
-                              (ignore-errors (apply #'evil-select-paren
-                                                    (regexp-quote (concat "\\left" deliml))
-                                                    (regexp-quote (concat "\\right" delimr)) args)))) nil))
-        ((not lr)
-         (if (ignore-errors
-                        (apply #'evil-select-paren
-                               (regexp-quote deliml)
-                               (regexp-quote delimr) args))
+                              delim-pair-lr)))
+         (when delim-pair-not-lr
                       (cons nil (cons (car (last args))
-                                      (ignore-errors (apply #'evil-select-paren
-                                                            (regexp-quote deliml)
-                                                            (regexp-quote delimr) args)))) nil))))
+                                      delim-pair-not-lr))))))
 
 (defun evil-tex--select-delim (&rest args)
   "Return (beg . end) of best math match.
