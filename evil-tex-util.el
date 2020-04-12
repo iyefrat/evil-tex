@@ -59,7 +59,7 @@ making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim
         (ia (nth 1 a))
         (a-beg (nth 2 a))
         (b-beg (nth 2 b)))
-     (cond
+    (cond
      ((not a)                       nil)
      ((not b)                       t)
      ((and ia (not (or a-lr b-lr))) (> a-beg b-beg))
@@ -80,7 +80,6 @@ ARGS is the information about the text object needed for the functions to work,
 such as wether the delimiter is an \\left( type or a ( type,
 and if the text object is an -an- or an -inner-"
 
-  ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
   (let ((delim-pair-lr (ignore-errors
                          (apply #'evil-select-paren
                                 (regexp-quote (concat "\\left" deliml))
@@ -89,32 +88,33 @@ and if the text object is an -an- or an -inner-"
                              (apply #'evil-select-paren
                                     (regexp-quote deliml)
                                     (regexp-quote delimr) args))))
-    (if lr
-         (when delim-pair-lr
-                (cons t (cons (car (last args))
-                              delim-pair-lr)))
-         (when delim-pair-not-lr
-                      (cons nil (cons (car (last args))
-                                      delim-pair-not-lr))))))
+
+    (if lr ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
+        (when delim-pair-lr
+          (cons t (cons (car (last args))
+                        delim-pair-lr)))
+      (when delim-pair-not-lr
+        (cons nil (cons (car (last args))
+                        delim-pair-not-lr))))))
 
 (defun evil-tex--select-delim (&rest args)
   "Return (beg . end) of best math match.
 
 ARGS passed to evil-select-(paren|quote)."
   (cddr (evil-tex-max-key
-   (list
-    (evil-tex--delim-finder nil "(" ")" args)
-    (evil-tex--delim-finder t "(" ")" args)
-    (evil-tex--delim-finder nil "[" "]" args)
-    (evil-tex--delim-finder t "[" "]" args)
-    (evil-tex--delim-finder nil "\\{" "\\}" args)
-    (evil-tex--delim-finder t "\\{" "\\}" args)
-    (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
-    (evil-tex--delim-finder t "\\langle" "\\rangle" args)
-    )
-   (lambda (arg) (if (consp arg) ; selection succeeded
-                         arg
-                   nil )) 'evil-tex--delim-compare )))
+         (list
+          (evil-tex--delim-finder nil "(" ")" args)
+          (evil-tex--delim-finder t "(" ")" args)
+          (evil-tex--delim-finder nil "[" "]" args)
+          (evil-tex--delim-finder t "[" "]" args)
+          (evil-tex--delim-finder nil "\\{" "\\}" args)
+          (evil-tex--delim-finder t "\\{" "\\}" args)
+          (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
+          (evil-tex--delim-finder t "\\langle" "\\rangle" args)
+          )
+         (lambda (arg) (if (consp arg) ; selection succeeded
+                           arg
+                         nil )) 'evil-tex--delim-compare )))
 (defvar evil-tex-include-newlines-in-envs t
   "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
 
@@ -141,6 +141,9 @@ ARGS passed to evil-select-(paren|quote)."
 
 (defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents:"
   "Prefix used when generating accent functions from `evil-tex-cdlatex-accent-map-generator-alist'.")
+
+(defvar evil-tex--delimiter-function-prefix "evil-tex-delimiters:"
+  "Prefix used when generating delimiter functions from `evil-tex-delimiter-map-generator-alist'.")
 
 (defun evil-tex--populate-surround-kemap (keymap generator-alist prefix
                                                  single-strings-fn)

@@ -201,7 +201,7 @@ assumed to be a cons. The text is wrapped in the resulted cons.")
     ("3"   "{\\scriptscriptstyle " . "}"))
   "Initial alist used to generate `evil-tex-cdlatex-accents-map'.
 
-Don't modify this directly; use `evil-tex-user-env-map-generator-alist'")
+Don't modify this directly; use `evil-tex-user-cdlatex-accents-map-generator-alist'")
 
 (defvar evil-tex-user-cdlatex-accents-map-generator-alist nil
   "Your alist for modifications of `evil-tex-cdlatex-accents-map'.
@@ -222,6 +222,24 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (defun evil-tex-cdlatex-accents:sf () "Return the (beg . end) that would make text sf style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
+(defvar evil-tex-delimiter-map-generator-alist
+  `(("b"  "(" . ")")
+    ("("  "(" . ")")
+    (")"  "(" . ")")
+    ("B"  "[" . "]")
+    ("["  "[" . "]")
+    ("]"  "[" . "]")
+    ("{"  "\{" . "\}")
+    ("}"  "\{" . "\}"))
+  "Initial alist used to generate `evil-tex-delimiter-map'.
+
+Don't modify this directly; use `evil-tex-user-delimiter-map-generator-alist'")
+
+(defvar evil-tex-user-delimiter-map-generator-alist nil
+  "Your alist for modifications of `evil-tex-delimiter-map'.
+See `evil-tex-user-env-map-generator-alist' for format specification.")
+
+
 (defvar evil-tex-env-map
   (evil-tex--populate-surround-kemap
    (make-sparse-keymap)
@@ -237,7 +255,16 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
            evil-tex-user-cdlatex-accents-map-generator-alist)
    evil-tex--cdlatex-accents-function-prefix
    #'evil-tex-format-cdlatex-accent-for-surrounding)
-  "Keymap for surrounding with environments.")
+  "Keymap for surrounding with cdlatex accents.")
+
+(defvar evil-tex-delimiter-map
+  (evil-tex--populate-surround-kemap
+   (make-sparse-keymap)
+   (append evil-tex-delimiter-map-generator-alist
+           evil-tex-user-delimiter-map-generator-alist)
+   evil-tex--delimiter-function-prefix
+   #'identity)
+  "Keymap for surrounding with delimiters.")
 
 (defun evil-tex-surround-env-prompt ()
   "Prompt user for an env to surround with using `evil-tex-env-map'."
@@ -246,6 +273,10 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (defun evil-tex-surround-cdlatex-accents-prompt ()
   "Prompt user for an env to surround with using `evil-tex-cdlatex-accents-map'."
   (evil-tex-read-with-keymap evil-tex-cdlatex-accents-map))
+
+(defun evil-tex-surround-delimiter-prompt ()
+  "Prompt user for an env to surround with using `evil-tex-delimiter-map'."
+  (evil-tex-read-with-keymap evil-tex-delimiter-map))
 
 ;; Shorten which-key descriptions in auto-generated keymaps
 (with-eval-after-load 'which-key
@@ -284,7 +315,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     (?$ "$" . "$")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
-    (?d "\\left(" . "\\right)")
+    (?d . ,#'evil-tex-surround-delimiter-prompt)
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt) )
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
