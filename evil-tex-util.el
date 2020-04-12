@@ -46,7 +46,7 @@ ARGS passed to evil-select-(paren|quote)."
                    most-negative-fixnum))))
 
 (defun evil-tex--delim-compare (a b)
-  "Recieves two cons' A B of structure (LR IA BEG END ...).
+  "Recieve two cons' A B of structure (LR IA BEG END ...).
 where LR is t for e.g. \\left( and nil for e.g. (,
  IA is t for -an- text objects and nil for -inner-,
 BEG and END are the coordinates for the begining and end of the potential delim,
@@ -81,12 +81,21 @@ such as wether the delimiter is an \\left( type or a ( type,
 and if the text object is an -an- or an -inner-"
 
   ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
-  (cond (lr (if (ignore-errors (apply #'evil-select-paren (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args))
-        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                              (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args)))) (identity nil)))
-      ((not lr) (if (ignore-errors (apply #'evil-select-paren (regexp-quote deliml) (regexp-quote delimr) args))
-        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                                (regexp-quote deliml) (regexp-quote delimr) args)))) (identity nil)))))
+  (let ((delim-pair-lr (ignore-errors
+                         (apply #'evil-select-paren
+                                (regexp-quote (concat "\\left" deliml))
+                                (regexp-quote (concat "\\right" delimr)) args)))
+        (delim-pair-not-lr (ignore-errors
+                             (apply #'evil-select-paren
+                                    (regexp-quote deliml)
+                                    (regexp-quote delimr) args))))
+    (if lr
+         (when delim-pair-lr
+                (cons t (cons (car (last args))
+                              delim-pair-lr)))
+         (when delim-pair-not-lr
+                      (cons nil (cons (car (last args))
+                                      delim-pair-not-lr))))))
 
 (defun evil-tex--select-delim (&rest args)
   "Return (beg . end) of best math match.
@@ -100,8 +109,8 @@ ARGS passed to evil-select-(paren|quote)."
     (evil-tex--delim-finder t "[" "]" args)
     (evil-tex--delim-finder nil "\\{" "\\}" args)
     (evil-tex--delim-finder t "\\{" "\\}" args)
-    (evil-tex--delim-finder nil "\langle" "\rangle" args)
-    (evil-tex--delim-finder t "\langle" "\rangle" args)
+    (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
+    (evil-tex--delim-finder t "\\langle" "\\rangle" args)
     )
    (lambda (arg) (if (consp arg) ; selection succeeded
                          arg

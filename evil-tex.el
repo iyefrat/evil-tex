@@ -41,7 +41,7 @@ Example: (| symbolizes point)
     (backward-char)))
 
 
-;; stolen code from https://github.com/hpdeifel/evil-tex
+;; stolen code from https://github.com/hpdeifel/evil-latex-textobjects
 (evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
   "Select inner dollar"
   :extend-selection nil
@@ -67,12 +67,12 @@ Example: (| symbolizes point)
                      beg end type count t))
 
 (evil-define-text-object evil-tex-a-delim (count &optional beg end type)
-  "Select a delimiter, e.g. (foo) or \left[bar\right]."
+  "Select a delimiter, e.g. (foo) or \\left[bar\\right]."
   :extend-selection nil
   (evil-tex--select-delim beg end type count t))
 
 (evil-define-text-object evil-tex-inner-delim (count &optional beg end type)
-  "Select inner delimiter, e.g. (foo) or \left[bar\right]."
+  "Select inner delimiter, e.g. (foo) or \\left[bar\\right]."
   :extend-selection nil
   (evil-tex--select-delim beg end type count nil))
 
@@ -278,7 +278,6 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   (evil-tex-format-cdlatex-accent-for-surrounding
    (read-from-minibuffer "macro: \\" nil minibuffer-local-ns-map)))
 
-;; TODO add surround delimiters
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")

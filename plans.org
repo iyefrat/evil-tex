@@ -1,5 +1,7 @@
 #+TITLE: Plans
 
+* Bugfixes
+** TODO when doint =csc= on say =\ep|silon=, and entering =c\mu=, it surrounds the command in =\mu= rather than changing it
 * Features
 ** Text Objects
 For environments, commands/macros, inline & display math
@@ -22,7 +24,7 @@ Redundant with:
 ** General delimiter text object, with integration to evil-surround
 *** DONE create delimiter text object
 *** DONE integrate with surround
-*** TODO add toggle
+*** TODO add prompt
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex
 *** DONE Vimtex way - minibuffer with evil-surrountd
@@ -37,6 +39,9 @@ fully type out the thing.
 - Aliases would be *customizable*
 - Have a *Menu for an overview* of the aliases
 ** DONE CDLaTeX-tab-like movement (implemented already)
+** TODO Steal some more stuff from vimtex
+*** TODO section text object iP aP
+*** TODO maybeeeeee still do the toggle?
 
 * Proposed
 Not sure if we should have explanations for the surround stuff, the toggle
@@ -78,21 +83,21 @@ be useful
 * Far Future
 * Appendix
 ** Keybinds
-| Mode         | Keybind | Action                                                                         |
-|--------------+---------+--------------------------------------------------------------------------------|
-| Normal       | =csd=     | Change surrounding delimiter (see id/ad)                                       |
-|              | =cse=     | Change environment                                                             |
-|              | =csc=     | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)          |
-|              | =tsd=     | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=              |
-|              | =tse=     | For surrounding environment, equation <==> equation*, or align <==> align*     |
-|              | =tsm=     | For surrounding math, =\(\)= <==> =\[\]=                                           |
-|              | =dse=     | Delete surrounding environment                                                 |
-|              | =dsc=     | Delete surrounding command, =\tilde{a}= => =a=                                           |
-| Text objects | =ie=, =ae=  | Select inside/around *environment*                                               |
-|              | =ic=, =ac=  | Select inside/around *command* (macro)                                           |
-|              | =im=, =am=  | Select inside/around *math*                                                      |
-|              | =id=, =ad=  | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
-| Insert       | ?       | Brace movement                                                                 |
+| Mode         | Keybind    | Action                                                                               |
+|--------------+------------+--------------------------------------------------------------------------------------|
+| Normal       | =csd=      | Change surrounding delimiter (see id/ad)                                             |
+|              | =cse=      | Change environment                                                                   |
+|              | =csc=      | Change command (should be acessable from any brace e.g. ==\frac{}{:}==)              |
+|              | =tsd=      | Toggle surrounding delimiter, e.g. =(f:oo)= <===> =\left(f:oo\right)=                |
+|              | =tse=      | For surrounding environment, equation <==> equation*, or align <==> align*           |
+|              | =tsm=      | For surrounding math, =\(\)= <==> =\[\]=                                             |
+|              | =dse=      | Delete surrounding environment                                                       |
+|              | =dsc=      | Delete surrounding command, =\tilde{a}= => =a=                                       |
+| Text objects | =ie=, =ae= | Select inside/around *environment*                                                   |
+|              | =ic=, =ac= | Select inside/around *command* (macro)                                               |
+|              | =im=, =am= | Select inside/around *math*                                                          |
+|              | =id=, =ad= | Select inside/around delimiter (math parentheses), e.g. =()=, =[]=, =\left[\right]=. |
+| Insert       | ?          | Brace movement                                                                       |
 ** Things to add to Doom in another repo later
 *** TODO auto compilation mappings
 *** DONE =TeX-fold= flag
