@@ -81,12 +81,24 @@ such as wether the delimiter is an \\left( type or a ( type,
 and if the text object is an -an- or an -inner-"
 
   ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
-  (cond (lr (if (ignore-errors (apply #'evil-select-paren (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args))
-        (cons t (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                              (regexp-quote (concat "\\left" deliml)) (regexp-quote (concat "\\right" delimr)) args)))) (identity nil)))
-      ((not lr) (if (ignore-errors (apply #'evil-select-paren (regexp-quote deliml) (regexp-quote delimr) args))
-        (cons nil (cons (car (last args)) (ignore-errors (apply #'evil-select-paren
-                                                                (regexp-quote deliml) (regexp-quote delimr) args)))) (identity nil)))))
+  (cond (lr
+         (if (ignore-errors
+                  (apply #'evil-select-paren
+                         (regexp-quote (concat "\\left" deliml))
+                         (regexp-quote (concat "\\right" delimr)) args))
+                (cons t (cons (car (last args))
+                              (ignore-errors (apply #'evil-select-paren
+                                                    (regexp-quote (concat "\\left" deliml))
+                                                    (regexp-quote (concat "\\right" delimr)) args)))) nil))
+        ((not lr)
+         (if (ignore-errors
+                        (apply #'evil-select-paren
+                               (regexp-quote deliml)
+                               (regexp-quote delimr) args))
+                      (cons nil (cons (car (last args))
+                                      (ignore-errors (apply #'evil-select-paren
+                                                            (regexp-quote deliml)
+                                                            (regexp-quote delimr) args)))) nil))))
 
 (defun evil-tex--select-delim (&rest args)
   "Return (beg . end) of best math match.

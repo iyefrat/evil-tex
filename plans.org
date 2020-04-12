@@ -22,7 +22,7 @@ Redundant with:
 ** General delimiter text object, with integration to evil-surround
 *** DONE create delimiter text object
 *** DONE integrate with surround
-*** TODO add toggle
+*** TODO add prompt
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex
 *** DONE Vimtex way - minibuffer with evil-surrountd
@@ -37,6 +37,9 @@ fully type out the thing.
 - Aliases would be *customizable*
 - Have a *Menu for an overview* of the aliases
 ** DONE CDLaTeX-tab-like movement (implemented already)
+** TODO Steal some more stuff from vimtex
+*** TODO section text object iP aP
+*** TODO maybeeeeee still do the toggle?
 
 * Proposed
 Not sure if we should have explanations for the surround stuff, the toggle
