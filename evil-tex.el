@@ -338,7 +338,6 @@ See `evil-surround-pairs-alist' for the format.")
   "Minor mode for latex-specific text objects in evil.
 
 Installs the following additional text objects:
-\\<evil-tex-outer-map>
   \\[evil-tex-a-math] latex math: \\\\[ \\\\], \\( \\)
   \\[evil-tex-a-dollar] TeX math: $ .. $
   \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
