@@ -229,8 +229,8 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     ("B"  "[" . "]")
     ("["  "[" . "]")
     ("]"  "[" . "]")
-    ("{"  "\{" . "\}")
-    ("}"  "\{" . "\}"))
+    ("{"  "\\{" . "\\}")
+    ("}"  "\\{" . "\\}"))
   "Initial alist used to generate `evil-tex-delimiter-map'.
 
 Don't modify this directly; use `evil-tex-user-delimiter-map-generator-alist'")

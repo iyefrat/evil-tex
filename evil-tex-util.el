@@ -18,11 +18,9 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
          (compare-fn (or compare-fn #'>)))
     (dolist (cur (cdr seq))
       (let ((cur-val (funcall fn cur)))
-        (print cur-val)
         (when (funcall compare-fn cur-val res-val)
           (setq res-val cur-val
                 res cur))))
-    (print res)
     res))
 
 (defun evil-tex--select-math (&rest args)
