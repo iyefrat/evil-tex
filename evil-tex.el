@@ -283,10 +283,10 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
     (?$ "$" . "$")
+    (?d "\\left(" . "\\right)")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
-    (?d "\\left(" . "\\right)")
-    (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt) )
+    (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt))
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
 See `evil-surround-pairs-alist' for the format.")
@@ -308,7 +308,6 @@ See `evil-surround-pairs-alist' for the format.")
   "Minor mode for latex-specific text objects in evil.
 
 Installs the following additional text objects:
-\\<evil-tex-outer-map>
   \\[evil-tex-a-math] latex math: \\\\[ \\\\], \\( \\)
   \\[evil-tex-a-dollar] TeX math: $ .. $
   \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
