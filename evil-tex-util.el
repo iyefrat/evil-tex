@@ -140,8 +140,8 @@ ARGS passed to evil-select-(paren|quote)."
 (defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents:"
   "Prefix used when generating accent functions from `evil-tex-cdlatex-accent-map-generator-alist'.")
 
-(defvar evil-tex--delimiter-function-prefix "evil-tex-delimiters:"
-  "Prefix used when generating delimiter functions from `evil-tex-delimiter-map-generator-alist'.")
+(defvar evil-tex--delim-function-prefix "evil-tex-delims:"
+  "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
 
 (defun evil-tex--populate-surround-kemap (keymap generator-alist prefix
                                                  single-strings-fn)

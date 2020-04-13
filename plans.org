@@ -24,7 +24,7 @@ Redundant with:
 ** General delimiter text object, with integration to evil-surround
 *** DONE create delimiter text object
 *** DONE integrate with surround
-*** TODO add prompt
+*** DONE add prompt
 ** Environment changing
 This is the =csd/cse/tsd/tse= commands from vimtex
 *** DONE Vimtex way - minibuffer with evil-surrountd
