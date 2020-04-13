@@ -223,14 +223,14 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
        (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
 (defvar evil-tex-delimiter-map-generator-alist
-  `(("b"  "(" . ")")
-    ("("  "(" . ")")
-    (")"  "(" . ")")
-    ("B"  "[" . "]")
-    ("["  "[" . "]")
-    ("]"  "[" . "]")
-    ("{"  "\\{" . "\\}")
-    ("}"  "\\{" . "\\}"))
+  `(("p"  "(" . ")")
+    ("P"  "\\left(" . "\\right)")
+    ("s"  "[" . "]")
+    ("S"  "\\left[" . "\\right]")
+    ("c"  "\\{" . "\\}")
+    ("C"  "\\left\\{" . "\\right\\}")
+    ("r"  "\\langle" . "\\rangle")
+    ("R"  "\\left\\langle" . "\\right\\rangle"))
   "Initial alist used to generate `evil-tex-delimiter-map'.
 
 Don't modify this directly; use `evil-tex-user-delimiter-map-generator-alist'")
