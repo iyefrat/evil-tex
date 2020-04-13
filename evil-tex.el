@@ -111,6 +111,19 @@ Example: (| symbolizes point)
         (end (evil-tex-env-end-begend)))
     (list (cdr beg) (car end))))
 
+(evil-define-text-object evil-tex-a-section (count &optional beg end type)
+  "Select a LaTeX section"
+  (let ((beg (evil-tex-section-beginning-begend))
+        (end (evil-tex-section-end-begend)))
+    (list (car beg) (cdr end))))
+
+(evil-define-text-object evil-tex-inner-section (count &optional beg end type)
+  "Select a LaTeX section"
+  :extend-selection nil
+  (let ((beg (evil-tex-section-beginning-begend))
+        (end (evil-tex-section-end-begend)))
+    (list (cdr beg) (car end))))
+
 
 ;; (defvar evil-tex-outer-map (make-sparse-keymap))
 ;; (defvar evil-tex-inner-map (make-sparse-keymap))
@@ -222,21 +235,21 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (defun evil-tex-cdlatex-accents:sf () "Return the (beg . end) that would make text sf style if wrapped between the car and cdr."
        (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
-(defvar evil-tex-delimiter-map-generator-alist
-  `(("b"  "(" . ")")
-    ("("  "(" . ")")
-    (")"  "(" . ")")
-    ("B"  "[" . "]")
-    ("["  "[" . "]")
-    ("]"  "[" . "]")
-    ("{"  "\{" . "\}")
-    ("}"  "\{" . "\}"))
-  "Initial alist used to generate `evil-tex-delimiter-map'.
+(defvar evil-tex-delim-map-generator-alist
+  `(("p"  "(" . ")")
+    ("P"  "\\left(" . "\\right)")
+    ("s"  "[" . "]")
+    ("S"  "\\left[" . "\\right]")
+    ("c"  "\\{" . "\\}")
+    ("C"  "\\left\\{" . "\\right\\}")
+    ("r"  "\\langle" . "\\rangle")
+    ("R"  "\\left\\langle" . "\\right\\rangle"))
+  "Initial alist used to generate `evil-tex-delim-map'.
 
-Don't modify this directly; use `evil-tex-user-delimiter-map-generator-alist'")
+Don't modify this directly; use `evil-tex-user-delim-map-generator-alist'")
 
-(defvar evil-tex-user-delimiter-map-generator-alist nil
-  "Your alist for modifications of `evil-tex-delimiter-map'.
+(defvar evil-tex-user-delim-map-generator-alist nil
+  "Your alist for modifications of `evil-tex-delim-map'.
 See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 
@@ -257,12 +270,12 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
    #'evil-tex-format-cdlatex-accent-for-surrounding)
   "Keymap for surrounding with cdlatex accents.")
 
-(defvar evil-tex-delimiter-map
+(defvar evil-tex-delim-map
   (evil-tex--populate-surround-kemap
    (make-sparse-keymap)
-   (append evil-tex-delimiter-map-generator-alist
-           evil-tex-user-delimiter-map-generator-alist)
-   evil-tex--delimiter-function-prefix
+   (append evil-tex-delim-map-generator-alist
+           evil-tex-user-delim-map-generator-alist)
+   evil-tex--delim-function-prefix
    #'identity)
   "Keymap for surrounding with delimiters.")
 
@@ -271,12 +284,12 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   (evil-tex-read-with-keymap evil-tex-env-map))
 
 (defun evil-tex-surround-cdlatex-accents-prompt ()
-  "Prompt user for an env to surround with using `evil-tex-cdlatex-accents-map'."
+  "Prompt user for an accent to surround with using `evil-tex-cdlatex-accents-map'."
   (evil-tex-read-with-keymap evil-tex-cdlatex-accents-map))
 
-(defun evil-tex-surround-delimiter-prompt ()
-  "Prompt user for an env to surround with using `evil-tex-delimiter-map'."
-  (evil-tex-read-with-keymap evil-tex-delimiter-map))
+(defun evil-tex-surround-delim-prompt ()
+  "Prompt user for an delimiter to surround with using `evil-tex-delim-map'."
+  (evil-tex-read-with-keymap evil-tex-delim-map))
 
 ;; Shorten which-key descriptions in auto-generated keymaps
 (with-eval-after-load 'which-key
@@ -289,12 +302,14 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-macro)
 (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
 (define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
+(define-key evil-inner-text-objects-map "S" 'evil-tex-inner-section)
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
 (define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar)
 (define-key evil-outer-text-objects-map "c" 'evil-tex-a-macro)
 (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
 (define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)
+(define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
 
 ;; (evil-define-key 'operator evil-tex-mode-map
 ;;   "a" evil-tex-outer-map
@@ -315,7 +330,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     (?$ "$" . "$")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
-    (?d . ,#'evil-tex-surround-delimiter-prompt)
+    (?d . ,#'evil-tex-surround-delim-prompt)
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt) )
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
