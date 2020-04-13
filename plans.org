@@ -40,23 +40,18 @@ fully type out the thing.
 - Have a *Menu for an overview* of the aliases
 ** DONE CDLaTeX-tab-like movement (implemented already)
 ** TODO Steal some more stuff from vimtex
-*** TODO section text object iP aP
+*** DONE section text object iS aS
+*** TODO add ]] etc motions, see evil-forward-section etc
 *** TODO maybeeeeee still do the toggle?
-
-* Proposed
-Not sure if we should have explanations for the surround stuff, the toggle
-stuff is non trivial but it would probably be ehough to just mention that the
-e,c,m,d text objects are compatible with evil-surround. We probably only need
-to give an example.
-Itai: I think that as long as we explain what the inner and around parts of the
-text objects are it's enough.
-** Add beamer or other envs to the env keymap
-** Sub/superscript text objects
+** TODO Misc
+*** Add beamer or other envs to the env keymap
+*** Sub/superscript text objects
 change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
   - Would not work with surround-stuff, only =c/d= commands. Just thought it
     might be useful (Say you quickly want to change a sigma index...)
-Itai: sounds good
+
+* Proposed
 * Rejected
 ** Support math envs (=begin{align}=...) with math text objects
 - Use =tsm= to toggle between =begin{align}= and =begin{equation}= (It already

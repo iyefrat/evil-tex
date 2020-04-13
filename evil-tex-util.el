@@ -113,6 +113,7 @@ ARGS passed to evil-select-(paren|quote)."
          (lambda (arg) (if (consp arg) ; selection succeeded
                            arg
                          nil )) 'evil-tex--delim-compare )))
+
 (defvar evil-tex-include-newlines-in-envs t
   "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
 
@@ -249,11 +250,11 @@ If no such macro can be found, return nil"
 (defvar evil-tex-select-newlines-with-envs t
   "Whether to select and insert newlines with env commands.
 
-By default, the newline proceeding \begin{...} and preceding
-\end{...} is selected as part of the delimiter. This way, when
+By default, the newline proceeding \\begin{...} and preceding
+\\end{...} is selected as part of the delimiter. This way, when
 doing =cie= you're placed on a separate line, and surrounding
-with envs would force separate lines for \begin, inner text, and
-\end.")
+with envs would force separate lines for \\begin, inner text, and
+\\end.")
 
 (defun evil-tex-env-beginning-begend ()
   "Return (start . end) of the \\begin{foo} of current env.
@@ -297,6 +298,37 @@ with envs would force separate lines for \begin, inner text, and
         (backward-char))
       (cons (point) end))))
 
+(defun evil-tex-section-beginning-begend ()
+  "Return (start . end) of the \\(sub)*section{foo} of current section.
+
+\\section{foo}
+^               ^"
+  (let (beg)
+    (save-excursion
+      ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
+      (search-backward "\\" (line-beginning-position) t)
+      (unless (looking-at "\\\\\\(sub\\)*section")
+        (re-search-backward "\\\\\\(sub\\)*section"))
+      ;; We are at backslash
+      (setq beg (point))
+      (skip-chars-forward "^{")        ; goto opening brace
+      (forward-sexp)                   ; goto closing brace
+      (when (and evil-tex-select-newlines-with-envs
+                 (looking-at "\n"))
+        (forward-line 1))
+      (cons beg (point)))))
+
+(defun evil-tex-section-end-begend ()
+  "Return (start . end) of the end of the current section.
+defined to be TODO.
+
+\\end{equation}
+^             ^"
+    (save-excursion
+      ;; LaTeX-find-matching-end doesn't work if on the \begin itself
+      (re-search-forward "\\\\\\(sub\\)*section\\|\\\\end{document}")
+      (move-beginning-of-line 1)
+      (cons (point) (point))))
 
 (provide 'evil-tex-util)
 ;;; evil-tex-util.el ends here
