@@ -330,5 +330,53 @@ defined to be TODO.
       (move-beginning-of-line 1)
       (cons (point) (point))))
 
+
+(defun evil-tex-script-beginning-begend (subsup)
+  "Return (start . end) of the sub/superscript that point is in.
+SUBSUP should be either \"^\" or \"_\"
+
+a_{n+1}
+ ^^"
+  (let ((qsubsup (regexp-quote subsup))
+        start)
+    (save-excursion
+      (unless (looking-at qsubsup)
+        (search-backward subsup
+                         (line-beginning-position 0))) ;; 2 lines up
+      (setq start (point))
+      (goto-char (match-end 0))
+      (when (looking-at "{") ; If no brace, no go
+        (forward-char 1))
+      (cons start (point)))))
+
+(defun evil-tex-script-end-begend (subsup)
+  "Return (start . end) of the sub/superscript that point is in.
+SUBSUP should be either \"^\" or \"_\"
+
+a_{n+1}
+      ^"
+  (let ((qsubsup (regexp-quote subsup)))
+    (save-excursion
+      (unless (looking-at qsubsup)
+        (search-backward subsup
+                         (line-beginning-position 0))) ;; 2 lines up
+      (goto-char (match-end 0))
+      (cond
+       ;; a_{something}
+       ((looking-at "{")
+        (forward-sexp)
+        (cons (1- (point)) (point)))
+       ;; a_\something
+       ((looking-at "\\\\[a-zA-Z@*]+")
+        (message "macro")
+        (goto-char (match-end 0))
+        ;; skip macro arguments
+        (while (looking-at "{\\|\\[")
+          (forward-sexp))
+        (cons (point) (point)))
+       (t ;; a_1 a_n
+        (forward-char)
+        (cons (point) (point)))))))
+
 (provide 'evil-tex-util)
 ;;; evil-tex-util.el ends here

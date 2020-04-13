@@ -34,17 +34,18 @@ TODO the right/left delimiters when implemented
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)¯\_
 * Complete info
-This package defines 6 text objects:
-| Key | Abbrevation     | Text Object Target                                         | Surround behavior                          |
+This package defines an increasing number of text objects:
+| Key | Abbreviation    | Text Object Target                                         | Surround behavior                          |
 |-----+-----------------+------------------------------------------------------------+--------------------------------------------|
 | ~c~   | command         | TeX marcos: \foo{...}                                      | Prompts you for a macro                    |
-| ~e~   | environment      | \begin{...} \end{...} blocks                               | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
+| ~e~   | environment     | \begin{...} \end{...} blocks                               | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
 | ~m~   | math            | Both inline ~\( \)~ and display ~\[ \]~.                       | Surrounds with ~\( \)~                       |
 | ~M~   | Display math    | N/A                                                        | Surrounds with ~\[ \]~                       |
-| ~$~   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. | Surrounds with ~$~                           |
+| ~$~   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. | Surrounds with ~$ $~                         |
 | ~d~   | delimiters      | TODO @itay                                                 | TODO @itay                                 |
 | ~;~   | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                        | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
-#+TBLFM: $3=\begin{}...\end{}= blocks
+| ~^~   | superscript     | x^a x^\alpha x^{...}                                               | Surrounds with ^{ }                        |
+| ~_~   | subscript       | x_a x_\alpha x_{...}                                               | Surroudns with _{ }                        |
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or

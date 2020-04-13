@@ -124,6 +124,32 @@ Example: (| symbolizes point)
         (end (evil-tex-section-end-begend)))
     (list (cdr beg) (car end))))
 
+(evil-define-text-object evil-tex-a-subscript (count &optional beg end type)
+  "Select a LaTeX subscript"
+  (let ((beg (evil-tex-script-beginning-begend "_"))
+        (end (evil-tex-script-end-begend "_")))
+    (list (car beg) (cdr end))))
+
+(evil-define-text-object evil-tex-inner-subscript (count &optional beg end type)
+  "Select a LaTeX subscript"
+  :extend-selection nil
+  (let ((beg (evil-tex-script-beginning-begend "_"))
+        (end (evil-tex-script-end-begend "_")))
+    (list (cdr beg) (car end))))
+
+(evil-define-text-object evil-tex-a-superscript (count &optional beg end type)
+  "Select a LaTeX superscript"
+  (let ((beg (evil-tex-script-beginning-begend "^"))
+        (end (evil-tex-script-end-begend "^")))
+    (list (car beg) (cdr end))))
+
+(evil-define-text-object evil-tex-inner-superscript (count &optional beg end type)
+  "Select a LaTeX superscript"
+  :extend-selection nil
+  (let ((beg (evil-tex-script-beginning-begend "^"))
+        (end (evil-tex-script-end-begend "^")))
+    (list (cdr beg) (car end))))
+
 
 ;; (defvar evil-tex-outer-map (make-sparse-keymap))
 ;; (defvar evil-tex-inner-map (make-sparse-keymap))
@@ -303,6 +329,8 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
 (define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
 (define-key evil-inner-text-objects-map "S" 'evil-tex-inner-section)
+(define-key evil-inner-text-objects-map "^" 'evil-tex-inner-superscript)
+(define-key evil-inner-text-objects-map "_" 'evil-tex-inner-subscript)
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
 (define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar)
@@ -310,6 +338,9 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
 (define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)
 (define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
+(define-key evil-outer-text-objects-map "^" 'evil-tex-a-superscript)
+(define-key evil-outer-text-objects-map "_" 'evil-tex-a-subscript)
+
 
 ;; (evil-define-key 'operator evil-tex-mode-map
 ;;   "a" evil-tex-outer-map
@@ -331,7 +362,9 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
     (?d . ,#'evil-tex-surround-delim-prompt)
-    (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt) )
+    (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt)
+    (?^ "^{" . "}")
+    (?_ "_{" . "}"))
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
 See `evil-surround-pairs-alist' for the format.")
