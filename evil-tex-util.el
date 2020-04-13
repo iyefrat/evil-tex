@@ -177,7 +177,7 @@ Return KEYMAP."
 Return the result of the called function, or error if the key
 pressed isn't found."
   (let (key map-result)
-    (when (and (require 'which-key nil t))
+    (when (require 'which-key nil t)
       (run-with-idle-timer
        which-key-idle-delay nil
        (lambda () (unless key
