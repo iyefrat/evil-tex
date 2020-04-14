@@ -7,13 +7,15 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 * Table of Contents :TOC_3:noexport:
 - [[#incomplete-showcase][Incomplete Showcase]]
 - [[#installation][Installation]]
-- [[#complete-info][Complete info]]
+- [[#overview][Overview]]
+  - [[#nontrivial-behaviours][Nontrivial behaviours:]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
-  - [[#disabling-newline-forcing-with-envs][Disabling newline forcing with envs]]
+  - [[#options-to-enable-and-disable][Options to enable and disable]]
 - [[#appendix][Appendix]]
   - [[#environment-keymap][Environment keymap]]
   - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
+  - [[#delimiter-keymap][Delimiter keymap]]
 
 * Incomplete Showcase
 =|= marks point.
@@ -26,26 +28,72 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 
 =\(\sum_{i=1}^{n} i^2|\)= -> csmM /(change surrounding math to display)/ -> =\[\sum_{i=1}^{n} i^2|\]=
 
-=\[a^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
+=\[a|^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
 =\begin{align*}\n a^2 \n\end{align}=
 
-TODO the right/left delimiters when implemented
+=(\mu|_\nu)= -> csddP /(change surrounding delimiter to =\left(=)/ -> =\left(\mu|_\nu\right)=
 * Installation
 Until this package's on MELPA, clone it and put it in your load path and hook it
-to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)¯\_
-* Complete info
+to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
+* Overview
 This package defines an increasing number of text objects:
-| Key | Abbreviation    | Text Object Target                                         | Surround behavior                          |
-|-----+-----------------+------------------------------------------------------------+--------------------------------------------|
-| ~c~   | command         | TeX marcos: \foo{...}                                      | Prompts you for a macro                    |
-| ~e~   | environment     | \begin{...} \end{...} blocks                               | Prompts you with [[#environment-keymap][the env keymap keymap]]     |
-| ~m~   | math            | Both inline ~\( \)~ and display ~\[ \]~.                       | Surrounds with ~\( \)~                       |
-| ~M~   | Display math    | N/A                                                        | Surrounds with ~\[ \]~                       |
-| ~$~   | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]]. | Surrounds with ~$ $~                         |
-| ~d~   | delimiters      | TODO @itay                                                 | TODO @itay                                 |
-| ~;~   | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                        | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
-| ~^~   | superscript     | x^a x^\alpha x^{...}                                               | Surrounds with ^{ }                        |
-| ~_~   | subscript       | x_a x_\alpha x_{...}                                               | Surroudns with _{ }                        |
+| Key | Abbreviation    | Text Object Target                                                       | Surround behavior                          |
+|-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
+| ~c~ | command         | TeX marcos: ~\foo{...}~                                                  | Prompts you for a macro                    |
+| ~e~ | environment     | ~\begin{...}~ ~\end{...}~ blocks                                         | Prompts you with [[#environment-keymap][the env keymap]]            |
+| ~m~ | math            | Both inline ~\( \)~ and display ~\[ \]~.                                 | Surrounds with ~\( \)~                     |
+| ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
+| ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]].               |                                            |
+| ~d~ | delimiters      | Math delimiters, ~(foo), \left(foo\right), [foo], \left[foo\right]~ etc. | Prompts you with [[#delimiter-keymap][the delim keymap]]          |
+| ~S~ | sections        | LaTeX (sub)sections,                                                     | TODO: change name of section?              |
+| ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                                      | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
+| ~^~ | superscript     | ~x^a~ ~x^\alpha~ ~x^{...}~                                               | Surrounds with ~^{ }~                      |
+| ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surroudns with ~_{ }~                      |
+
+The full text object definitions are as follows:
+
+#+BEGIN_SRC LaTeX
+    \foobar{barbaz}     \foobar{barbaz}
+    └─────────────┘             └────┘
+           ac                     ic
+
+   ┌\begin{foobar}     \begin{foobar}
+   │                  ┌
+ ae│ baz            ie│ baz
+   │                  └
+   └\end{foobar}       \end{foobar}
+
+   \(foobar\)    \(foobar\)
+   └────────┘      └────┘
+       am            im
+
+   (foobar)    (foobar)    \left(foobar\right)    \left(foobar\right)
+   └──────┘     └────┘     └─────────────────┘          └────┘
+      ad          id               ad                     id
+
+    ┌\section{foo}          \section{foo}
+    │                      ┌
+  aS│ baz                iS│ baz
+    └                      └
+     \subsection{bar}       \subsection{bar}
+
+    a^{foo}    a^{foo}    a^b    a^b    a^\bar    a^\bar
+     └────┘       └─┘      └╵      ╵     └───┘      └──┘
+#+END_SRC LaTeX
+
+** Nontrivial behaviours:
+- The subscript and superscript text objects are found by searching backwards,
+  unless you are already on e.g. =^=. For example, =a^b efg |c^d= -> da^ ->
+   =a^| efg c^d=.
+- TODO As illustrated, the =S= text object treets the begining of all
+  =\(sub)*section='s equally. However, If you want to manipulate a section with all
+  of it's included subsections, you can do this performing the operations while
+  the cursor is on the section command itself, e.g. =\section{f|oo}=
+- By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
+  selected as part of the delimiter. This way, when doing =cie= you're placed on a
+  separate line, and surrounding with envs would force separate lines for ~\begin~,
+  inner text, and ~\end~.
+
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
@@ -64,47 +112,44 @@ Same for ~evil-tex-user-cdlatex-accents-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
 
 *Make sure to set these variables before evil-TeX is loaded!*
-** Disabling newline forcing with envs
-By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
-selected as part of the delimiter. This way, when doing =cie= you're placed on a
-separate line, and surrounding with envs would force separate lines for ~\begin~,
-inner text, and ~\end~.
-
-If you do not want this, just set ~evil-tex-select-newlines-with-envs~ to ~nil~.
+** Options to enable and disable
+- If you don't want the  ~\begin{...}~ newline behaviour discribed above,
+  set ~evil-tex-select-newlines-with-envs~ to ~nil~.
+- TODO Toggling stuff after I get that working
 * Appendix
 ** Environment keymap
 Giving a prefix argument would prompt for options.
-| Category        | env         | key alias |
-|-----------------+-------------+-----------|
-| Generic         | prompt user | x         |
-|-----------------+-------------+-----------|
-| Built In        | equation    | e         |
-|                 | equation*   | E         |
-|                 | figure      | f         |
-|                 | itemize     | i         |
-|                 | enumerate   | I         |
-| AmsMath         | align       | a         |
-|                 | align*      | A         |
-|                 | alignat     | n         |
-|                 | alignat*    | N         |
-|                 | eqnarray    | r         |
-|                 | flalign     | l         |
-|                 | flalign*    | L         |
-|                 | gather      | g         |
-|                 | gather*     | G         |
-|                 | multline    | m         |
-|                 | multline*   | M         |
-|                 | cases       | c         |
-| Common Theorems | axiom       | ta        |
-| prefix t        | corollary   | tc        |
-|                 | definition  | td        |
-|                 | examples    | te        |
-|                 | exercise    | ts        |
-|                 | lemma       | tl        |
-|                 | proof       | tp        |
-|                 | question    | tq        |
-|                 | remark      | tr        |
-|                 | theorem     | tt        |
+| Category                  | env         | key alias |
+|---------------------------+-------------+-----------|
+| Generic                   | prompt user | x         |
+|---------------------------+-------------+-----------|
+| Built In                  | equation    | e         |
+|                           | equation*   | E         |
+|                           | figure      | f         |
+|                           | itemize     | i         |
+|                           | enumerate   | I         |
+| AmsMath                   | align       | a         |
+|                           | align*      | A         |
+|                           | alignat     | n         |
+|                           | alignat*    | N         |
+|                           | eqnarray    | r         |
+|                           | flalign     | l         |
+|                           | flalign*    | L         |
+|                           | gather      | g         |
+|                           | gather*     | G         |
+|                           | multline    | m         |
+|                           | multline*   | M         |
+|                           | cases       | c         |
+| Common Theorems, prefix t | axiom       | ta        |
+|                           | corollary   | tc        |
+|                           | definition  | td        |
+|                           | examples    | te        |
+|                           | exercise    | ts        |
+|                           | lemma       | tl        |
+|                           | proof       | tp        |
+|                           | question    | tq        |
+|                           | remark      | tr        |
+|                           | theorem     | tt        |
 ** cdlatex accent keymap
 See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlatex]]. "style?" implies that the braces come before the macro, e.g
 ={\displaystyle ...}=
@@ -139,3 +184,14 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | 1   | displaystyle      | yes    |
 | 2   | scriptstyle       | yes    |
 | 3   | scriptscriptstyle | yes    |
+** Delimiter keymap
+| key | delimiter                      |
+|-----+--------------------------------|
+| b   | ~[foo]~                         |
+| B   | ~\left[foo\right]~               |
+| c   | ~\{foo\}~                        |
+| C   | ~\left\{foo\right\}~             |
+| r   | ~\langle foo\rangle~             |
+| R   | ~\left\langle foo \right\langle~ |
+| p   | ~(foo)~                          |
+| P   | ~\left(foo\right)~               |
