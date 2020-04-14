@@ -398,6 +398,49 @@ See `evil-surround-pairs-alist' for the format.")
 ;(defun evil-tex-temp ()
 ;    (interactive))
 
+;; working code courtesy of mr. doom. currently remaps ts to ti for fun.
+(evil-define-command toggle-or-snipe (count key)
+  (interactive "<c><C>")
+  (let ((count (or count 1)))
+    (if (eq key ?s)
+        (progn
+          (evil-snipe-t 1 (list ?i))
+          )
+      (setq evil-snipe--last-direction t)
+      (evil-snipe-t count (list key)))))
+
+(defun evil-tex-toggle-delim ()
+  "Toggle delimiters."
+  (let ((begbeg (car (evil-tex-a-delim)))
+        (begend (cadr (evil-tex-inner-delim)))
+        (endbeg (car (evil-tex-a-delim)))
+        (endend (cadr (evil-tex-inner-delim))))
+  (save-excursion
+    (goto-char (car (evil-tex-a-delim)))
+    (cond
+       ((looking-at \left(regexp-quote "(")\right) (setq unread-command-events
+      (mapcar (lambda (e) `(t . ,e))
+              (listify-key-sequence (kbd "csddP")))))))))
+
+(defun evil-tex-toggle-delim2 ()
+  "Toggle delimiters, but with better practices."
+  (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
+        (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
+  (save-excursion
+    (overlay-put an-over 'happy t)
+    (goto-char (overlay-start an-over))
+    (cond
+     ((looking-at (regexp-quote "("))
+        (delete-region (overlay-start an-over) (overlay-start in-over))
+        (goto-char (overlay-start an-over))
+        (insert "\\left(")
+        (delete-region (overlay-end in-over) (overlay-end in-over))
+        (goto-char (overlay-end in-over))
+        (insert "\\right)")
+        )))
+  (delete-overlay an-over) (delete-overlay in-over)))
+
+(define-key evil-normal-state-map "t" 'toggle-or-snipe)
 
 ;;;###autoload
 (define-minor-mode evil-tex-mode

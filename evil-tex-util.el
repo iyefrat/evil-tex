@@ -330,6 +330,10 @@ defined to be TODO.
       (move-beginning-of-line 1)
       (cons (point) (point))))
 
+(defun evil-tex--select-section ()
+  "TODO A better section selecting function."
+
+  )
 
 (defun evil-tex-script-beginning-begend (subsup)
   "Return (start . end) of the sub/superscript that point is in.
