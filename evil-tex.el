@@ -381,6 +381,24 @@ See `evil-surround-pairs-alist' for the format.")
                (mapcar #'car evil-tex-surround-delimiters)
                evil-embrace-evil-surround-keys)))
 
+;;;in which we add the toggle
+
+;; when we have snipe, we want to override:
+;evil-snipe-t
+; when we don't, we want to override:
+;evil-find-char-to
+
+;(advice-add 'evil-snipe-t :around #'evil-tex--toggle-advice)
+
+;(defun evil-tex--toggle-advice (t-fun &rest args)
+;  "Advice evil t motion to be a toggle if user types ts.
+;T-FUN is either evil-snipe-t or evil-find-char-to. ARGS.")
+
+
+;(defun evil-tex-temp ()
+;    (interactive))
+
+
 ;;;###autoload
 (define-minor-mode evil-tex-mode
   "Minor mode for latex-specific text objects in evil.
