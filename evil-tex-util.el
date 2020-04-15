@@ -338,19 +338,37 @@ defined to be TODO.
 (defun evil-tex--goto-script-prefix (subsup)
   "Return goto end of the found SUBSUP prefix.
 {(ab|)}_c => {(ab)}_|c"
-  (let ((orig-point (point)))
-    (unless (when (search-forward subsup (line-end-position 2) t) ; 2 lines down
-              (let (beg end)
-                (backward-char) ; before the ^_
-                (setq end (point))
-                (if (eq (char-before) ?}) ; {}^b
-                    (backward-sexp)
-                  (backward-char)) ; a^b
-                (setq beg (point))
-                ;; require point to be inside the base bounds
-                (<= beg orig-point end)))
-      (search-backward subsup (line-beginning-position 0))))
-  (goto-char (match-end 0)))
+  (let ((orig-point (point))
+        subsup-end)
+    (or
+     ;; subsup after point
+     (when (search-forward subsup (line-end-position 2) t) ; 2 lines down
+       (let (beg end)
+         (setq subsup-end (match-end 0))
+         (goto-char (match-beginning 0))
+         (setq end (point))
+         (when
+             (cond
+              ;; {}^
+              ((eq (char-before) ?})
+               (backward-sexp)
+               (setq beg (point)))
+              ;; \macro^
+              ((and (search-backward "\\" (line-beginning-position) t)
+                    (looking-at "\\\\[A-Za-z@*]+")
+                    (eq end (match-end 0)))
+               (message "macro! point %s" (point))
+               (setq beg (match-beginning 0)))
+              ;; a^
+              (t
+               (setq beg (1- (point)))))
+           ;; require point to be inside the base bounds
+           (message "%s %s %s" beg orig-point end)
+           (<= beg orig-point end))))
+     ;; subsup before point
+     (when (search-backward subsup (line-beginning-position 0))
+       (setq subsup-end (match-end 0))))
+    (goto-char subsup-end)))
 
 (defun evil-tex-script-beginning-begend (subsup)
   "Return (start . end) of the sub/superscript that point is in.
