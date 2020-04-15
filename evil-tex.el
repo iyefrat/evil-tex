@@ -405,26 +405,13 @@ See `evil-surround-pairs-alist' for the format.")
     (if (eq key ?s)
         (let ((key2 (read-char)))
           (cond
-           ((eq key2 ?d) (evil-tex-toggle-delim2))
+           ((eq key2 ?d) (evil-tex-toggle-delim))
            ((eq key2 ?e) ());;TODO toggle surrounding enviornment
            ((eq key2 ?m) ());;TODO toggle surrounding math
            ((eq key2 ?f) ());;TODO toggle surrounding fraction?
            ))
       (setq evil-snipe--last-direction t)
-      (evil-snipe-t count (list key)))))
-
-(defun evil-tex-toggle-delim ()
-  "Toggle delimiters."
-  (let ((begbeg (car (evil-tex-a-delim)))
-        (begend (cadr (evil-tex-inner-delim)))
-        (endbeg (car (evil-tex-a-delim)))
-        (endend (cadr (evil-tex-inner-delim))))
-  (save-excursion
-    (goto-char (car (evil-tex-a-delim)))
-    (cond
-       ((looking-at \left(regexp-quote "(")\right) (setq unread-command-events
-      (mapcar (lambda (e) `(t . ,e))
-              (listify-key-sequence (kbd "csddP")))))))))
+      (evil-snipe-t count (list key)))));;TODO add support for when you don't have snipe
 
 (defun evil-tex--regex-overlay-replace (deliml delimr an-over in-over)
   "Replace surround area defined by AN-OVER and IN-OVER with new delimiters DELIML and DELIMR.
@@ -435,7 +422,7 @@ Should be used inside of a 'save-excursion'."
          (delete-region (overlay-end in-over) (overlay-end an-over))
          (goto-char (overlay-end in-over))
          (insert delimr)))
-(defun evil-tex-toggle-delim2 ()
+(defun evil-tex-toggle-delim ()
   "Toggle delimiters, but with better practices."
   (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
         (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
