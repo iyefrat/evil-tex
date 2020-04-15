@@ -388,17 +388,7 @@ See `evil-surround-pairs-alist' for the format.")
 ; when we don't, we want to override:
 ;evil-find-char-to
 
-;(advice-add 'evil-snipe-t :around #'evil-tex--toggle-advice)
-
-;(defun evil-tex--toggle-advice (t-fun &rest args)
-;  "Advice evil t motion to be a toggle if user types ts.
-;T-FUN is either evil-snipe-t or evil-find-char-to. ARGS.")
-
-
-;(defun evil-tex-temp ()
-;    (interactive))
-
-;; working code courtesy of mr. doom. currently remaps ts to ti for fun.
+;; working code courtesy of mr. doom.
 (evil-define-command toggle-or-snipe (count key)
   (interactive "<c><C>")
   (let ((count (or count 1)))
@@ -412,41 +402,6 @@ See `evil-surround-pairs-alist' for the format.")
            ))
       (setq evil-snipe--last-direction t)
       (evil-snipe-t count (list key)))));;TODO add support for when you don't have snipe
-
-(defun evil-tex--regex-overlay-replace (deliml delimr an-over in-over)
-  "Replace surround area defined by AN-OVER and IN-OVER with new delimiters DELIML and DELIMR.
-Should be used inside of a 'save-excursion'."
-  (progn (delete-region (overlay-start an-over) (overlay-start in-over))
-         (goto-char (overlay-start an-over))
-         (insert deliml)
-         (delete-region (overlay-end in-over) (overlay-end an-over))
-         (goto-char (overlay-end in-over))
-         (insert delimr)))
-(defun evil-tex-toggle-delim ()
-  "Toggle delimiters, but with better practices."
-  (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
-        (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
-  (save-excursion
-    (overlay-put an-over 'happy t)
-    (goto-char (overlay-start an-over))
-    (cond
-     ((looking-at (regexp-quote "("))
-      (evil-tex--regex-overlay-replace "\\left(" "\\right)" an-over in-over))
-     ((looking-at (regexp-quote "\\left("))
-      (evil-tex--regex-overlay-replace "(" ")" an-over in-over))
-     ((looking-at (regexp-quote "["))
-      (evil-tex--regex-overlay-replace "\\left[" "\\right]" an-over in-over))
-     ((looking-at (regexp-quote "\\left["))
-      (evil-tex--regex-overlay-replace "[" "]" an-over in-over))
-     ((looking-at (regexp-quote "\\{"))
-      (evil-tex--regex-overlay-replace "\\left\\{" "\\right\\}" an-over in-over))
-     ((looking-at (regexp-quote "\\left\\{"))
-      (evil-tex--regex-overlay-replace "\\{" "\\}" an-over in-over))
-     ((looking-at (regexp-quote "\\langle"))
-      (evil-tex--regex-overlay-replace "\\left\\langle" "\\right\\rangle" an-over in-over))
-     ((looking-at (regexp-quote "\\left\\langle"))
-      (evil-tex--regex-overlay-replace "\\langle" "\\rangle" an-over in-over))))
-  (delete-overlay an-over) (delete-overlay in-over)))
 
 (define-key evil-normal-state-map "t" 'toggle-or-snipe)
 

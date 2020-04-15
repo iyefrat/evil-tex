@@ -392,5 +392,39 @@ a_{n+1}
         (forward-char)
         (cons (point) (point)))))))
 
+(defun evil-tex--regex-overlay-replace (deliml delimr an-over in-over)
+  "Replace surround area defined by AN-OVER and IN-OVER with new delimiters DELIML and DELIMR.
+Should be used inside of a 'save-excursion'."
+  (progn (delete-region (overlay-start an-over) (overlay-start in-over))
+         (goto-char (overlay-start an-over))
+         (insert deliml)
+         (delete-region (overlay-end in-over) (overlay-end an-over))
+         (goto-char (overlay-end in-over))
+         (insert delimr)))
+(defun evil-tex-toggle-delim ()
+  "Toggle delimiters, but with better practices."
+  (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
+        (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
+  (save-excursion
+    (goto-char (overlay-start an-over))
+    (cond
+     ((looking-at (regexp-quote "("))
+      (evil-tex--regex-overlay-replace "\\left(" "\\right)" an-over in-over))
+     ((looking-at (regexp-quote "\\left("))
+      (evil-tex--regex-overlay-replace "(" ")" an-over in-over))
+     ((looking-at (regexp-quote "["))
+      (evil-tex--regex-overlay-replace "\\left[" "\\right]" an-over in-over))
+     ((looking-at (regexp-quote "\\left["))
+      (evil-tex--regex-overlay-replace "[" "]" an-over in-over))
+     ((looking-at (regexp-quote "\\{"))
+      (evil-tex--regex-overlay-replace "\\left\\{" "\\right\\}" an-over in-over))
+     ((looking-at (regexp-quote "\\left\\{"))
+      (evil-tex--regex-overlay-replace "\\{" "\\}" an-over in-over))
+     ((looking-at (regexp-quote "\\langle"))
+      (evil-tex--regex-overlay-replace "\\left\\langle" "\\right\\rangle" an-over in-over))
+     ((looking-at (regexp-quote "\\left\\langle"))
+      (evil-tex--regex-overlay-replace "\\langle" "\\rangle" an-over in-over))))
+  (delete-overlay an-over) (delete-overlay in-over)))
+
 (provide 'evil-tex-util)
 ;;; evil-tex-util.el ends here
