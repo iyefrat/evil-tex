@@ -477,7 +477,16 @@ Should be used inside of a 'save-excursion'."
         (evil-tex--regexp-overlay-replace "\\(" "\\)" an-over in-over))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
-
+(defun evil-tex-toggle-command ()
+  "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  (let ((an-over (make-overlay (car (evil-tex-a-macro)) (cadr (evil-tex-a-macro))))
+        (in-over (make-overlay (car (evil-tex-inner-macro)) (cadr (evil-tex-inner-macro)))))
+    (save-excursion
+      (goto-char (overlay-start an-over))
+      (skip-chars-forward "^{")
+      (backward-char 1)
+      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
+    (delete-overlay an-over) (delete-overlay in-over)))
 
 
 (provide 'evil-tex-util)
