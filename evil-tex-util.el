@@ -335,21 +335,34 @@ defined to be TODO.
 
   )
 
+(defun evil-tex--goto-script-prefix (subsup)
+  "Return goto end of the found SUBSUP prefix.
+{(ab|)}_c => {(ab)}_|c"
+  (let ((orig-point (point)))
+    (unless (when (search-forward subsup (line-end-position 2) t) ; 2 lines down
+              (let (beg end)
+                (backward-char) ; before the ^_
+                (setq end (point))
+                (if (eq (char-before) ?}) ; {}^b
+                    (backward-sexp)
+                  (backward-char)) ; a^b
+                (setq beg (point))
+                ;; require point to be inside the base bounds
+                (<= beg orig-point end)))
+      (search-backward subsup (line-beginning-position 0))))
+  (goto-char (match-end 0)))
+
 (defun evil-tex-script-beginning-begend (subsup)
   "Return (start . end) of the sub/superscript that point is in.
 SUBSUP should be either \"^\" or \"_\"
 
 a_{n+1}
  ^^"
-  (let ((qsubsup (regexp-quote subsup))
-        start)
+  (let (start)
     (save-excursion
-      (unless (looking-at qsubsup)
-        (search-backward subsup
-                         (line-beginning-position 0))) ;; 2 lines up
-      (setq start (point))
-      (goto-char (match-end 0))
-      (when (looking-at "{") ; If no brace, no go
+      (evil-tex--goto-script-prefix subsup)
+      (setq start (1- (point)))
+      (when (looking-at "{") ; select brace if present
         (forward-char 1))
       (cons start (point)))))
 
@@ -361,10 +374,7 @@ a_{n+1}
       ^"
   (let ((qsubsup (regexp-quote subsup)))
     (save-excursion
-      (unless (looking-at qsubsup)
-        (search-backward subsup
-                         (line-beginning-position 0))) ;; 2 lines up
-      (goto-char (match-end 0))
+      (evil-tex--goto-script-prefix subsup)
       (cond
        ;; a_{something}
        ((looking-at "{")
