@@ -396,12 +396,12 @@ See `evil-surround-pairs-alist' for the format.")
         (let ((key2 (read-char)))
           (cond
            ((eq key2 ?d) (evil-tex-toggle-delim))
-           ((eq key2 ?e) ());;TODO toggle surrounding enviornment
-           ((eq key2 ?m) ());;TODO toggle surrounding math
-           ((eq key2 ?f) ());;TODO toggle surrounding fraction?
+           ((eq key2 ?e) ());; TODO toggle surrounding enviornment
+           ((eq key2 ?m) ());; TODO toggle surrounding math
+           ((eq key2 ?f) ());; TODO toggle surrounding fraction?
            ))
       (setq evil-snipe--last-direction t)
-      (evil-snipe-t count (list key)))));;TODO add support for when you don't have snipe
+      (evil-snipe-t count (list key)))));; TODO add support for when you don't have snipe
 
 (define-key evil-normal-state-map "t" 'toggle-or-snipe)
 
@@ -423,7 +423,6 @@ Installs the following additional text objects:
       #'evil-tex-set-up-surround)
     (eval-after-load 'evil-embrace
       #'evil-tex-set-up-embrace)))
-
 
 (provide 'evil-tex)
 ;;; evil-tex ends here
