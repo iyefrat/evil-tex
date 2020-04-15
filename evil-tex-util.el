@@ -425,7 +425,7 @@ Should be used inside of a 'save-excursion'."
          (insert delimr)))
 
 (defun evil-tex-toggle-delim ()
-  "Toggle delimiters between e.g. (foo) and \\left(foo\\right) ."
+  "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right) ."
   (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
         (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
     (save-excursion
@@ -450,7 +450,7 @@ Should be used inside of a 'save-excursion'."
     (delete-overlay an-over) (delete-overlay in-over)))
 
 (defun evil-tex-toggle-env ()
-  "Toggle enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
   (let ((an-over (make-overlay (car (evil-tex-an-env)) (cadr (evil-tex-an-env))))
         (in-over (make-overlay (car (evil-tex-inner-env)) (cadr (evil-tex-inner-env)))))
     (save-excursion
@@ -464,7 +464,19 @@ Should be used inside of a 'save-excursion'."
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
-;;(defun evil-tex-toggle-math ())
+(defun evil-tex-toggle-math ()
+  "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
+  (let ((an-over (make-overlay (car (evil-tex-a-math)) (cadr (evil-tex-a-math))))
+        (in-over (make-overlay (car (evil-tex-inner-math)) (cadr (evil-tex-inner-math)))))
+    (save-excursion
+      (goto-char (overlay-start an-over))
+      (cond
+       ((looking-at (regexp-quote "\\("))
+        (evil-tex--regexp-overlay-replace "\\[" "\\]" an-over in-over))
+       ((looking-at (regexp-quote "\\["))
+        (evil-tex--regexp-overlay-replace "\\(" "\\)" an-over in-over))))
+    (delete-overlay an-over) (delete-overlay in-over)))
+
 
 
 

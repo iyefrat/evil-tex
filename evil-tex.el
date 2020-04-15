@@ -397,7 +397,7 @@ See `evil-surround-pairs-alist' for the format.")
           (cond
            ((eq key2 ?d) (evil-tex-toggle-delim))
            ((eq key2 ?e) (evil-tex-toggle-env))
-           ((eq key2 ?m) (evil-tex-toggle-math)) ; TODO toggle surrounding math
+           ((eq key2 ?m) (evil-tex-toggle-math))
            ((eq key2 ?c) ()) ; TODO toggle surrounding command \foo <=> \foo*
            ((eq key2 ?S) ()) ; TODO toggle surrounding section \section* <=> \section
            ))
