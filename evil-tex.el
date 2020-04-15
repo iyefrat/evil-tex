@@ -403,9 +403,13 @@ See `evil-surround-pairs-alist' for the format.")
   (interactive "<c><C>")
   (let ((count (or count 1)))
     (if (eq key ?s)
-        (progn
-          (evil-snipe-t 1 (list ?i))
-          )
+        (let ((key2 (read-char)))
+          (cond
+           ((eq key2 ?d) (evil-tex-toggle-delim2))
+           ((eq key2 ?e) ());;TODO toggle surrounding enviornment
+           ((eq key2 ?m) ());;TODO toggle surrounding math
+           ((eq key2 ?f) ());;TODO toggle surrounding fraction?
+           ))
       (setq evil-snipe--last-direction t)
       (evil-snipe-t count (list key)))))
 
