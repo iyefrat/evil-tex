@@ -298,8 +298,8 @@ with envs would force separate lines for \\begin, inner text, and
         (backward-char))
       (cons (point) end))))
 
-(defvar evil-tex--section-regex (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
-  "Regex that matches for LaTeX section macros.")
+(defvar evil-tex--section-regexp (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
+  "Regexp that matches for LaTeX section macros.")
 
 (defun evil-tex-section-beginning-begend ()
   "Return (start . end) of the \\(sub)*section{foo} of current section.
@@ -310,8 +310,8 @@ with envs would force separate lines for \\begin, inner text, and
     (save-excursion
       ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
       (search-backward "\\" (line-beginning-position) t)
-      (unless (looking-at evil-tex--section-regex)
-        (re-search-backward evil-tex--section-regex))
+      (unless (looking-at evil-tex--section-regexp)
+        (re-search-backward evil-tex--section-regexp))
       ;; We are at backslash
       (setq beg (point))
       (skip-chars-forward "^{")        ; goto opening brace
@@ -329,7 +329,7 @@ NOT:\\end{equation}
     ^             ^"
     (save-excursion
       ;; LaTeX-find-matching-end doesn't work if on the \begin itself
-      (re-search-forward (concat evil-tex--section-regex "\\|\\\\end{document}"))
+      (re-search-forward (concat evil-tex--section-regexp "\\|\\\\end{document}"))
       (move-beginning-of-line 1)
       (cons (point) (point))))
 
@@ -414,7 +414,7 @@ a_{n+1}
         (forward-char)
         (cons (point) (point)))))))
 
-(defun evil-tex--regex-overlay-replace (deliml delimr an-over in-over)
+(defun evil-tex--regexp-overlay-replace (deliml delimr an-over in-over)
   "Replace surround area defined by AN-OVER and IN-OVER with new delimiters DELIML and DELIMR.
 Should be used inside of a 'save-excursion'."
   (progn (delete-region (overlay-start an-over) (overlay-start in-over))
@@ -432,21 +432,21 @@ Should be used inside of a 'save-excursion'."
       (goto-char (overlay-start an-over))
       (cond
        ((looking-at (regexp-quote "("))
-        (evil-tex--regex-overlay-replace "\\left(" "\\right)" an-over in-over))
+        (evil-tex--regexp-overlay-replace "\\left(" "\\right)" an-over in-over))
        ((looking-at (regexp-quote "\\left("))
-        (evil-tex--regex-overlay-replace "(" ")" an-over in-over))
+        (evil-tex--regexp-overlay-replace "(" ")" an-over in-over))
        ((looking-at (regexp-quote "["))
-        (evil-tex--regex-overlay-replace "\\left[" "\\right]" an-over in-over))
+        (evil-tex--regexp-overlay-replace "\\left[" "\\right]" an-over in-over))
        ((looking-at (regexp-quote "\\left["))
-        (evil-tex--regex-overlay-replace "[" "]" an-over in-over))
+        (evil-tex--regexp-overlay-replace "[" "]" an-over in-over))
        ((looking-at (regexp-quote "\\{"))
-        (evil-tex--regex-overlay-replace "\\left\\{" "\\right\\}" an-over in-over))
+        (evil-tex--regexp-overlay-replace "\\left\\{" "\\right\\}" an-over in-over))
        ((looking-at (regexp-quote "\\left\\{"))
-        (evil-tex--regex-overlay-replace "\\{" "\\}" an-over in-over))
+        (evil-tex--regexp-overlay-replace "\\{" "\\}" an-over in-over))
        ((looking-at (regexp-quote "\\langle"))
-        (evil-tex--regex-overlay-replace "\\left\\langle" "\\right\\rangle" an-over in-over))
+        (evil-tex--regexp-overlay-replace "\\left\\langle" "\\right\\rangle" an-over in-over))
        ((looking-at (regexp-quote "\\left\\langle"))
-        (evil-tex--regex-overlay-replace "\\langle" "\\rangle" an-over in-over))))
+        (evil-tex--regexp-overlay-replace "\\langle" "\\rangle" an-over in-over))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
 (defun evil-tex-toggle-env ()
