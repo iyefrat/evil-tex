@@ -82,9 +82,6 @@ The full text object definitions are as follows:
 #+END_SRC LaTeX
 
 ** Nontrivial behaviours:
-- The subscript and superscript text objects are found by searching backwards,
-  unless you are already on e.g. =^=. For example, =a^b efg |c^d= -> da^ ->
-   =a^| efg c^d=.
 - TODO As illustrated, the =S= text object treets the begining of all
   =\(sub)*section='s equally. However, If you want to manipulate a section with all
   of it's included subsections, you can do this performing the operations while
