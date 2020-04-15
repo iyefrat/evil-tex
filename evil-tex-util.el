@@ -401,30 +401,47 @@ Should be used inside of a 'save-excursion'."
          (delete-region (overlay-end in-over) (overlay-end an-over))
          (goto-char (overlay-end in-over))
          (insert delimr)))
+
 (defun evil-tex-toggle-delim ()
-  "Toggle delimiters, but with better practices."
+  "Toggle delimiters between e.g. (foo) and \\left(foo\\right) ."
   (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
         (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
-  (save-excursion
-    (goto-char (overlay-start an-over))
-    (cond
-     ((looking-at (regexp-quote "("))
-      (evil-tex--regex-overlay-replace "\\left(" "\\right)" an-over in-over))
-     ((looking-at (regexp-quote "\\left("))
-      (evil-tex--regex-overlay-replace "(" ")" an-over in-over))
-     ((looking-at (regexp-quote "["))
-      (evil-tex--regex-overlay-replace "\\left[" "\\right]" an-over in-over))
-     ((looking-at (regexp-quote "\\left["))
-      (evil-tex--regex-overlay-replace "[" "]" an-over in-over))
-     ((looking-at (regexp-quote "\\{"))
-      (evil-tex--regex-overlay-replace "\\left\\{" "\\right\\}" an-over in-over))
-     ((looking-at (regexp-quote "\\left\\{"))
-      (evil-tex--regex-overlay-replace "\\{" "\\}" an-over in-over))
-     ((looking-at (regexp-quote "\\langle"))
-      (evil-tex--regex-overlay-replace "\\left\\langle" "\\right\\rangle" an-over in-over))
-     ((looking-at (regexp-quote "\\left\\langle"))
-      (evil-tex--regex-overlay-replace "\\langle" "\\rangle" an-over in-over))))
-  (delete-overlay an-over) (delete-overlay in-over)))
+    (save-excursion
+      (goto-char (overlay-start an-over))
+      (cond
+       ((looking-at (regexp-quote "("))
+        (evil-tex--regex-overlay-replace "\\left(" "\\right)" an-over in-over))
+       ((looking-at (regexp-quote "\\left("))
+        (evil-tex--regex-overlay-replace "(" ")" an-over in-over))
+       ((looking-at (regexp-quote "["))
+        (evil-tex--regex-overlay-replace "\\left[" "\\right]" an-over in-over))
+       ((looking-at (regexp-quote "\\left["))
+        (evil-tex--regex-overlay-replace "[" "]" an-over in-over))
+       ((looking-at (regexp-quote "\\{"))
+        (evil-tex--regex-overlay-replace "\\left\\{" "\\right\\}" an-over in-over))
+       ((looking-at (regexp-quote "\\left\\{"))
+        (evil-tex--regex-overlay-replace "\\{" "\\}" an-over in-over))
+       ((looking-at (regexp-quote "\\langle"))
+        (evil-tex--regex-overlay-replace "\\left\\langle" "\\right\\rangle" an-over in-over))
+       ((looking-at (regexp-quote "\\left\\langle"))
+        (evil-tex--regex-overlay-replace "\\langle" "\\rangle" an-over in-over))))
+    (delete-overlay an-over) (delete-overlay in-over)))
+
+(defun evil-tex-toggle-env ()
+  "Toggle enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  (let ((an-over (make-overlay (car (evil-tex-an-env)) (cadr (evil-tex-an-env))))
+        (in-over (make-overlay (car (evil-tex-inner-env)) (cadr (evil-tex-inner-env)))))
+    (save-excursion
+      (goto-char (overlay-start an-over))
+      (skip-chars-forward "^}")
+      (backward-char 1)
+      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))
+      (goto-char (overlay-end in-over))
+      (skip-chars-forward "^}")
+      (backward-char 1)
+      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
+    (delete-overlay an-over) (delete-overlay in-over)))
+
 
 (provide 'evil-tex-util)
 ;;; evil-tex-util.el ends here

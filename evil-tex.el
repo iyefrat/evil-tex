@@ -396,12 +396,12 @@ See `evil-surround-pairs-alist' for the format.")
         (let ((key2 (read-char)))
           (cond
            ((eq key2 ?d) (evil-tex-toggle-delim))
-           ((eq key2 ?e) ());; TODO toggle surrounding enviornment
-           ((eq key2 ?m) ());; TODO toggle surrounding math
-           ((eq key2 ?f) ());; TODO toggle surrounding fraction?
+           ((eq key2 ?e) (evil-tex-toggle-env))
+           ((eq key2 ?m) ()) ; TODO toggle surrounding math
+           ((eq key2 ?f) ()) ; TODO toggle surrounding fraction?
            ))
       (setq evil-snipe--last-direction t)
-      (evil-snipe-t count (list key)))));; TODO add support for when you don't have snipe
+      (evil-snipe-t count (list key))))) ; TODO add support for when you don't have snipe
 
 (define-key evil-normal-state-map "t" 'toggle-or-snipe)
 
@@ -410,7 +410,7 @@ See `evil-surround-pairs-alist' for the format.")
   "Minor mode for latex-specific text objects in evil.
 
 Installs the following additional text objects:
-  \\[evil-tex-a-math] latex math: \\\\[ \\\\], \\( \\)
+
   \\[evil-tex-a-dollar] TeX math: $ .. $
   \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
   \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
