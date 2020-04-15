@@ -298,6 +298,9 @@ with envs would force separate lines for \\begin, inner text, and
         (backward-char))
       (cons (point) end))))
 
+(defvar evil-tex--section-regex (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
+  "Regex that matches for LaTeX section macros.")
+
 (defun evil-tex-section-beginning-begend ()
   "Return (start . end) of the \\(sub)*section{foo} of current section.
 
@@ -307,8 +310,8 @@ with envs would force separate lines for \\begin, inner text, and
     (save-excursion
       ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
       (search-backward "\\" (line-beginning-position) t)
-      (unless (looking-at "\\\\\\(sub\\)*section")
-        (re-search-backward "\\\\\\(sub\\)*section"))
+      (unless (looking-at evil-tex--section-regex)
+        (re-search-backward evil-tex--section-regex))
       ;; We are at backslash
       (setq beg (point))
       (skip-chars-forward "^{")        ; goto opening brace
@@ -322,17 +325,18 @@ with envs would force separate lines for \\begin, inner text, and
   "Return (start . end) of the end of the current section.
 defined to be TODO.
 
-\\end{equation}
-^             ^"
+NOT:\\end{equation}
+    ^             ^"
     (save-excursion
       ;; LaTeX-find-matching-end doesn't work if on the \begin itself
-      (re-search-forward "\\\\\\(sub\\)*section\\|\\\\end{document}")
+      (re-search-forward (concat evil-tex--section-regex "\\|\\\\end{document}"))
       (move-beginning-of-line 1)
       (cons (point) (point))))
 
 (defun evil-tex--select-section ()
-  "TODO A better section selecting function."
-
+  "A better section selecting function."
+;; TODO make section txtobj that when selected from the command includes subsections,
+;; includes \section*'s, and \chapter etc.
   )
 
 (defun evil-tex--goto-script-prefix (subsup)
@@ -459,6 +463,9 @@ Should be used inside of a 'save-excursion'."
       (backward-char 1)
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
     (delete-overlay an-over) (delete-overlay in-over)))
+
+;;(defun evil-tex-toggle-math ())
+
 
 
 (provide 'evil-tex-util)

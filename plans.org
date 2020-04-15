@@ -1,7 +1,7 @@
 #+TITLE: Plans
 
 * Bugfixes
-** TODO when doint =csc= on say =\ep|silon=, and entering =c\mu=, it surrounds the command in =\mu= rather than changing it
+** Whe doing =daS= on the last =\section{}= before =\end{document}=, the result is =\\end{document}= for some reason
 * Features
 ** Text Objects
 For environments, commands/macros, inline & display math
@@ -42,7 +42,7 @@ fully type out the thing.
 ** TODO Steal some more stuff from vimtex
 *** DONE section text object iS aS
 *** TODO add ]] etc motions, see evil-forward-section etc
-*** TODO maybeeeeee still do the toggle?
+*** DONE maybeeeeee still do the toggle?
 ** TODO Misc
 *** Add beamer or other envs to the env keymap
 *** Sub/superscript text objects
