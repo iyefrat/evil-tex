@@ -464,10 +464,10 @@ until one of them returns non-nil.")
                                         count key))))
 
 (when evil-tex-toggle-override-t
-  (evil-define-key 'normal evil-tex-mode-map "t" 'evil-tex--toggle-override-t))
+  (evil-define-key 'normal evil-tex-mode-map "t" 'evil-tex-t))
 
 (when evil-tex-toggle-override-q
-  (evil-define-key 'normal evil-tex-mode-map "q" 'evil-tex--toggle-override-q))
+  (evil-define-key 'normal evil-tex-mode-map "q" 'evil-tex-q))
 
 
 ;;;###autoload
