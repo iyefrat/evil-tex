@@ -38,13 +38,13 @@ fully type out the thing.
 - Aliases would be *customizable*
 - Have a *Menu for an overview* of the aliases
 ** DONE CDLaTeX-tab-like movement (implemented already)
-** TODO Steal some more stuff from vimtex
+** Steal some more stuff from vimtex
 *** DONE section text object iS aS
 *** TODO add ]] etc motions, see evil-forward-section etc
 *** DONE maybeeeeee still do the toggle?
-** TODO Misc
-*** Add beamer or other envs to the env keymap
-*** Sub/superscript text objects
+** DONE Misc
+*** DONE Add beamer or other envs to the env keymap
+*** DONE Sub/superscript text objects
 change inside/around sub/superscript =ci^ ci_= which would jump to the closest
   sub/superscript
   - Would not work with surround-stuff, only =c/d= commands. Just thought it
