@@ -10,7 +10,6 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 - [[#overview][Overview]]
   - [[#text-objects][Text Objects]]
   - [[#toggling][Toggling]]
-  - [[#nontrivial-behaviours][Nontrivial behaviours:]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
   - [[#options-to-enable-and-disable][Options to enable and disable]]
@@ -99,15 +98,6 @@ who don't like the letter =s=, we also provide the ability to map the toggles to
 | qte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= and =\begin{equation*}= |
 | qtm | math         | toggle between inline and display math, i.e. =\(foo\)= and =\[foo\]=        |
 | qtS | section      | toggle section text object asterisk, e.g. =\chapter{}= and =\chapter*{}=    |
-** Nontrivial behaviours:
-- TODO As illustrated, the =S= text object treets the begining of all
-  =\(sub)*section='s equally. However, If you want to manipulate a section with all
-  of it's included subsections, you can do this performing the operations while
-  the cursor is on the section command itself, e.g. =\section{f|oo}=
-- By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
-  selected as part of the delimiter. This way, when doing =cie= you're placed on a
-  separate line, and surrounding with envs would force separate lines for ~\begin~,
-  inner text, and ~\end~.
 
 * Configuration
 ** Binding new envs/accents to the keymaps
@@ -126,12 +116,18 @@ To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
 Same for ~evil-tex-user-cdlatex-accents-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
 ** Options to enable and disable
-- If you don't want the  ~\begin{...}~ newline behaviour discribed above,
+ - By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
+  selected as part of the delimiter. This way, when doing =cie= you're placed on a
+  separate line, and surrounding with envs would force separate lines for ~\begin~,
+  inner text, and ~\end~.
+
+  If you don't want the  ~\begin{...}~ newline behaviour discribed above,
   set ~evil-tex-select-newlines-with-envs~ to ~nil~.
 - The toggle bindings are set by default to =qt*=. To turn this off and regain
   the invaluable =qt= macro binding, set ~evil-tex-toggle-override-q~ to ~nil~.
 - In order to map the toggle bindings to =ts*=, set ~evil-tex-toggle-override-t~
-  to ~t~.
+  to ~t~. This will overide the standard =t= motion, and will rob you of the
+  ability to move to one character before =s=.
 
 *Make sure to set these variables before evil-TeX is loaded!*
 
