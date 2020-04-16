@@ -403,7 +403,6 @@ See `evil-surround-pairs-alist' for the format.")
                (mapcar #'car evil-tex-surround-delimiters)
                evil-embrace-evil-surround-keys)))
 
-;; working code courtesy of @hlissner
 (defvar evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
 overrides normal 't' functionality for `s' only.
@@ -414,41 +413,61 @@ Needs to be defined before loading evil-tex.")
 overrides normal `q' functionality for 't' only.
 Needs to be defined before loading evil-tex.")
 
+(defvar evil-tex-t-functions
+  (list (defun evil-tex-try-evil-snipe (count key)
+          (when (bound-and-true-p evil-snipe-mode)
+            (setq evil-snipe--last-direction t)
+            (evil-snipe-t count (list key))
+            t)
+          #'evil-find-char-to))
+  "List of functions that should run on 't' key by default.
 
-(evil-define-command evil-tex--toggle-override-t (count key)
+The functions are called one by one, with arguments (count key),
+until one of them returns non-nil.")
+
+;; working code courtesy of @hlissner
+(evil-define-command evil-tex-t (count key)
+  "If KEY is s, toggle surronding. otherwise, try functions from
+`evil-tex-t-functions' as fallback from surround toggling."
   (interactive "<c><C>")
   (let ((count (or count 1)))
     (if (eq key ?s)
-        (let ((key2 (read-char)))
-          (cond
-           ((eq key2 ?d) (evil-tex-toggle-delim))
-           ((eq key2 ?e) (evil-tex-toggle-env))
-           ((eq key2 ?m) (evil-tex-toggle-math))
-           ((eq key2 ?c) (evil-tex-toggle-command))
-           ((eq key2 ?S) (evil-tex-toggle-section))))
-      (if (bound-and-true-p evil-snipe-mode)
-          (progn (setq evil-snipe--last-direction t)
-                 ((evil-snipe-t count (list key))))
-        (evil-find-char-to count key)))))
+        (pcase (read-char)
+          (?d (evil-tex-toggle-delim))
+          (?e (evil-tex-toggle-env))
+          (?m (evil-tex-toggle-math))
+          (?c (evil-tex-toggle-command))
+          (?S (evil-tex-toggle-section)))
+      (run-hook-with-args-until-success 'evil-tex-t-functions
+                                        count key))))
 
-(evil-define-command evil-tex--toggle-override-q (count key)
+(defvar evil-tex-q-functions
+  (list (lambda (key _count) (evil-record-macro key)))
+  "List of functions that should run on 'q' key by default.
+
+The functions are called one by one, with arguments (count key),
+until one of them returns non-nil.")
+
+(evil-define-command evil-tex-q (count key)
+  "If KEY is s, toggle surronding. otherwise, try functions from
+`evil-tex-q-functions' as fallback from surround toggling."
   (interactive "<c><C>")
   (let ((count (or count 1)))
     (if (eq key ?t)
-        (let ((key2 (read-char)))
-          (cond
-           ((eq key2 ?d) (evil-tex-toggle-delim))
-           ((eq key2 ?e) (evil-tex-toggle-env))
-           ((eq key2 ?m) (evil-tex-toggle-math))
-           ((eq key2 ?c) (evil-tex-toggle-command))
-           ((eq key2 ?S) (evil-tex-toggle-section))))
-      (evil-record-macro key))))
+        (pcase (read-char)
+          (?d (evil-tex-toggle-delim))
+          (?e (evil-tex-toggle-env))
+          (?m (evil-tex-toggle-math))
+          (?c (evil-tex-toggle-command))
+          (?S (evil-tex-toggle-section)))
+      (run-hook-with-args-until-success 'evil-tex-q-functions
+                                        count key))))
 
 (when evil-tex-toggle-override-t
-  (define-key evil-normal-state-map "t" 'evil-tex--toggle-override-t))
+  (evil-define-key 'normal evil-tex-mode-map "t" 'evil-tex--toggle-override-t))
 
 (when evil-tex-toggle-override-q
-  (define-key evil-normal-state-map "q" 'evil-tex--toggle-override-q))
+  (evil-define-key 'normal evil-tex-mode-map "q" 'evil-tex--toggle-override-q))
 
 
 ;;;###autoload

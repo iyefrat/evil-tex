@@ -91,7 +91,8 @@ distinguish between named and unnamed sections.
 ** Toggling
 There are a few operations one might want to do frequently, but not want to
 press many keys for. To this end we provide a few toggles, bound by default to
-=qt*= (for =que toggle=), as you have 25 other macros to choose from.
+=qt*= (for /"que toggle"/), as you have 25 other macros to choose from.
+
 For vimtex users, or people who don't like the letter =s=, we also provide the
 ability  to map the toggles to =ts*= instead, e.g. instead of =qtd= toggling
 delimiters, =tsd= will. See [[#configuration][configuration]]. the provided toggles are:
