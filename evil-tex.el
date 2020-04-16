@@ -389,7 +389,7 @@ See `evil-surround-pairs-alist' for the format.")
 ;evil-find-char-to
 
 ;; working code courtesy of mr. doom.
-(evil-define-command toggle-or-snipe (count key)
+(evil-define-command evil-tex--toggle-overide-t (count key)
   (interactive "<c><C>")
   (let ((count (or count 1)))
     (if (eq key ?s)
@@ -405,7 +405,7 @@ See `evil-surround-pairs-alist' for the format.")
                   ((evil-snipe-t count (list key))))
             (evil-find-char-to count key)))))
 
-(define-key evil-normal-state-map "t" 'toggle-or-snipe)
+(define-key evil-normal-state-map "t" 'evil-tex--toggle-overide-t)
 
 ;;;###autoload
 (define-minor-mode evil-tex-mode
@@ -425,7 +425,9 @@ TODO F1X TH1S"
     (eval-after-load 'evil-surround
       #'evil-tex-set-up-surround)
     (eval-after-load 'evil-embrace
-      #'evil-tex-set-up-embrace)))
+      #'evil-tex-set-up-embrace)
+    (eval-after-load 'evil-snipe
+      #'evil-tex-set-up-snipe)))
 
 (provide 'evil-tex)
 ;;; evil-tex ends here
