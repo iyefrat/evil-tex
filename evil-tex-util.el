@@ -299,8 +299,10 @@ with envs would force separate lines for \\begin, inner text, and
         (backward-char))
       (cons (point) end))))
 
-(defvar evil-tex--section-regexp (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
+(defvar evil-tex--section-regexp "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
   "Regexp that matches for LaTeX section macros.")
+
+;; (defvar evil-tex--section-regexp (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
 
 (defun evil-tex-section-beginning-begend ()
   "Return (start . end) of the \\(sub)*section{foo} of current section.
@@ -309,7 +311,7 @@ with envs would force separate lines for \\begin, inner text, and
 ^               ^"
   (let (beg)
     (save-excursion
-      ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
+      ;; back searching won't work if we are on the \section itself
       (search-backward "\\" (line-beginning-position) t)
       (unless (looking-at evil-tex--section-regexp)
         (re-search-backward evil-tex--section-regexp))
@@ -329,7 +331,12 @@ defined to be TODO.
 NOT:\\end{equation}
     ^             ^"
     (save-excursion
-      ;; LaTeX-find-matching-end doesn't work if on the \begin itself
+      ;; If we are on \section, we need to find the next one.
+      (search-backward "\\" (line-beginning-position) t)
+      (when (looking-at evil-tex--section-regexp)
+        (skip-chars-forward "^{")      ; goto opening brace
+        (forward-sexp))                ; goto closing brace
+      ;; now definitely inside section.
       (re-search-forward (concat evil-tex--section-regexp "\\|\\\\end{document}"))
       (move-beginning-of-line 1)
       (cons (point) (point))))
