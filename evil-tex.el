@@ -412,10 +412,10 @@ Needs to be defined before loading evil-tex.")
            ((eq key2 ?m) (evil-tex-toggle-math))
            ((eq key2 ?c) (evil-tex-toggle-command))
            ((eq key2 ?S) (evil-tex-toggle-section))))
-      (if (evil-snipe-mode)
-           (progn (setq evil-snipe--last-direction t)
-                  ((evil-snipe-t count (list key))))
-            (evil-find-char-to count key)))))
+      (if (bound-and-true-p evil-snipe-mode)
+          (progn (setq evil-snipe--last-direction t)
+                 ((evil-snipe-t count (list key))))
+        (evil-find-char-to count key)))))
 
 (evil-define-command evil-tex--toggle-override-q (count key)
   (interactive "<c><C>")
@@ -430,10 +430,10 @@ Needs to be defined before loading evil-tex.")
            ((eq key2 ?S) (evil-tex-toggle-section))))
       (evil-record-macro key))))
 
-(when (evil-tex-toggle-override-t)
+(when evil-tex-toggle-override-t
   (define-key evil-normal-state-map "t" 'evil-tex--toggle-override-t))
 
-(when (evil-tex-toggle-override-q)
+(when evil-tex-toggle-override-q
   (define-key evil-normal-state-map "q" 'evil-tex--toggle-override-q))
 
 
