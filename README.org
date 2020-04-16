@@ -8,6 +8,8 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 - [[#incomplete-showcase][Incomplete Showcase]]
 - [[#installation][Installation]]
 - [[#overview][Overview]]
+  - [[#text-objects][Text Objects]]
+  - [[#toggling][Toggling]]
   - [[#nontrivial-behaviours][Nontrivial behaviours:]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
@@ -36,6 +38,7 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
 * Overview
+** Text Objects
 This package defines an increasing number of text objects:
 | Key | Abbreviation    | Text Object Target                                                       | Surround behavior                          |
 |-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
@@ -45,7 +48,7 @@ This package defines an increasing number of text objects:
 | ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
 | ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]].               |                                            |
 | ~d~ | delimiters      | Math delimiters, ~(foo), \left(foo\right), [foo], \left[foo\right]~ etc. | Prompts you with [[#delimiter-keymap][the delim keymap]]          |
-| ~S~ | sections        | LaTeX (sub)sections,                                                     | TODO: change name of section?              |
+| ~S~ | sections        | LaTeX parts, chapters, ((sub)jjkksections, and (sub)paragraphs           | TODO: change name of section?              |
 | ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                                      | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
 | ~^~ | superscript     | ~x^a~ ~x^\alpha~ ~x^{...}~                                               | Surrounds with ~^{ }~                      |
 | ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surroudns with ~_{ }~                      |
@@ -81,6 +84,21 @@ The full text object definitions are as follows:
      └────┘       └─┘      └╵      ╵     └───┘      └──┘
 #+END_SRC LaTeX
 Note that the above rendering might bug out on mobile.
+** Toggling
+There are a few operations one might want to do frequently, but not want to
+press many keys for. To this end we provide a few toggles, bound by default to
+=qt*= (for =que toggle=), as you have 25 other macros to choose from. For vimtex users, or people
+who don't like the letter =s=, we also provide the ability to map the toggles to
+=ts*= instead, e.g. instead of =qtd= toggling delimiters, =tsd= will. See
+[[#configuration][configuration]]. the provided toggles are:
+
+| Key | Abbreviation | Behaviour                                                                   |
+|-----+--------------+-----------------------------------------------------------------------------|
+| qtc | command      | toggle asterisk on command, e.g. =\foo= and =\foo*=                         |
+| qtd | delimiter    | toggle between delimiter autosizing, e.g.  =(foo)= and =\left(foo\right)=   |
+| qte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= and =\begin{equation*}= |
+| qtm | math         | toggle between inline and display math, i.e. =\(foo\)= and =\[foo\]=        |
+| qtS | section      | toggle section text object asterisk, e.g. =\chapter{}= and =\chapter*{}=    |
 ** Nontrivial behaviours:
 - TODO As illustrated, the =S= text object treets the begining of all
   =\(sub)*section='s equally. However, If you want to manipulate a section with all
