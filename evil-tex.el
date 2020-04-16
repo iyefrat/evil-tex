@@ -489,9 +489,7 @@ TODO F1X TH1S"
     (eval-after-load 'evil-surround
       #'evil-tex-set-up-surround)
     (eval-after-load 'evil-embrace
-      #'evil-tex-set-up-embrace)
-    (eval-after-load 'evil-snipe
-      #'evil-tex-set-up-snipe)))
+      #'evil-tex-set-up-embrace)))
 
 (provide 'evil-tex)
 ;;; evil-tex ends here
