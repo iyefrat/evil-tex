@@ -154,7 +154,6 @@ by (lambda () (interactive) (SINGLE-STRINGS-FN env)).
 Return KEYMAP."
 
   (dolist (pair generator-alist)
-    (message "pair: %s" pair)
     (let* ((key (car pair))
            (env (cdr pair))
            name)
@@ -185,7 +184,6 @@ pressed isn't found."
     (setq key (string (read-char)))
     (when (functionp 'which-key--hide-popup)
       (which-key--hide-popup))
-    (message "read it! %s" key)
     (setq map-result (lookup-key keymap key))
     (cond
      ((or (not map-result) (numberp map-result))
@@ -373,13 +371,11 @@ returns ((beg-an . end-an) . (beg-inner . end-inner))"
               ((and (search-backward "\\" (line-beginning-position) t)
                     (looking-at "\\\\[A-Za-z@*]+")
                     (eq end (match-end 0)))
-               (message "macro! point %s" (point))
                (setq beg (match-beginning 0)))
               ;; a^
               (t
                (setq beg (1- (point)))))
            ;; require point to be inside the base bounds
-           (message "%s %s %s" beg orig-point end)
            (<= beg orig-point end))))
      ;; subsup before point
      (when (search-backward subsup (line-beginning-position 0))
@@ -416,7 +412,6 @@ a_{n+1}
         (cons (1- (point)) (point)))
        ;; a_\something
        ((looking-at "\\\\[a-zA-Z@*]+")
-        (message "macro")
         (goto-char (match-end 0))
         ;; skip macro arguments
         (while (looking-at "{\\|\\[")
