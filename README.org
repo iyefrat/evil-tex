@@ -80,7 +80,7 @@ The full text object definitions are as follows:
     a^{foo}    a^{foo}    a^b    a^b    a^\bar    a^\bar
      └────┘       └─┘      └╵      ╵     └───┘      └──┘
 #+END_SRC LaTeX
-
+Note that the above rendering might bug out on mobile.
 ** Nontrivial behaviours:
 - TODO As illustrated, the =S= text object treets the begining of all
   =\(sub)*section='s equally. However, If you want to manipulate a section with all

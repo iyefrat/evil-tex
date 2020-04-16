@@ -99,7 +99,7 @@ and if the text object is an -an- or an -inner-"
   "Return (beg . end) of best math match.
 
 ARGS passed to evil-select-(paren|quote).
-TODO update docstring"
+TODO update docstring to incude inner vs outer, etc."
   (cddr (evil-tex-max-key
          (list
           (evil-tex--delim-finder nil "(" ")" args)
@@ -343,8 +343,7 @@ NOT:\\end{equation}
 
 (defun evil-tex--select-section ()
   "A better section selecting function."
-;; TODO make section txtobj that when selected from the command includes subsections,
-;; includes \section*'s, and \chapter etc.
+;; TODO perform nontrivial behaviour.
 
 
   )
@@ -491,6 +490,17 @@ Should be used inside of a 'save-excursion'."
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
   (let ((an-over (make-overlay (car (evil-tex-a-macro)) (cadr (evil-tex-a-macro))))
         (in-over (make-overlay (car (evil-tex-inner-macro)) (cadr (evil-tex-inner-macro)))))
+    (save-excursion
+      (goto-char (overlay-start an-over))
+      (skip-chars-forward "^{")
+      (backward-char 1)
+      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
+    (delete-overlay an-over) (delete-overlay in-over)))
+
+(defun evil-tex-toggle-section ()
+  "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  (let ((an-over (make-overlay (car (evil-tex-a-section)) (cadr (evil-tex-a-section))))
+        (in-over (make-overlay (car (evil-tex-inner-section)) (cadr (evil-tex-inner-section)))))
     (save-excursion
       (goto-char (overlay-start an-over))
       (skip-chars-forward "^{")
