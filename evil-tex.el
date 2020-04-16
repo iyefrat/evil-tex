@@ -403,15 +403,7 @@ See `evil-surround-pairs-alist' for the format.")
                (mapcar #'car evil-tex-surround-delimiters)
                evil-embrace-evil-surround-keys)))
 
-;;;in which we add the toggle
-
-;; when we have snipe, we want to override:
-;evil-snipe-t
-; when we don't, we want to override:
-;evil-find-char-to
-
-;; working code courtesy of mr. doom.
-
+;; working code courtesy of @hlissner
 (defvar evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
 overrides normal 't' functionality for `s' only.

@@ -303,13 +303,13 @@ with envs would force separate lines for \\begin, inner text, and
 (defun evil-tex--section-regexp-higher (str)
   "For section name STR, return regex that only matche higher sections."
   (cond
-     ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
-     ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
-     ((string-match "\\\\section\\*?" str)   "\\\\\\(part\\|chapter\\|section\\)\\*?")
-     ((string-match "\\\\subsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsection\\|section\\)\\*?")
-     ((string-match "\\\\subsubsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
-     ((string-match "\\\\paragraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
-     ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
+   ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
+   ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
+   ((string-match "\\\\section\\*?" str)   "\\\\\\(part\\|chapter\\|section\\)\\*?")
+   ((string-match "\\\\subsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsection\\|section\\)\\*?")
+   ((string-match "\\\\subsubsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
+   ((string-match "\\\\paragraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
+   ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 ;; (defvar evil-tex--section-regexp (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
 
 (defun evil-tex--select-section ()
@@ -402,24 +402,23 @@ SUBSUP should be either \"^\" or \"_\"
 
 a_{n+1}
       ^"
-  (let ((qsubsup (regexp-quote subsup)))
-    (save-excursion
-      (evil-tex--goto-script-prefix subsup)
-      (cond
-       ;; a_{something}
-       ((looking-at "{")
-        (forward-sexp)
-        (cons (1- (point)) (point)))
-       ;; a_\something
-       ((looking-at "\\\\[a-zA-Z@*]+")
-        (goto-char (match-end 0))
-        ;; skip macro arguments
-        (while (looking-at "{\\|\\[")
-          (forward-sexp))
-        (cons (point) (point)))
-       (t ;; a_1 a_n
-        (forward-char)
-        (cons (point) (point)))))))
+  (save-excursion
+    (evil-tex--goto-script-prefix subsup)
+    (cond
+     ;; a_{something}
+     ((looking-at "{")
+      (forward-sexp)
+      (cons (1- (point)) (point)))
+     ;; a_\something
+     ((looking-at "\\\\[a-zA-Z@*]+")
+      (goto-char (match-end 0))
+      ;; skip macro arguments
+      (while (looking-at "{\\|\\[")
+        (forward-sexp))
+      (cons (point) (point)))
+     (t ;; a_1 a_n
+      (forward-char)
+      (cons (point) (point))))))
 
 (defun evil-tex--regexp-overlay-replace (deliml delimr an-over in-over)
   "Replace surround area defined by AN-OVER and IN-OVER with new delimiters DELIML and DELIMR.
