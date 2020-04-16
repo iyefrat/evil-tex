@@ -399,9 +399,11 @@ See `evil-surround-pairs-alist' for the format.")
            ((eq key2 ?e) (evil-tex-toggle-env))
            ((eq key2 ?m) (evil-tex-toggle-math))
            ((eq key2 ?c) (evil-tex-toggle-command))
-           ((eq key2 ?S) (evil-tex-toggle-surround))))
-      (setq evil-snipe--last-direction t)
-      (evil-snipe-t count (list key))))) ; TODO add support for when you don't have snipe
+           ((eq key2 ?S) (evil-tex-toggle-section))))
+      (if (evil-snipe-mode)
+           (progn (setq evil-snipe--last-direction t)
+                  ((evil-snipe-t count (list key))))
+            (evil-find-char-to count key)))))
 
 (define-key evil-normal-state-map "t" 'toggle-or-snipe)
 

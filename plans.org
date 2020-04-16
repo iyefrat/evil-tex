@@ -1,7 +1,6 @@
 #+TITLE: Plans
 
 * Bugfixes
-** TODO fix =S= textobject, the regexp is defined wrong. While you're at it do the other thing
 * Features
 ** Text Objects
 For environments, commands/macros, inline & display math

@@ -326,8 +326,8 @@ with envs would force separate lines for \\begin, inner text, and
 
 (defun evil-tex-section-end-begend ()
   "Return (start . end) of the end of the current section.
-defined to be TODO.
-
+defined to be.
+TODO write docstring of e-t-sec-end-be if better section doesn't pan out
 NOT:\\end{equation}
     ^             ^"
     (save-excursion
