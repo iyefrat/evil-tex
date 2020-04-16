@@ -23,6 +23,21 @@
 (require 'evil)
 (require 'evil-tex-util)
 
+(defun evil-tex-go-back-section (&optional arg)
+  "Go back to the closest part/section/subsection etc.
+If given, go ARG sections up."
+  (interactive)
+  (re-search-backward evil-tex--section-regexp nil t arg))
+
+(defun evil-tex-go-forward-section (&optional arg)
+  "Go forward to the closest part/section/subsection etc.
+If given, go ARG sections down."
+  (interactive)
+  (when (looking-at evil-tex--section-regexp)
+    (goto-char (match-end 0)))
+  (when (re-search-forward evil-tex--section-regexp nil arg)
+    (goto-char (match-beginning 0))))
+
 (defun evil-tex-brace-movement ()
   "Brace movement similar to TAB in cdlatex.
 
@@ -278,6 +293,13 @@ Don't modify this directly; use `evil-tex-user-delim-map-generator-alist'")
   "Your alist for modifications of `evil-tex-delim-map'.
 See `evil-tex-user-env-map-generator-alist' for format specification.")
 
+(defvar evil-tex-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (evil-define-key* '(motion normal) keymap
+      "[[" #'evil-tex-go-back-section
+      "]]" #'evil-tex-go-forward-section)
+    keymap)
+  "Keymap for `evil-tex-mode'.")
 
 (defvar evil-tex-env-map
   (evil-tex--populate-surround-kemap
@@ -448,6 +470,7 @@ Installs the following additional text objects:
   \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}
 TODO F1X TH1S"
   :init-value nil
+  :keymap evil-tex-mode-map
   (when evil-tex-mode
     (evil-normalize-keymaps)
     ;; (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
