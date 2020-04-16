@@ -391,13 +391,13 @@ See `evil-surround-pairs-alist' for the format.")
 ;; working code courtesy of mr. doom.
 
 (defvar evil-tex-toggle-override-t nil
-  "Set to t to bind evil-tex toggles to `ts*' keybindings.
-overrides normal `t' functionality for `s' only.
+  "Set to t to bind evil-tex toggles to 'ts*' keybindings.
+overrides normal 't' functionality for `s' only.
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-toggle-override-q t
-  "Set to t to bind evil-tex toggles to `qt*' keybindings.
-overrides normal `q' functionality for `t' only.
+  "Set to t to bind evil-tex toggles to 'qt*' keybindings.
+overrides normal `q' functionality for 't' only.
 Needs to be defined before loading evil-tex.")
 
 
