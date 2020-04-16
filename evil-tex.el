@@ -113,16 +113,15 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-a-section (count &optional beg end type)
   "Select a LaTeX section"
-  (let ((beg (evil-tex-section-beginning-begend))
-        (end (evil-tex-section-end-begend)))
-    (list (car beg) (cdr end))))
+  (let ((beg (nth 0 (evil-tex--select-section)))
+        (end (nth 1 (evil-tex--select-section))))
+    (list beg end)))
 
 (evil-define-text-object evil-tex-inner-section (count &optional beg end type)
   "Select a LaTeX section"
-  :extend-selection nil
-  (let ((beg (evil-tex-section-beginning-begend))
-        (end (evil-tex-section-end-begend)))
-    (list (cdr beg) (car end))))
+  (let ((beg (nth 2 (evil-tex--select-section)))
+        (end (nth 3 (evil-tex--select-section))))
+    (list beg end)))
 
 (evil-define-text-object evil-tex-a-subscript (count &optional beg end type)
   "Select a LaTeX subscript"
@@ -431,8 +430,11 @@ See README.org for more information.")
            ((eq key2 ?S) (evil-tex-toggle-section))))
       (evil-record-macro key))))
 
-(when (evil-tex-toggle-override-t) (define-key evil-normal-state-map "t" 'evil-tex--toggle-override-t))
-(when (evil-tex-toggle-override-q) (define-key evil-normal-state-map "q" 'evil-tex--toggle-override-q))
+(when (evil-tex-toggle-override-t)
+  (define-key evil-normal-state-map "t" 'evil-tex--toggle-override-t))
+
+(when (evil-tex-toggle-override-q)
+  (define-key evil-normal-state-map "q" 'evil-tex--toggle-override-q))
 
 
 ;;;###autoload

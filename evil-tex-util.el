@@ -302,51 +302,54 @@ with envs would force separate lines for \\begin, inner text, and
 (defvar evil-tex--section-regexp "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
   "Regexp that matches for LaTeX section macros.")
 
+(defun evil-tex--section-regexp-higher (str)
+  "For section name STR, return regex that only matche higher sections."
+  (cond
+     ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
+     ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
+     ((string-match "\\\\section\\*?" str)   "\\\\\\(part\\|chapter\\|section\\)\\*?")
+     ((string-match "\\\\subsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsection\\|section\\)\\*?")
+     ((string-match "\\\\subsubsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
+     ((string-match "\\\\paragraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
+     ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 ;; (defvar evil-tex--section-regexp (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
 
-(defun evil-tex-section-beginning-begend ()
-  "Return (start . end) of the \\(sub)*section{foo} of current section.
+(defun evil-tex--select-section ()
+  "Return begends for section text object.
+an variant defined from the first character of
+the \\section{} command, to the line above the next
+\\section{} command of equal or higher rank,
+e.g. \\chapter{}. Inner varaind starts after the
+end of the command, and also after an immidiately
+following newline if exists. treats \\section{} and
+\\section*{} the same.
+Return in format (list beg-an end-an beg-inner end-inner).
 
-\\section{foo}
-^               ^"
-  (let (beg)
+
+returns ((beg-an . end-an) . (beg-inner . end-inner))"
+  (let (beg-an end-an beg-inner end-inner what-section)
     (save-excursion
       ;; back searching won't work if we are on the \section itself
       (search-backward "\\" (line-beginning-position) t)
-      (unless (looking-at evil-tex--section-regexp)
-        (re-search-backward evil-tex--section-regexp))
+      (if (looking-at evil-tex--section-regexp)
+          (setq what-section (match-string 0))
+        (re-search-backward evil-tex--section-regexp)
+        (setq what-section (match-string 0)))
       ;; We are at backslash
-      (setq beg (point))
+      (print what-section)
+      (print (evil-tex--section-regexp-higher what-section))
+      (setq beg-an (point))
       (skip-chars-forward "^{")        ; goto opening brace
       (forward-sexp)                   ; goto closing brace
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
         (forward-line 1))
-      (cons beg (point)))))
-
-(defun evil-tex-section-end-begend ()
-  "Return (start . end) of the end of the current section.
-defined to be.
-TODO write docstring of e-t-sec-end-be if better section doesn't pan out
-NOT:\\end{equation}
-    ^             ^"
-    (save-excursion
-      ;; If we are on \section, we need to find the next one.
-      (search-backward "\\" (line-beginning-position) t)
-      (when (looking-at evil-tex--section-regexp)
-        (skip-chars-forward "^{")      ; goto opening brace
-        (forward-sexp))                ; goto closing brace
-      ;; now definitely inside section.
-      (re-search-forward (concat evil-tex--section-regexp "\\|\\\\end{document}"))
+      (setq beg-inner (point))
+      (re-search-forward (concat (evil-tex--section-regexp-higher what-section) "\\|\\\\end{document}"))
       (move-beginning-of-line 1)
-      (cons (point) (point))))
-
-(defun evil-tex--select-section ()
-  "A better section selecting function."
-;; TODO perform nontrivial behaviour.
-
-
-  )
+      (setq end-inner (point))
+      (setq end-an (point))
+      (list beg-an end-an beg-inner end-inner))))
 
 (defun evil-tex--goto-script-prefix (subsup)
   "Return goto end of the found SUBSUP prefix.
