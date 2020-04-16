@@ -48,7 +48,7 @@ This package defines an increasing number of text objects:
 | ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
 | ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]].               |                                            |
 | ~d~ | delimiters      | Math delimiters, ~(foo), \left(foo\right), [foo], \left[foo\right]~ etc. | Prompts you with [[#delimiter-keymap][the delim keymap]]          |
-| ~S~ | sections        | LaTeX parts, chapters, ((sub)jjkksections, and (sub)paragraphs           | TODO: change name of section?              |
+| ~S~ | sections        | LaTeX parts, chapters, ((sub)jjkksections, and (sub)paragraphs           |               |
 | ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                                      | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
 | ~^~ | superscript     | ~x^a~ ~x^\alpha~ ~x^{...}~                                               | Surrounds with ~^{ }~                      |
 | ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surroudns with ~_{ }~                      |
@@ -125,12 +125,16 @@ To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
 #+END_SRC
 Same for ~evil-tex-user-cdlatex-accents-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
-
-*Make sure to set these variables before evil-TeX is loaded!*
 ** Options to enable and disable
 - If you don't want the  ~\begin{...}~ newline behaviour discribed above,
   set ~evil-tex-select-newlines-with-envs~ to ~nil~.
-- TODO Toggling stuff after I get that working
+- The toggle bindings are set by default to =qt*=. To turn this off and regain
+  the invaluable =qt= macro binding, set ~evil-tex-toggle-override-q~ to ~nil~.
+- In order to map the toggle bindings to =ts*=, set ~evil-tex-toggle-override-t~
+  to ~t~.
+
+*Make sure to set these variables before evil-TeX is loaded!*
+
 * Appendix
 ** Environment keymap
 Giving a prefix argument would prompt for options.
