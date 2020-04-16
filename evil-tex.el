@@ -389,7 +389,19 @@ See `evil-surround-pairs-alist' for the format.")
 ;evil-find-char-to
 
 ;; working code courtesy of mr. doom.
-(evil-define-command evil-tex--toggle-overide-t (count key)
+
+(defvar evil-tex-toggle-override-t nil
+  "Set to t to bind toggling to =ts*=, overiding normal =t= functionality.
+Needs to be defined before loading evil-tex.
+See README.org for more information.")
+
+(defvar evil-tex-toggle-override-q t
+  "Set to q to bind toggling to =qt*=, overiding normal =q= functionality.
+Needs to be defined before loading evil-tex.
+See README.org for more information.")
+
+
+(evil-define-command evil-tex--toggle-override-t (count key)
   (interactive "<c><C>")
   (let ((count (or count 1)))
     (if (eq key ?s)
@@ -405,7 +417,22 @@ See `evil-surround-pairs-alist' for the format.")
                   ((evil-snipe-t count (list key))))
             (evil-find-char-to count key)))))
 
-(define-key evil-normal-state-map "t" 'evil-tex--toggle-overide-t)
+(evil-define-command evil-tex--toggle-override-q (count key)
+  (interactive "<c><C>")
+  (let ((count (or count 1)))
+    (if (eq key ?t)
+        (let ((key2 (read-char)))
+          (cond
+           ((eq key2 ?d) (evil-tex-toggle-delim))
+           ((eq key2 ?e) (evil-tex-toggle-env))
+           ((eq key2 ?m) (evil-tex-toggle-math))
+           ((eq key2 ?c) (evil-tex-toggle-command))
+           ((eq key2 ?S) (evil-tex-toggle-section))))
+      (evil-record-macro key))))
+
+(when (evil-tex-toggle-override-t) (define-key evil-normal-state-map "t" 'evil-tex--toggle-override-t))
+(when (evil-tex-toggle-override-q) (define-key evil-normal-state-map "q" 'evil-tex--toggle-override-q))
+
 
 ;;;###autoload
 (define-minor-mode evil-tex-mode
