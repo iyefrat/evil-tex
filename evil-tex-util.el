@@ -193,6 +193,19 @@ pressed isn't found."
      ((keymapp map-result)
       (evil-tex-read-with-keymap map-result)))))
 
+;; working code courtesy of @hlissner
+(defmacro evil-tex-dispatch-single-key (catch-key callback &optional fallbacks)
+  "Define a an evil command to execute CALLBACK when given CATCH-KEY.
+
+Otherwise try to call any of the functions in FALLBACKS (a
+symbol) until any of them succeeds (returns non-nil.)"
+  `(evil-define-command
+     ,(intern (concat "evil-tex-dispath-" (string catch-key))) (count key)
+     (interactive "<c><C>")
+     (if (eq key ,catch-key)
+         (funcall ,callback)
+       (run-hook-with-args-until-success ,fallbacks
+                                         count key))))
 
 ;; Stuff from evil-latex-textobjects
 

@@ -425,52 +425,39 @@ Needs to be defined before loading evil-tex.")
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
 
-;; working code courtesy of @hlissner
-(evil-define-command evil-tex-t (count key)
-  "If KEY is s, toggle surronding. otherwise, try functions from
-`evil-tex-t-functions' as fallback from surround toggling."
-  (interactive "<c><C>")
-  (let ((count (or count 1)))
-    (if (eq key ?s)
-        (save-excursion
-          (pcase (read-char)
-            (?d (evil-tex-toggle-delim))
-            (?e (evil-tex-toggle-env))
-            (?m (evil-tex-toggle-math))
-            (?c (evil-tex-toggle-command))
-            (?S (evil-tex-toggle-section))))
-      (run-hook-with-args-until-success 'evil-tex-t-functions
-                                        count key))))
-
 (defvar evil-tex-q-functions
-  (list (lambda (key _count) (evil-record-macro key)))
+  (list (lambda (_count key)
+          (evil-record-macro key)
+          t))
   "List of functions that should run on 'q' key by default.
 
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
 
-(evil-define-command evil-tex-q (count key)
-  "If KEY is s, toggle surronding. otherwise, try functions from
-`evil-tex-q-functions' as fallback from surround toggling."
-  (interactive "<c><C>")
-  (let ((count (or count 1)))
-    (if (eq key ?t)
-        (save-excursion
-          (pcase (read-char)
-            (?d (evil-tex-toggle-delim))
-            (?e (evil-tex-toggle-env))
-            (?m (evil-tex-toggle-math))
-            (?c (evil-tex-toggle-command))
-            (?S (evil-tex-toggle-section))))
-      (run-hook-with-args-until-success 'evil-tex-q-functions
-                                        count key))))
+(defvar evil-tex-toggle-delimiter-map
+  (let ((keymap (make-sparse-keymap)))
+    (define-key keymap "d" #'evil-tex-toggle-delim)
+    (define-key keymap "e" #'evil-tex-toggle-env)
+    (define-key keymap "m" #'evil-tex-toggle-math)
+    (define-key keymap "c" #'evil-tex-toggle-command)
+    (define-key keymap "S" #'evil-tex-toggle-section)
+    keymap)
+  "Keymap for delimiter surrounding.")
+
+(defun evil-tex-read-and-execute-toggle ()
+  "Prompt user with `evil-tex-toggle-delimiter-map' to toggle something."
+  (save-excursion
+    (evil-tex-read-with-keymap evil-tex-toggle-delimiter-map)))
 
 (when evil-tex-toggle-override-t
-  (evil-define-key 'normal evil-tex-mode-map "t" 'evil-tex-t))
+  (evil-define-key 'normal evil-tex-mode-map "t"
+    (evil-tex-dispatch-single-key ?s #'evil-tex-read-and-execute-toggle
+                                  'evil-tex-t-functions)))
 
 (when evil-tex-toggle-override-q
-  (evil-define-key 'normal evil-tex-mode-map "q" 'evil-tex-q))
-
+  (evil-define-key 'normal evil-tex-mode-map "q"
+    (evil-tex-dispatch-single-key ?t #'evil-tex-read-and-execute-toggle
+                                  'evil-tex-q-functions)))
 
 ;;;###autoload
 (define-minor-mode evil-tex-mode
