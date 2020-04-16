@@ -1,7 +1,7 @@
 #+TITLE: Plans
 
 * Bugfixes
-** Whe doing =daS= on the last =\section{}= before =\end{document}=, the result is =\\end{document}= for some reason
+** TODO fix =S= textobject, the regexp is defined wrong. While you're at it do the other thing
 * Features
 ** Text Objects
 For environments, commands/macros, inline & display math

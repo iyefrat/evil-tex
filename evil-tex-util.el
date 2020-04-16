@@ -98,7 +98,8 @@ and if the text object is an -an- or an -inner-"
 (defun evil-tex--select-delim (&rest args)
   "Return (beg . end) of best math match.
 
-ARGS passed to evil-select-(paren|quote)."
+ARGS passed to evil-select-(paren|quote).
+TODO update docstring"
   (cddr (evil-tex-max-key
          (list
           (evil-tex--delim-finder nil "(" ")" args)
@@ -337,6 +338,8 @@ NOT:\\end{equation}
   "A better section selecting function."
 ;; TODO make section txtobj that when selected from the command includes subsections,
 ;; includes \section*'s, and \chapter etc.
+
+
   )
 
 (defun evil-tex--goto-script-prefix (subsup)
