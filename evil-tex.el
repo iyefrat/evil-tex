@@ -397,9 +397,9 @@ See `evil-surround-pairs-alist' for the format.")
 overrides normal 't' functionality for `s' only.
 Needs to be defined before loading evil-tex.")
 
-(defvar evil-tex-toggle-override-q t
-  "Set to t to bind evil-tex toggles to 'qt*' keybindings.
-overrides normal `q' functionality for 't' only.
+(defvar evil-tex-toggle-override-m t
+  "Set to t to bind evil-tex toggles to 'mt*' keybindings.
+overrides normal `m' functionality for 't' only.
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-t-functions
@@ -414,11 +414,11 @@ Needs to be defined before loading evil-tex.")
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
 
-(defvar evil-tex-q-functions
+(defvar evil-tex-m-functions
   (list (lambda (_count key)
-          (evil-record-macro key)
+          (evil-set-marker key)
           t))
-  "List of functions that should run on 'q' key by default.
+  "List of functions that should run on 'm' key by default.
 
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
@@ -443,10 +443,10 @@ until one of them returns non-nil.")
     (evil-tex-dispatch-single-key ?s #'evil-tex-read-and-execute-toggle
                                   'evil-tex-t-functions)))
 
-(when evil-tex-toggle-override-q
-  (evil-define-key 'normal evil-tex-mode-map "q"
+(when evil-tex-toggle-override-m
+  (evil-define-key 'normal evil-tex-mode-map "m"
     (evil-tex-dispatch-single-key ?t #'evil-tex-read-and-execute-toggle
-                                  'evil-tex-q-functions)))
+                                  'evil-tex-m-functions)))
 
 ;;;###autoload
 (define-minor-mode evil-tex-mode

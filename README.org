@@ -96,19 +96,19 @@ distinguish between named and unnamed sections.
 ** Toggling
 There are a few operations one might want to do frequently, but not want to
 press many keys for. To this end we provide a few toggles, bound by default to
-=qt*= (for /"que toggle"/), as you have 25 other macros to choose from.
+=mt*= (for /"magnificent toggle"/), as you have 25 other marks to choose from.
 
 For vimtex users, or people who don't like the letter =s=, we also provide the
-ability  to map the toggles to =ts*= instead, e.g. instead of =qtd= toggling
+ability to map the toggles to =ts*= instead, e.g. instead of =mtd= toggling
 delimiters, =tsd= will. See [[#configuration][configuration]]. the provided toggles are:
 
 | Key | Abbreviation | Behaviour                                                                               |
 |-----+--------------+-----------------------------------------------------------------------------------------|
-| qtc | command      | toggle asterisk on command, e.g. =\foo= \Leftrightarrow =\foo*=                         |
-| qtd | delimiter    | toggle between delimiter autosizing, e.g.  =(foo)= \Leftrightarrow =\Left(foo\right)=   |
-| qte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= \Leftrightarrow =\begin{equation*}= |
-| qtm | math         | toggle between inline and display math, i.e. =\(foo\)= \Leftrightarrow =\[foo\]=        |
-| qtS | section      | toggle section text object asterisk, e.g. =\chapter{}= \Leftrightarrow =\chapter*{}=    |
+| mtc | command      | toggle asterisk on command, e.g. =\foo= \Leftrightarrow =\foo*=                         |
+| mtd | delimiter    | toggle between delimiter autosizing, e.g.  =(foo)= \Leftrightarrow =\Left(foo\right)=   |
+| mte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= \Leftrightarrow =\begin{equation*}= |
+| mtm | math         | toggle between inline and display math, i.e. =\(foo\)= \Leftrightarrow =\[foo\]=        |
+| mtS | section      | toggle section text object asterisk, e.g. =\chapter{}= \Leftrightarrow =\chapter*{}=    |
 
 * Configuration
 ** Binding new envs/accents to the keymaps
@@ -134,11 +134,11 @@ is documented under the variable ~evil-tex-user-env-map-generator-alist~
 
   If you don't want the  ~\begin{...}~ newline behaviour discribed above,
   set ~evil-tex-select-newlines-with-envs~ to ~nil~.
-- The toggle bindings are set by default to =qt*=. To turn this off and regain
-  the invaluable =qt= macro binding, set ~evil-tex-toggle-override-q~ to ~nil~.
+- The toggle bindings are set by default to =mt*=. To turn this off and regain
+  the invaluable =t= mark, set ~evil-tex-toggle-override-m~ to ~nil~.
 - In order to map the toggle bindings to =ts*=, set ~evil-tex-toggle-override-t~
   to ~t~. This will overide the standard =t= motion, and will rob you of the
-  ability to move to one character before =s=.
+  ability to move to one character before =s= (unless you are willing to do =fsh=).
 
 *Make sure to set these variables before evil-TeX is loaded!*
 
