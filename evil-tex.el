@@ -95,9 +95,8 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-a-macro (count &optional beg end type)
   "Select a TeX macro."
   :extend-selection nil
-  (let ((beg (evil-tex-macro-beginning-begend))
-        (end (evil-tex-macro-end-begend)))
-    (list (car beg) (cdr end))))
+  (list (car (evil-tex-macro-beginning-begend))
+        (cdr (evil-tex-macro-end-begend))))
 
 (evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
   "Select inner TeX macro, i.e the argument to the macro."
@@ -105,7 +104,7 @@ Example: (| symbolizes point)
   (let ((beg (evil-tex-macro-beginning-begend))
         (end (evil-tex-macro-end-begend)))
     (cond
-     ;; TODO is this needed/could be simplified
+     ;; TODO is this needed/could this be simplified
      ((= (cdr beg) (car end))          ; macro has no content
       (list (1+ (car beg))             ; return macro boundaries excluding \
             (cdr beg)))
@@ -113,54 +112,46 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment."
-  (let ((beg (evil-tex-env-beginning-begend))
-        (end (evil-tex-env-end-begend)))
-    (list (car beg) (cdr end))))
+  (list (car (evil-tex-env-beginning-begend))
+        (cdr (evil-tex-env-end-begend))))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select a LaTeX environment."
   :extend-selection nil
-  (let ((beg (evil-tex-env-beginning-begend))
-        (end (evil-tex-env-end-begend)))
-    (list (cdr beg) (car end))))
+  (list (cdr (evil-tex-env-beginning-begend))
+        (car (evil-tex-env-end-begend))))
 
 (evil-define-text-object evil-tex-a-section (count &optional beg end type)
   "Select a LaTeX section."
-  (let ((beg (nth 0 (evil-tex--select-section)))
-        (end (nth 1 (evil-tex--select-section))))
-    (list beg end)))
+  (list (nth 0 (evil-tex--select-section))
+        (nth 1 (evil-tex--select-section))))
 
 (evil-define-text-object evil-tex-inner-section (count &optional beg end type)
   "Select a LaTeX section."
-  (let ((beg (nth 2 (evil-tex--select-section)))
-        (end (nth 3 (evil-tex--select-section))))
-    (list beg end)))
+  (list (nth 2 (evil-tex--select-section))
+        (nth 3 (evil-tex--select-section))))
 
 (evil-define-text-object evil-tex-a-subscript (count &optional beg end type)
   "Select a LaTeX subscript."
-  (let ((beg (evil-tex-script-beginning-begend "_"))
-        (end (evil-tex-script-end-begend "_")))
-    (list (car beg) (cdr end))))
+  (list (car (evil-tex-script-beginning-begend "_"))
+        (cdr (evil-tex-script-end-begend "_"))))
 
 (evil-define-text-object evil-tex-inner-subscript (count &optional beg end type)
   "Select a LaTeX subscript."
   :extend-selection nil
-  (let ((beg (evil-tex-script-beginning-begend "_"))
-        (end (evil-tex-script-end-begend "_")))
-    (list (cdr beg) (car end))))
+  (list (cdr (evil-tex-script-beginning-begend "_"))
+        (car (evil-tex-script-end-begend "_"))))
 
 (evil-define-text-object evil-tex-a-superscript (count &optional beg end type)
   "Select a LaTeX superscript."
-  (let ((beg (evil-tex-script-beginning-begend "^"))
-        (end (evil-tex-script-end-begend "^")))
-    (list (car beg) (cdr end))))
+  (list (car (evil-tex-script-beginning-begend "^"))
+        (cdr (evil-tex-script-end-begend "^"))))
 
 (evil-define-text-object evil-tex-inner-superscript (count &optional beg end type)
   "Select a LaTeX superscript."
   :extend-selection nil
-  (let ((beg (evil-tex-script-beginning-begend "^"))
-        (end (evil-tex-script-end-begend "^")))
-    (list (cdr beg) (car end))))
+  (list (cdr (evil-tex-script-beginning-begend "^"))
+        (car (evil-tex-script-end-begend "^"))))
 
 
 ;; (defvar evil-tex-outer-map (make-sparse-keymap))
