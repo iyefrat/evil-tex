@@ -96,20 +96,19 @@ and if the text object is an -an- or an -inner-"
                         delim-pair-not-lr))))))
 
 (defun evil-tex--select-delim (&rest args)
-  "Return (beg . end) of best math match.
+  "Return (beg . end) of closes delimiter match.
 
-ARGS passed to evil-select-(paren|quote).
-TODO update docstring to incude inner vs outer, etc."
+ARGS passed to evil-select-paren, within evil-tex--delim-finder."
   (cddr (evil-tex-max-key
          (list (evil-tex--delim-finder nil "(" ")" args)
-               (evil-tex--delim-finder t "(" ")" args)
+               (evil-tex--delim-finder t "(" ")" args) ; when t finds \left(foo\right) instead
                (evil-tex--delim-finder nil "[" "]" args)
                (evil-tex--delim-finder t "[" "]" args)
                (evil-tex--delim-finder nil "\\{" "\\}" args)
                (evil-tex--delim-finder t "\\{" "\\}" args)
                (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
                (evil-tex--delim-finder t "\\langle" "\\rangle" args))
-         (lambda (arg) (when (consp arg) ; selection succeeded
+         (lambda (arg) (when (consp arg) ; check if selection succeeded
                          arg))
          #'evil-tex--delim-compare)))
 
