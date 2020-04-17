@@ -213,26 +213,28 @@ symbol) until any of them succeeds (returns non-nil.)"
 If no enclosing macro is found, return nil.
 For example for \\macro{foo|bar} it returns the start and end of \"\\macro{\""
   (let ((beg (TeX-find-macro-start)))
-    (when beg
-      (save-excursion
-        (goto-char beg)
-        (forward-char)                  ; backslash
-        (skip-chars-forward "A-Za-z@*") ; macro-name
-        (when (looking-at "{\\|\\[")
-          (forward-char))               ; opening brace
-        (cons beg (point))))))
+    (unless beg
+      (user-error "No surrounding macro found"))
+    (save-excursion
+      (goto-char beg)
+      (forward-char)                  ; backslash
+      (skip-chars-forward "A-Za-z@*") ; macro-name
+      (when (looking-at "{\\|\\[")
+        (forward-char))               ; opening brace
+      (cons beg (point)))))
 
 (defun evil-tex-macro-end-begend ()
   "Return (start . end) of the end of the enclosing macro.
 
 If no such macro can be found, return nil"
   (let ((end (TeX-find-macro-end)))
-    (when end
-      (save-excursion
-        (goto-char end)
-        (when (looking-back "}\\|\\]" (- (point) 2))
-          (backward-char))              ; closing brace
-        (cons (point) end)))))
+    (unless end
+      (user-error "No surrounding macro found"))
+    (save-excursion
+      (goto-char end)
+      (when (looking-back "}\\|\\]" (- (point) 2))
+        (backward-char))              ; closing brace
+      (cons (point) end))))
 
 ;; TODO Support visual selection
 ;; TODO Support count
@@ -390,7 +392,8 @@ returns ((beg-an . end-an) . (beg-inner . end-inner))"
            (<= beg orig-point end))))
      ;; subsup before point
      (when (search-backward subsup (line-beginning-position 0))
-       (setq subsup-end (match-end 0))))
+       (setq subsup-end (match-end 0)))
+     (user-error "No surrounding %s found" subsup))
     (goto-char subsup-end)))
 
 (defun evil-tex-script-beginning-begend (subsup)

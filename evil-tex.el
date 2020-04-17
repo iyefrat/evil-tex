@@ -97,9 +97,7 @@ Example: (| symbolizes point)
   :extend-selection nil
   (let ((beg (evil-tex-macro-beginning-begend))
         (end (evil-tex-macro-end-begend)))
-    (if (and beg end)
-        (list (car beg) (cdr end))
-      (error "No enclosing macro found"))))
+    (list (car beg) (cdr end))))
 
 (evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
   "Select inner TeX macro, i.e the argument to the macro."
@@ -107,8 +105,7 @@ Example: (| symbolizes point)
   (let ((beg (evil-tex-macro-beginning-begend))
         (end (evil-tex-macro-end-begend)))
     (cond
-     ((or (null beg) (null end))
-      (error "No enclosing macro found"))
+     ;; TODO is this needed/could be simplified
      ((= (cdr beg) (car end))          ; macro has no content
       (list (1+ (car beg))             ; return macro boundaries excluding \
             (cdr beg)))
