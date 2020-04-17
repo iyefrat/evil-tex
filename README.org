@@ -21,18 +21,18 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
 * Incomplete Showcase
 =|= marks point.
 
-=\ti|lde{h}= -> cic /(change inner command)/ -> =\tilde{|}=
+=\ti|lde{h}= \to cic /(change inner command)/ \to =\tilde{|}=
 
-=\tilde{h|}= -> cscc bar SPC /(change surrounding command to =bar=)/ -> =\bar{h}=
+=\tilde{h|}= \to cscc bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
 
-=\(\sum_{i=1}^{n} i^2|\)= -> cim /(change inner math)/ -> =\(|\)=
+=\(\sum_{i=1}^{n} i^2|\)= \to cim /(change inner math)/ \to =\(|\)=
 
-=\(\sum_{i=1}^{n} i^2|\)= -> csmM /(change surrounding math to display)/ -> =\[\sum_{i=1}^{n} i^2|\]=
+=\(\sum_{i=1}^{n} i^2|\)= \to qtm /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
 
-=\[a|^2\]= -> csmeA /(change surrounding math to environment =align*=)/ ->
+=\[a|^2\]= \to csmeA /(change surrounding math to environment =align*=)/ \to
 =\begin{align*}\n a^2 \n\end{align}=
 
-=(\mu|_\nu)= -> csddP /(change surrounding delimiter to =\left(=)/ -> =\left(\mu|_\nu\right)=
+=(\mu|_\nu)= \to csddP /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
 * Installation
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
@@ -97,13 +97,13 @@ For vimtex users, or people who don't like the letter =s=, we also provide the
 ability  to map the toggles to =ts*= instead, e.g. instead of =qtd= toggling
 delimiters, =tsd= will. See [[#configuration][configuration]]. the provided toggles are:
 
-| Key | Abbreviation | Behaviour                                                                   |
-|-----+--------------+-----------------------------------------------------------------------------|
-| qtc | command      | toggle asterisk on command, e.g. =\foo= and =\foo*=                         |
-| qtd | delimiter    | toggle between delimiter autosizing, e.g.  =(foo)= and =\left(foo\right)=   |
-| qte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= and =\begin{equation*}= |
-| qtm | math         | toggle between inline and display math, i.e. =\(foo\)= and =\[foo\]=        |
-| qtS | section      | toggle section text object asterisk, e.g. =\chapter{}= and =\chapter*{}=    |
+| Key | Abbreviation | Behaviour                                                                               |
+|-----+--------------+-----------------------------------------------------------------------------------------|
+| qtc | command      | toggle asterisk on command, e.g. =\foo= \Leftrightarrow =\foo*=                         |
+| qtd | delimiter    | toggle between delimiter autosizing, e.g.  =(foo)= \Leftrightarrow =\Left(foo\right)=   |
+| qte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= \Leftrightarrow =\begin{equation*}= |
+| qtm | math         | toggle between inline and display math, i.e. =\(foo\)= \Leftrightarrow =\[foo\]=        |
+| qtS | section      | toggle section text object asterisk, e.g. =\chapter{}= \Leftrightarrow =\chapter*{}=    |
 
 * Configuration
 ** Binding new envs/accents to the keymaps
@@ -207,9 +207,9 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | 2   | scriptstyle       | yes    |
 | 3   | scriptscriptstyle | yes    |
 ** Delimiter keymap
-| key | delimiter                      |
-|-----+--------------------------------|
-| b   | ~[foo]~                         |
+| key | delimiter                        |
+|-----+----------------------------------|
+| b   | ~[foo]~                          |
 | B   | ~\left[foo\right]~               |
 | c   | ~\{foo\}~                        |
 | C   | ~\left\{foo\right\}~             |
