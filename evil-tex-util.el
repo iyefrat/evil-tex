@@ -204,12 +204,12 @@ symbol) until any of them succeeds (returns non-nil.)"
        (run-hook-with-args-until-success ,fallbacks
                                          count key))))
 
-(defun evil-tex--select-macro ()
-  "Return macro text object boundries, and emptyness status.
-A macro is defined to be empty if all if it's inpus have no
+(defun evil-tex--select-command ()
+  "Return command (macro) text object boundries, and emptyness status.
+A command is defined to be empty if all if it's inpus have no
 characters (including whitespace).
 
-inner type text objects defined to be the entire macro sans \\ if empty,
+inner type text objects defined to be the entire command sans \\ if empty,
 and just the input portion if non empty.
 
 Return in format (list beg-an end-an beg-inner end-inner is-empty)"
@@ -217,7 +217,7 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
         (end-an (TeX-find-macro-end))
         beg-inner end-inner (is-empty nil))
     (unless beg-an
-      (user-error "No surrounding macro found"))
+      (user-error "No surrounding command found"))
     (save-excursion
       (goto-char beg-an)
       (unless (ignore-errors (re-search-forward "{.+}\\|\\[.+\\]" end-an))
@@ -287,7 +287,7 @@ with envs would force separate lines for \\begin, inner text, and
       (cons (point) end))))
 
 (defvar evil-tex--section-regexp "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
-  "Regexp that matches for LaTeX section macros.")
+  "Regexp that matches for LaTeX section commands.")
 
 (defun evil-tex--section-regexp-higher (str)
   "For section name STR, return regex that only matche higher sections."
@@ -354,7 +354,7 @@ returns ((beg-an . end-an) . (beg-inner . end-inner))"
               ((eq (char-before) ?})
                (backward-sexp)
                (setq beg (point)))
-              ;; \macro^
+              ;; \command^
               ((and (search-backward "\\" (line-beginning-position) t)
                     (looking-at "\\\\[A-Za-z@*]+")
                     (eq end (match-end 0)))
@@ -400,7 +400,7 @@ a_{n+1}
      ;; a_\something
      ((looking-at "\\\\[a-zA-Z@*]+")
       (goto-char (match-end 0))
-      ;; skip macro arguments
+      ;; skip command arguments
       (while (looking-at "{\\|\\[")
         (forward-sexp))
       (cons (point) (point)))
@@ -480,8 +480,8 @@ Should be used inside of a 'save-excursion'."
 
 (defun evil-tex-toggle-command ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
-  (let ((an-over (make-overlay (car (evil-tex-a-macro)) (cadr (evil-tex-a-macro))))
-        (in-over (make-overlay (car (evil-tex-inner-macro)) (cadr (evil-tex-inner-macro)))))
+  (let ((an-over (make-overlay (car (evil-tex-a-command)) (cadr (evil-tex-a-command))))
+        (in-over (make-overlay (car (evil-tex-inner-command)) (cadr (evil-tex-inner-command)))))
     (save-excursion
       (goto-char (overlay-start an-over))
       (skip-chars-forward "^{")

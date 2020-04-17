@@ -92,15 +92,15 @@ Example: (| symbolizes point)
   :extend-selection nil
   (evil-tex--select-delim beg end type count nil))
 
-(evil-define-text-object evil-tex-a-macro (count &optional beg end type)
+(evil-define-text-object evil-tex-a-command (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 0 (evil-tex--select-macro))
-        (nth 1 (evil-tex--select-macro))))
+  (list (nth 0 (evil-tex--select-command))
+        (nth 1 (evil-tex--select-command))))
 
-(evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
+(evil-define-text-object evil-tex-inner-command (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 2 (evil-tex--select-macro))
-        (nth 3 (evil-tex--select-macro))))
+  (list (nth 2 (evil-tex--select-command))
+        (nth 3 (evil-tex--select-command))))
 
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
@@ -329,7 +329,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
 (define-key evil-inner-text-objects-map "$" 'evil-tex-inner-dollar)
-(define-key evil-inner-text-objects-map "c" 'evil-tex-inner-macro)
+(define-key evil-inner-text-objects-map "c" 'evil-tex-inner-command)
 (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
 (define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
 (define-key evil-inner-text-objects-map "S" 'evil-tex-inner-section)
@@ -338,7 +338,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
 (define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar)
-(define-key evil-outer-text-objects-map "c" 'evil-tex-a-macro)
+(define-key evil-outer-text-objects-map "c" 'evil-tex-a-command)
 (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
 (define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)
 (define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
@@ -355,9 +355,9 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 ;;   "i" evil-tex-inner-map)
 
 (defun evil-tex-surround-command-prompt ()
-  "Ask the user for the macro they'd like to surround with."
+  "Ask the user for the command they'd like to surround with."
   (evil-tex-format-cdlatex-accent-for-surrounding
-   (read-from-minibuffer "macro: \\" nil minibuffer-local-ns-map)))
+   (read-from-minibuffer "command: \\" nil minibuffer-local-ns-map)))
 
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
@@ -448,7 +448,7 @@ until one of them returns non-nil.")
 Installs the following additional text objects:
 
   \\[evil-tex-a-dollar] TeX math: $ .. $
-  \\[evil-tex-a-macro] TeX command/macro: \\foo{..}
+  \\[evil-tex-a-command] TeX command/macro: \\foo{..}
   \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}
 TODO F1X TH1S L4ST"
   :init-value nil
