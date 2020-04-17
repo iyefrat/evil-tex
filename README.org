@@ -30,6 +30,10 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
 
 =\tilde{h|}= \to cscc bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
 
+=\dv|{}= \to cscc pdv SPC /(change surrounding command to =pdv=)/ \to =\pdv{}=
+
+=\eps|ilon= \to cscc mu SPC /(change surrounding command to =mu=)/ \to =\mu=
+
 =\(\sum_{i=1}^{n} i^2|\)= \to cim /(change inner math)/ \to =\(|\)=
 
 =\(\sum_{i=1}^{n} i^2|\)= \to qtm /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
@@ -61,8 +65,8 @@ The full text object definitions are as follows:
 
 #+BEGIN_SRC LaTeX
     \foobar{barbaz}     \foobar{barbaz}    \foobar     \foobar    \foobar{}     \foobar{}
-    └─────────────┘             └────┘    └──────┘      └────┘    └───────┘      └──────┘
-           ac                     ic         ac           ic         ac             ic
+    └─────────────┘             └────┘    └──────┘            ┆   └───────┘             ┆
+           ac                     ic         ac      ic (empty)      ac            ic (empty)
 
    ┌\begin{foobar}     \begin{foobar}
    │                  ┌
