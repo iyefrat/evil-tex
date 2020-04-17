@@ -104,10 +104,10 @@ Example: (| symbolizes point)
   (let ((beg (evil-tex-macro-beginning-begend))
         (end (evil-tex-macro-end-begend)))
     (cond
-     ;; TODO is this needed/could this be simplified
+     ;; TODO is this needed/could this be simplified, also bug!
      ((= (cdr beg) (car end))          ; macro has no content
       (list (1+ (car beg))             ; return macro boundaries excluding \
-            (cdr beg)))
+            (cdr beg)))                ; BUG for \alpha{} 'dic' returns \} instead of \/
      (t (list (cdr beg) (car end))))))
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)

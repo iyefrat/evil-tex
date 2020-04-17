@@ -17,11 +17,11 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
   - [[#options-to-enable-and-disable][Options to enable and disable]]
+- [[#acknowledgements][Acknowledgements]]
 - [[#appendix][Appendix]]
   - [[#environment-keymap][Environment keymap]]
   - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
   - [[#delimiter-keymap][Delimiter keymap]]
-- [[#acknowledgements][Acknowledgements]]
 
 * Incomplete Showcase
 =|= marks point.
@@ -60,9 +60,9 @@ This package defines an increasing number of text objects:
 The full text object definitions are as follows:
 
 #+BEGIN_SRC LaTeX
-    \foobar{barbaz}     \foobar{barbaz}
-    └─────────────┘             └────┘
-           ac                     ic
+    \foobar{barbaz}     \foobar{barbaz}    \foobar     \foobar    \foobar{}     \foobar{}
+    └─────────────┘             └────┘    └──────┘      └────┘    └───────┘      └──────┘
+           ac                     ic         ac           ic         ac             ic
 
    ┌\begin{foobar}     \begin{foobar}
    │                  ┌
@@ -141,6 +141,15 @@ is documented under the variable ~evil-tex-user-env-map-generator-alist~
   ability to move to one character before =s= (unless you are willing to do =fsh=).
 
 *Make sure to set these variables before evil-TeX is loaded!*
+
+* Acknowledgements
+
+We would like to thank [[https://github.com/lervag][@lervag]] for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
+which was the main thing we missed about vim. We would also like to thank
+[[https://github.com/hpdeifel/][@hpdeifel]] for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
+package. Lastly, we would like to thank [[i][@hlissner]] helping us with a
+particulary tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this
+plugin would probably not exist.
 
 * Appendix
 ** Environment keymap
@@ -223,11 +232,3 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | p   | ~(foo)~                          |
 | P   | ~\left(foo\right)~               |
 
-* Acknowledgements
-
-We would like to thank [[https://github.com/lervag][@lervag]] for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
-which was the main thing we missed about vim. We would also like to thank
-[[https://github.com/hpdeifel/][@hpdeifel]] for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
-package. Lastly, we would like to thank [[i][@hlissner]] helping us with a
-particulary tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this
-plugin would probably not exist.
