@@ -432,7 +432,10 @@ a_{n+1}
       (cons (point) (point))))))
 
 (defun evil-tex--regexp-overlay-replace (deliml delimr an-over in-over)
-  "Replace surround area defined by AN-OVER and IN-OVER with new delimiters DELIML and DELIMR.
+  "Replace surround area with new delimiters.
+Take the surround area defined by overlays AN-OVER and IN-OVER,
+delete the parts of AN-OVER that don't overlap with IN-OVER, and surround
+the remaining IN-OVER with new delimiters DELIML and DELIMR.
 Should be used inside of a 'save-excursion'."
   (progn (delete-region (overlay-start an-over) (overlay-start in-over))
          (goto-char (overlay-start an-over))
