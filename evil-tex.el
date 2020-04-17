@@ -93,22 +93,15 @@ Example: (| symbolizes point)
   (evil-tex--select-delim beg end type count nil))
 
 (evil-define-text-object evil-tex-a-macro (count &optional beg end type)
-  "Select a TeX macro."
-  :extend-selection nil
-  (list (car (evil-tex-macro-beginning-begend))
-        (cdr (evil-tex-macro-end-begend))))
+  "Select a LaTeX section."
+  (list (nth 0 (evil-tex--select-macro))
+        (nth 1 (evil-tex--select-macro))))
 
 (evil-define-text-object evil-tex-inner-macro (count &optional beg end type)
-  "Select inner TeX macro, i.e the argument to the macro."
-  :extend-selection nil
-  (let ((beg (evil-tex-macro-beginning-begend))
-        (end (evil-tex-macro-end-begend)))
-    (cond
-     ;; TODO is this needed/could this be simplified, also bug!
-     ((= (cdr beg) (car end))          ; macro has no content
-      (list (1+ (car beg))             ; return macro boundaries excluding \
-            (cdr beg)))                ; BUG for \alpha{} 'dic' returns \} instead of \/
-     (t (list (cdr beg) (car end))))))
+  "Select a LaTeX section."
+  (list (nth 2 (evil-tex--select-macro))
+        (nth 3 (evil-tex--select-macro))))
+
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment."

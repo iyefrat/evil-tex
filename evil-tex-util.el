@@ -204,59 +204,36 @@ symbol) until any of them succeeds (returns non-nil.)"
        (run-hook-with-args-until-success ,fallbacks
                                          count key))))
 
-;; Stuff from evil-latex-textobjects
+(defun evil-tex--select-macro ()
+  "Return macro text object boundries, and emptyness status.
+A macro is defined to be empty if all if it's inpus have no
+characters (including whitespace).
 
-(defun evil-tex-macro-beginning-begend ()
-  "Return (start . end) of the macro-beginning to the left of point.
+inner type text objects defined to be the entire macro sans \\ if empty,
+and just the input portion if non empty.
 
-If no enclosing macro is found, return nil.
-For example for \\macro{foo|bar} it returns the start and end of \"\\macro{\""
-  (let ((beg (TeX-find-macro-start)))
-    (unless beg
+Return in format (list beg-an end-an beg-inner end-inner is-empty)"
+  (let ((beg-an (TeX-find-macro-start))
+        (end-an (TeX-find-macro-end))
+        beg-inner end-inner (is-empty nil))
+    (unless beg-an
       (user-error "No surrounding macro found"))
     (save-excursion
-      (goto-char beg)
-      (forward-char)                  ; backslash
-      (skip-chars-forward "A-Za-z@*") ; macro-name
-      (when (looking-at "{\\|\\[")
-        (forward-char))               ; opening brace
-      (cons beg (point)))))
-
-(defun evil-tex-macro-end-begend ()
-  "Return (start . end) of the end of the enclosing macro.
-
-If no such macro can be found, return nil"
-  (let ((end (TeX-find-macro-end)))
-    (unless end
-      (user-error "No surrounding macro found"))
+      (goto-char beg-an)
+      (unless (ignore-errors (re-search-forward "{.+}\\|\\[.+\\]" end-an))
+        (setq is-empty t)))
     (save-excursion
-      (goto-char end)
-      (when (looking-back "}\\|\\]" (- (point) 2))
-        (backward-char))              ; closing brace
-      (cons (point) end))))
-
-;; TODO Support visual selection
-;; TODO Support count
-
-;; Now ours
-
-(defun evil-tex--re-search-backwards-unless-already (str)
-  "Search backward for STR unless point is already on it."
-  (unless (looking-at str)
-    (re-search-backward str)))
-
-(defun evil-tex--get-macro-braces-begend ()
-  "Return (beg . end) of the macro braces currently active.
-\foo{bar}
-    ^   ^"
-  (let (beg end)
+      (goto-char beg-an)
+      (ignore-errors (re-search-forward "{\\|\\[" end-an)) ;goto opeing brace if exists.
+      (if (or is-empty (eq beg-an (point)))
+        (setq beg-inner (1+ beg-an)) ; Set inner correctly for empty and non-empty commands.
+        (setq beg-inner (point)))   ; NOTE: interprets any command with empty first input as empty.
     (save-excursion
-      (evil-tex--re-search-backwards-unless-already "\\\\")
-      (search-forward "{")
-      (setq beg (point))
-      (forward-sexp)
-      (setq end (point)))
-    (cons beg end)))
+      (goto-char end-an)
+      (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
+        (backward-char))
+      (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
+      (list beg-an end-an beg-inner end-inner is-empty)))))
 
 (defvar evil-tex-select-newlines-with-envs t
   "Whether to select and insert newlines with env commands.
