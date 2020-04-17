@@ -226,14 +226,14 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
       (goto-char beg-an)
       (ignore-errors (re-search-forward "{\\|\\[" end-an)) ;goto opeing brace if exists.
       (if (or is-empty (eq beg-an (point)))
-        (setq beg-inner (1+ beg-an)) ; Set inner correctly for empty and non-empty commands.
+          (setq beg-inner (1+ beg-an)) ; Set inner correctly for empty and non-empty commands.
         (setq beg-inner (point)))   ; NOTE: interprets any command with empty first input as empty.
-    (save-excursion
-      (goto-char end-an)
-      (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
-        (backward-char))
-      (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
-      (list beg-an end-an beg-inner end-inner is-empty)))))
+      (save-excursion
+        (goto-char end-an)
+        (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
+          (backward-char))
+        (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
+        (list beg-an end-an beg-inner end-inner is-empty)))))
 
 (defvar evil-tex-select-newlines-with-envs t
   "Whether to select and insert newlines with env commands.
