@@ -347,8 +347,6 @@ returns ((beg-an . end-an) . (beg-inner . end-inner))"
         (re-search-backward evil-tex--section-regexp)
         (setq what-section (match-string 0)))
       ;; We are at backslash
-      (print what-section)
-      (print (evil-tex--section-regexp-higher what-section))
       (setq beg-an (point))
       (skip-chars-forward "^{")        ; goto opening brace
       (forward-sexp)                   ; goto closing brace
