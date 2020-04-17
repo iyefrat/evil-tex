@@ -225,9 +225,9 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 
 * Acknowledgements
 
-We would like to thank @levrag for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
+We would like to thank [[https://github.com/lervag][@lervag]] for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
 which was the main thing we missed about vim. We would also like to thank
-@hpdeifel for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
-package. Lastly, we would like to thank @hilssner for helping us with a
+[[https://github.com/hpdeifel/][@hpdeifel]] for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
+package. Lastly, we would like to thank [[i][@hlissner]] helping us with a
 particulary tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this
 plugin would probably not exist.
