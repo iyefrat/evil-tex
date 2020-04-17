@@ -94,13 +94,13 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-a-command (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 0 (evil-tex--select-command))
-        (nth 1 (evil-tex--select-command))))
+  (list (nth 0 (evil-tex--select-command2))
+        (nth 1 (evil-tex--select-command2))))
 
 (evil-define-text-object evil-tex-inner-command (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 2 (evil-tex--select-command))
-        (nth 3 (evil-tex--select-command))))
+  (list (nth 2 (evil-tex--select-command2))
+        (nth 3 (evil-tex--select-command2))))
 
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
@@ -356,7 +356,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defun evil-tex-surround-command-prompt ()
   "Ask the user for the command they'd like to surround with."
-  (evil-tex-format-cdlatex-accent-for-surrounding
+  (evil-tex-format-command-for-surrounding
    (read-from-minibuffer "command: \\" nil minibuffer-local-ns-map)))
 
 (defvar evil-tex-surround-delimiters

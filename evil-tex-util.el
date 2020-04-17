@@ -128,6 +128,12 @@ ARGS passed to evil-select-paren, within evil-tex--delim-finder."
   "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
   (cons (concat "\\" accent "{") "}"))
 
+(defun evil-tex-format-command-for-surrounding (command)
+  "Format COMMAND for surrounding: return a cons of \\COMMAND{ . }."
+  (if evil-tex--last-command-empty
+      (cons (concat "\\" command "") "")
+      (cons (concat "\\" command "{") "}")))
+
 (defun evil-tex-prompt-for-env ()
   "Prompt the user for an env to insert."
   (evil-tex-format-env-for-surrounding
@@ -234,6 +240,39 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
           (backward-char))
         (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
         (list beg-an end-an beg-inner end-inner is-empty)))))
+
+(defvar evil-tex--last-command-empty nil
+  "global that tells us if the last command text object used
+was empty (e.g. \epsilon) or not (e.g. \dv{x})")
+
+(defun evil-tex--select-command2 ()
+  "Return command (macro) text object boundries.
+inner commmand defined to be what is inside {}'s and []'s,
+or empty if none exist
+
+Return in format (list beg-an end-an beg-inner end-inner is-empty)"
+  (let ((beg-an (TeX-find-macro-start))
+        (end-an (TeX-find-macro-end))
+        beg-inner end-inner (is-empty nil))
+    (save-excursion
+      (goto-char beg-an)
+      (if (ignore-errors (re-search-forward "{\\|\\[" end-an))
+          (setq evil-tex--last-command-empty nil)
+          (setq evil-tex--last-command-empty t)))
+    (unless beg-an
+      (user-error "No surrounding command found"))
+    (save-excursion
+      (goto-char beg-an)
+      (if (ignore-errors (re-search-forward "{\\|\\[" end-an))
+          (setq beg-inner (point))
+          (setq beg-inner end-an))) ;goto opeing brace if exists.
+      (save-excursion
+        (goto-char end-an)
+        (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
+          (backward-char))
+        (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
+        (list beg-an end-an beg-inner end-inner))))
+
 
 (defvar evil-tex-select-newlines-with-envs t
   "Whether to select and insert newlines with env commands.
