@@ -20,6 +20,7 @@
 ;;; Code:
 
 
+(require 'cl-lib)
 (require 'evil)
 (require 'evil-tex-util)
 

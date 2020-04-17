@@ -101,19 +101,17 @@ and if the text object is an -an- or an -inner-"
 ARGS passed to evil-select-(paren|quote).
 TODO update docstring to incude inner vs outer, etc."
   (cddr (evil-tex-max-key
-         (list
-          (evil-tex--delim-finder nil "(" ")" args)
-          (evil-tex--delim-finder t "(" ")" args)
-          (evil-tex--delim-finder nil "[" "]" args)
-          (evil-tex--delim-finder t "[" "]" args)
-          (evil-tex--delim-finder nil "\\{" "\\}" args)
-          (evil-tex--delim-finder t "\\{" "\\}" args)
-          (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
-          (evil-tex--delim-finder t "\\langle" "\\rangle" args)
-          )
-         (lambda (arg) (if (consp arg) ; selection succeeded
-                           arg
-                         nil )) 'evil-tex--delim-compare )))
+         (list (evil-tex--delim-finder nil "(" ")" args)
+               (evil-tex--delim-finder t "(" ")" args)
+               (evil-tex--delim-finder nil "[" "]" args)
+               (evil-tex--delim-finder t "[" "]" args)
+               (evil-tex--delim-finder nil "\\{" "\\}" args)
+               (evil-tex--delim-finder t "\\{" "\\}" args)
+               (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
+               (evil-tex--delim-finder t "\\langle" "\\rangle" args))
+         (lambda (arg) (when (consp arg) ; selection succeeded
+                         arg))
+         #'evil-tex--delim-compare)))
 
 (defvar evil-tex-include-newlines-in-envs t
   "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
