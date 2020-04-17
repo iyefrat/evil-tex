@@ -2,8 +2,12 @@
 #+DATE:    February 1, 2020
 #+STARTUP: inlineimages nofold
 
-LaTeX text objects for =evil-mode= that work well with =evil-surround=.
-Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]]
+LaTeX integration for =evil-mode=. Provides text objects that work well with
+=evil-surround=, LaTeX oriented section movement, prompts for quickly
+entering environments or [[https://github.com/cdominik/cdlatex][cdlatex]] like accents, and useful toggles.
+
+Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]].
+
 * Table of Contents :TOC_3:noexport:
 - [[#incomplete-showcase][Incomplete Showcase]]
 - [[#installation][Installation]]
@@ -17,6 +21,7 @@ Successor of  [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-t
   - [[#environment-keymap][Environment keymap]]
   - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
   - [[#delimiter-keymap][Delimiter keymap]]
+- [[#acknowledgements][Acknowledgements]]
 
 * Incomplete Showcase
 =|= marks point.
@@ -217,3 +222,12 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | R   | ~\left\langle foo \right\langle~ |
 | p   | ~(foo)~                          |
 | P   | ~\left(foo\right)~               |
+
+* Acknowledgements
+
+We would like to thank @levrag for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
+which was the main thing we missed about vim. We would also like to thank
+@hpdeifel for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
+package. Lastly, we would like to thank @hilssner for helping us with a
+particulary tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this
+plugin would probably not exist.
