@@ -449,7 +449,7 @@ Installs the following additional text objects:
 
   \\[evil-tex-a-dollar] TeX math: $ .. $
   \\[evil-tex-a-command] TeX command/macro: \\foo{..}
-  \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}
+  \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
   :init-value nil
   :keymap evil-tex-mode-map
   (when evil-tex-mode
