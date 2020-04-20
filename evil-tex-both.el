@@ -1,9 +1,27 @@
-;;; evil-tex-util.el -- Functions to be used by evil-texi -*- lexical-binding: t; -*-
+;;; evil-tex.el --- Useful features for editing TeX in evil-mode -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
+;;
+;; Author: Yoav Marco <http://github/yoavm448>, Itai Y. Efrat <http://github/itai33>
+;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
+;; Created: February 01, 2020
+;; Modified: February 01, 2020
+;; Version: 0.0.1
+;; Keywords:
+;; Homepage: https://github.com/itai33/evil-tex
+;; Package-Requires: ((evil "1.0") (auctex "11.88") (cl-lib "0.5"))
+;;
+;; This file is not part of GNU Emacs.
+;;
 ;;; Commentary:
-;; This file is part of evil-tex, which provides license
-;; information.
+;;
+;;  Useful features for editing TeX in evil-mode
+;;
 ;;; Code:
 
+
+(require 'cl-lib)
+(require 'evil)
 (require 'latex)
 (require 'evil-common)
 
@@ -539,34 +557,6 @@ Should be used inside of a 'save-excursion'."
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
-
-(provide 'evil-tex-util)
-;;; evil-tex-util.el ends here
-;;; evil-tex.el --- Useful features for editing TeX in evil-mode -*- lexical-binding: t; -*-
-;;
-;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
-;;
-;; Author: Yoav Marco <http://github/yoavm448>, Itai Y. Efrat <http://github/itai33>
-;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
-;; Created: February 01, 2020
-;; Modified: February 01, 2020
-;; Version: 0.0.1
-;; Keywords:
-;; Homepage: https://github.com/itai33/evil-tex
-;; Package-Requires: ((evil "1.0") (auctex "11.88") (cl-lib "0.5"))
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; Commentary:
-;;
-;;  Useful features for editing TeX in evil-mode
-;;
-;;; Code:
-
-
-(require 'cl-lib)
-(require 'evil)
-(require 'evil-tex-util)
 
 (defun evil-tex-go-back-section (&optional arg)
   "Go back to the closest part/section/subsection etc.
