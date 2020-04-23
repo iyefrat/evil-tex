@@ -1,13 +1,17 @@
 #+TITLE: Plans
 
 * TODO End of the Line
+** TODO Check customizations suggested in the readme
+** TODO Bind the tab-like movement to some key
+** TODO Reach out to the original evil-LaTeX-txtobjs author
 ** TODO bind textobjects on local keymap
 Currently on global
 ** TODO Go over all documentation, and make it better
 Particularly the one under ~define-minor-mode~.
 Also probably delete =test.tex=
 ** TODO have final look at README
-Maybe move apendix to seperate file, maybe add recomended pluggins section.
+Restructure. Maybe move appendix to seperate file, maybe add recomended plugins
+section.
 ** TODO Restructure order of all the functions so it makes more sense (if need be).
 ** TODO Final stress test
 Take a copy of Itai's =main.tex= and make sure everything works as expected on a
