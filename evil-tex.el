@@ -150,20 +150,20 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
       (goto-char beg-an)
       (if (ignore-errors (re-search-forward "{\\|\\[" end-an))
           (setq evil-tex--last-command-empty nil)
-          (setq evil-tex--last-command-empty t)))
+        (setq evil-tex--last-command-empty t)))
     (unless beg-an
       (user-error "No surrounding command found"))
     (save-excursion
       (goto-char beg-an)
       (if (ignore-errors (re-search-forward "{\\|\\[" end-an))
           (setq beg-inner (point))
-          (setq beg-inner end-an))) ;goto opeing brace if exists.
-      (save-excursion
-        (goto-char end-an)
-        (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
-          (backward-char))
-        (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
-        (list beg-an end-an beg-inner end-inner))))
+        (setq beg-inner end-an))) ;goto opeing brace if exists.
+    (save-excursion
+      (goto-char end-an)
+      (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
+        (backward-char))
+      (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
+      (list beg-an end-an beg-inner end-inner))))
 
 (defvar evil-tex-include-newlines-in-envs t
   "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
@@ -644,7 +644,7 @@ symbol) until any of them succeeds (returns non-nil.)"
   "Format COMMAND for surrounding: return a cons of \\COMMAND{ . }."
   (if evil-tex--last-command-empty
       (cons (concat "\\" command "") "")
-      (cons (concat "\\" command "{") "}")))
+    (cons (concat "\\" command "{") "}")))
 
 (defun evil-tex-prompt-for-env ()
   "Prompt the user for an env to insert."
