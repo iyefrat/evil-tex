@@ -437,7 +437,7 @@ Should be used inside of a 'save-excursion'."
     (delete-overlay an-over) (delete-overlay in-over)))
 
 
-;;; some movement commands
+;;; Some movement commands
 
 (defun evil-tex-go-back-section (&optional arg)
   "Go back to the closest part/section/subsection etc.
