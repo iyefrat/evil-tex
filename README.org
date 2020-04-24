@@ -36,7 +36,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
 
 =\(\sum_{i=1}^{n} i^2|\)= \to cim /(change inner math)/ \to =\(|\)=
 
-=\(\sum_{i=1}^{n} i^2|\)= \to qtm /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
+=\(\sum_{i=1}^{n} i^2|\)= \to mtm /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
 
 =\[a|^2\]= \to csmeA /(change surrounding math to environment =align*=)/ \to
 =\begin{align*}\n a^2 \n\end{align}=
