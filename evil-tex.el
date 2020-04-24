@@ -413,13 +413,14 @@ Should be used inside of a 'save-excursion'."
     (delete-overlay an-over) (delete-overlay in-over)))
 
 (defun evil-tex-toggle-command ()
-  "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  "Toggle command between \\foo and \\foo*."
   (let ((an-over (make-overlay (car (evil-tex-a-command)) (cadr (evil-tex-a-command))))
         (in-over (make-overlay (car (evil-tex-inner-command)) (cadr (evil-tex-inner-command)))))
     (save-excursion
-      (goto-char (overlay-start an-over))
-      (skip-chars-forward "^{")
+      (goto-char (overlay-start in-over))
+      ;;(skip-chars-forward "^{")
       (backward-char 1)
+      (when (eq ?{ (char-after)) (backward-char 1) )
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
