@@ -21,9 +21,8 @@
 
 
 (require 'cl-lib)
-(require 'evil)
 (require 'latex)
-(require 'evil-common)
+(require 'evil)
 
 
 ;;; helper functions for text objects
