@@ -26,6 +26,8 @@
 (require 'evil-common)
 
 
+;;; helper functions for text objects
+
 (defun evil-tex-max-key (seq fn &optional compare-fn)
   "Return the element of SEQ for which FN gives the biggest result.
 
@@ -130,140 +132,11 @@ ARGS passed to evil-select-paren, within evil-tex--delim-finder."
                          arg))
          #'evil-tex--delim-compare)))
 
-(defvar evil-tex-include-newlines-in-envs t
-  "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
-
-(defun evil-tex-format-env-for-surrounding (env-name)
-  "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
-  (cons (format "\\begin{%s}%s"
-                env-name
-                (when evil-tex-include-newlines-in-envs "\n"))
-        (format "%s\\end{%s}"
-                (when evil-tex-include-newlines-in-envs "\n")
-                env-name)))
-
-(defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
-  "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
-  (cons (concat "\\" accent "{") "}"))
-
-(defun evil-tex-format-command-for-surrounding (command)
-  "Format COMMAND for surrounding: return a cons of \\COMMAND{ . }."
-  (if evil-tex--last-command-empty
-      (cons (concat "\\" command "") "")
-      (cons (concat "\\" command "{") "}")))
-
-(defun evil-tex-prompt-for-env ()
-  "Prompt the user for an env to insert."
-  (evil-tex-format-env-for-surrounding
-   (read-from-minibuffer "env: " nil minibuffer-local-ns-map)))
-
-(defvar evil-tex--env-function-prefix "evil-tex-envs:"
-  "Prefix used when generating env functions from `evil-tex-env-map-generator-alist'.")
-
-(defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents:"
-  "Prefix used when generating accent functions from `evil-tex-cdlatex-accent-map-generator-alist'.")
-
-(defvar evil-tex--delim-function-prefix "evil-tex-delims:"
-  "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
-
-(defun evil-tex--populate-surround-kemap (keymap generator-alist prefix
-                                                 single-strings-fn)
-  "Populate KEYMAP with keys and callbacks from GENERATOR-ALIST.
-see `evil-tex-env-map-generator-alist' the the alist fromat.
-PREFIX is the prefix to give the generated functions created
-by (lambda () (interactive) (SINGLE-STRINGS-FN env)).
-Return KEYMAP."
-
-  (dolist (pair generator-alist)
-    (let* ((key (car pair))
-           (env (cdr pair))
-           name)
-      (cond
-       ((stringp env)
-        (setq name (intern (concat prefix env)))
-        (fset name (lambda () (interactive) (funcall single-strings-fn env)))
-        (define-key keymap key name))
-       ((consp env)
-        (setq name (intern (concat prefix (car env))))
-        (fset name (lambda () (interactive) env))
-        (define-key keymap key name))
-       ((or (functionp env) (not env))
-        (define-key keymap key env)))))
-  keymap)
-
-(defun evil-tex-read-with-keymap (keymap)
-  "Prompt the user to press a key from KEYMAP.
-
-Return the result of the called function, or error if the key
-pressed isn't found."
-  (let (key map-result)
-    (when (require 'which-key nil t)
-      (run-with-idle-timer
-       which-key-idle-delay nil
-       (lambda () (unless key
-                    (which-key--show-keymap nil keymap nil nil t)))))
-    (setq key (string (read-char)))
-    (when (functionp 'which-key--hide-popup)
-      (which-key--hide-popup))
-    (setq map-result (lookup-key keymap key))
-    (cond
-     ((or (not map-result) (numberp map-result))
-      (user-error "%s not found in keymap" key))
-     ((functionp map-result)
-      (funcall map-result))
-     ((keymapp map-result)
-      (evil-tex-read-with-keymap map-result)))))
-
-;; working code courtesy of @hlissner
-(defmacro evil-tex-dispatch-single-key (catch-key callback &optional fallbacks)
-  "Define a an evil command to execute CALLBACK when given CATCH-KEY.
-
-Otherwise try to call any of the functions in FALLBACKS (a
-symbol) until any of them succeeds (returns non-nil.)"
-  `(evil-define-command
-     ,(intern (concat "evil-tex-dispath-" (string catch-key))) (count key)
-     (interactive "<c><C>")
-     (if (eq key ,catch-key)
-         (funcall ,callback)
-       (run-hook-with-args-until-success ,fallbacks
-                                         count key))))
-
-(defun evil-tex--select-command ()
-  "Return command (macro) text object boundries, and emptyness status.
-A command is defined to be empty if all if it's inpus have no
-characters (including whitespace).
-
-inner type text objects defined to be the entire command sans \\ if empty,
-and just the input portion if non empty.
-
-Return in format (list beg-an end-an beg-inner end-inner is-empty)"
-  (let ((beg-an (TeX-find-macro-start))
-        (end-an (TeX-find-macro-end))
-        beg-inner end-inner (is-empty nil))
-    (unless beg-an
-      (user-error "No surrounding command found"))
-    (save-excursion
-      (goto-char beg-an)
-      (unless (ignore-errors (re-search-forward "{.+}\\|\\[.+\\]" end-an))
-        (setq is-empty t)))
-    (save-excursion
-      (goto-char beg-an)
-      (ignore-errors (re-search-forward "{\\|\\[" end-an)) ;goto opeing brace if exists.
-      (if (or is-empty (eq beg-an (point)))
-          (setq beg-inner (1+ beg-an)) ; Set inner correctly for empty and non-empty commands.
-        (setq beg-inner (point)))   ; NOTE: interprets any command with empty first input as empty.
-      (save-excursion
-        (goto-char end-an)
-        (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
-          (backward-char))
-        (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
-        (list beg-an end-an beg-inner end-inner is-empty)))))
-
 (defvar evil-tex--last-command-empty nil
   "global that tells us if the last command text object used
 was empty (e.g. \epsilon) or not (e.g. \dv{x})")
 
-(defun evil-tex--select-command2 ()
+(defun evil-tex--select-command ()
   "Return command (macro) text object boundries.
 inner commmand defined to be what is inside {}'s and []'s,
 or empty if none exist
@@ -291,6 +164,8 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
         (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
         (list beg-an end-an beg-inner end-inner))))
 
+(defvar evil-tex-include-newlines-in-envs t
+  "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
 
 (defvar evil-tex-select-newlines-with-envs t
   "Whether to select and insert newlines with env commands.
@@ -356,7 +231,6 @@ with envs would force separate lines for \\begin, inner text, and
    ((string-match "\\\\subsubsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
    ((string-match "\\\\paragraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
    ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
-;; (defvar evil-tex--section-regexp (concat "\\\\" (regexp-opt-group (mapcar #'car LaTeX-section-list) nil) "\\*?")
 
 (defun evil-tex--select-section ()
   "Return begends for section text object.
@@ -465,6 +339,9 @@ a_{n+1}
       (forward-char)
       (cons (point) (point))))))
 
+
+;;; Toggles
+
 (defun evil-tex--regexp-overlay-replace (deliml delimr an-over in-over)
   "Replace surround area with new delimiters.
 Take the surround area defined by overlays AN-OVER and IN-OVER,
@@ -558,6 +435,8 @@ Should be used inside of a 'save-excursion'."
     (delete-overlay an-over) (delete-overlay in-over)))
 
 
+;;; some movement commands
+
 (defun evil-tex-go-back-section (&optional arg)
   "Go back to the closest part/section/subsection etc.
 If given, go ARG sections up."
@@ -591,7 +470,8 @@ Example: (| symbolizes point)
     (backward-char)))
 
 
-;; stolen code from https://github.com/hpdeifel/evil-latex-textobjects
+;;; Text object definitions
+;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
 (evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
   "Select inner dollar."
   :extend-selection nil
@@ -628,13 +508,13 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-a-command (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 0 (evil-tex--select-command2))
-        (nth 1 (evil-tex--select-command2))))
+  (list (nth 0 (evil-tex--select-command))
+        (nth 1 (evil-tex--select-command))))
 
 (evil-define-text-object evil-tex-inner-command (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 2 (evil-tex--select-command2))
-        (nth 3 (evil-tex--select-command2))))
+  (list (nth 2 (evil-tex--select-command))
+        (nth 3 (evil-tex--select-command))))
 
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
@@ -681,8 +561,102 @@ Example: (| symbolizes point)
         (car (evil-tex-script-end-begend "^"))))
 
 
-;; (defvar evil-tex-outer-map (make-sparse-keymap))
-;; (defvar evil-tex-inner-map (make-sparse-keymap))
+;;; evil-surround setup
+
+(defun evil-tex--populate-surround-kemap (keymap generator-alist prefix
+                                                 single-strings-fn)
+  "Populate KEYMAP with keys and callbacks from GENERATOR-ALIST.
+see `evil-tex-env-map-generator-alist' the the alist fromat.
+PREFIX is the prefix to give the generated functions created
+by (lambda () (interactive) (SINGLE-STRINGS-FN env)).
+Return KEYMAP."
+
+  (dolist (pair generator-alist)
+    (let* ((key (car pair))
+           (env (cdr pair))
+           name)
+      (cond
+       ((stringp env)
+        (setq name (intern (concat prefix env)))
+        (fset name (lambda () (interactive) (funcall single-strings-fn env)))
+        (define-key keymap key name))
+       ((consp env)
+        (setq name (intern (concat prefix (car env))))
+        (fset name (lambda () (interactive) env))
+        (define-key keymap key name))
+       ((or (functionp env) (not env))
+        (define-key keymap key env)))))
+  keymap)
+
+(defun evil-tex-read-with-keymap (keymap)
+  "Prompt the user to press a key from KEYMAP.
+
+Return the result of the called function, or error if the key
+pressed isn't found."
+  (let (key map-result)
+    (when (require 'which-key nil t)
+      (run-with-idle-timer
+       which-key-idle-delay nil
+       (lambda () (unless key
+                    (which-key--show-keymap nil keymap nil nil t)))))
+    (setq key (string (read-char)))
+    (when (functionp 'which-key--hide-popup)
+      (which-key--hide-popup))
+    (setq map-result (lookup-key keymap key))
+    (cond
+     ((or (not map-result) (numberp map-result))
+      (user-error "%s not found in keymap" key))
+     ((functionp map-result)
+      (funcall map-result))
+     ((keymapp map-result)
+      (evil-tex-read-with-keymap map-result)))))
+
+;; working code courtesy of @hlissner
+(defmacro evil-tex-dispatch-single-key (catch-key callback &optional fallbacks)
+  "Define a an evil command to execute CALLBACK when given CATCH-KEY.
+
+Otherwise try to call any of the functions in FALLBACKS (a
+symbol) until any of them succeeds (returns non-nil.)"
+  `(evil-define-command
+     ,(intern (concat "evil-tex-dispath-" (string catch-key))) (count key)
+     (interactive "<c><C>")
+     (if (eq key ,catch-key)
+         (funcall ,callback)
+       (run-hook-with-args-until-success ,fallbacks
+                                         count key))))
+
+(defun evil-tex-format-env-for-surrounding (env-name)
+  "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
+  (cons (format "\\begin{%s}%s"
+                env-name
+                (when evil-tex-include-newlines-in-envs "\n"))
+        (format "%s\\end{%s}"
+                (when evil-tex-include-newlines-in-envs "\n")
+                env-name)))
+
+(defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
+  "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
+  (cons (concat "\\" accent "{") "}"))
+
+(defun evil-tex-format-command-for-surrounding (command)
+  "Format COMMAND for surrounding: return a cons of \\COMMAND{ . }."
+  (if evil-tex--last-command-empty
+      (cons (concat "\\" command "") "")
+      (cons (concat "\\" command "{") "}")))
+
+(defun evil-tex-prompt-for-env ()
+  "Prompt the user for an env to insert."
+  (evil-tex-format-env-for-surrounding
+   (read-from-minibuffer "env: " nil minibuffer-local-ns-map)))
+
+(defvar evil-tex--env-function-prefix "evil-tex-envs:"
+  "Prefix used when generating env functions from `evil-tex-env-map-generator-alist'.")
+
+(defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents:"
+  "Prefix used when generating accent functions from `evil-tex-cdlatex-accent-map-generator-alist'.")
+
+(defvar evil-tex--delim-function-prefix "evil-tex-delims:"
+  "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
 
 (defvar evil-tex-env-map-generator-alist
   `(("x"  . ,#'evil-tex-prompt-for-env)
@@ -855,6 +829,14 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   "Prompt user for an delimiter to surround with using `evil-tex-delim-map'."
   (evil-tex-read-with-keymap evil-tex-delim-map))
 
+(defun evil-tex-surround-command-prompt ()
+  "Ask the user for the command they'd like to surround with."
+  (evil-tex-format-command-for-surrounding
+   (read-from-minibuffer "command: \\" nil minibuffer-local-ns-map)))
+
+
+;;; Text object keybindings and surround declirations.
+
 ;; Shorten which-key descriptions in auto-generated keymaps
 (with-eval-after-load 'which-key
   (push
@@ -878,20 +860,6 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
 (define-key evil-outer-text-objects-map "^" 'evil-tex-a-superscript)
 (define-key evil-outer-text-objects-map "_" 'evil-tex-a-subscript)
-
-
-;; (evil-define-key 'operator evil-tex-mode-map
-;;   "a" evil-tex-outer-map
-;;   "i" evil-tex-inner-map)
-
-;; (evil-define-key 'visual evil-tex-mode-map
-;;   "a" evil-tex-outer-map
-;;   "i" evil-tex-inner-map)
-
-(defun evil-tex-surround-command-prompt ()
-  "Ask the user for the command they'd like to surround with."
-  (evil-tex-format-command-for-surrounding
-   (read-from-minibuffer "command: \\" nil minibuffer-local-ns-map)))
 
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
@@ -918,6 +886,9 @@ See `evil-surround-pairs-alist' for the format.")
                ;; embrace only needs the key chars, not the whole delimiters
                (mapcar #'car evil-tex-surround-delimiters)
                evil-embrace-evil-surround-keys)))
+
+
+;;; Set up text object toggling.
 
 (defvar evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
