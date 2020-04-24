@@ -133,8 +133,9 @@ ARGS passed to evil-select-paren, within evil-tex--delim-finder."
          #'evil-tex--delim-compare)))
 
 (defvar evil-tex--last-command-empty nil
-  "global that tells us if the last command text object used
-was empty (e.g. \epsilon) or not (e.g. \dv{x})")
+  "Global to hold if the last command text object used was empty.
+
+For example, \\epsilon is empty, \\dv{x} is not.")
 
 (defun evil-tex--select-command ()
   "Return command (macro) text object boundries.
