@@ -2,6 +2,11 @@
 
 * TODO End of the Line
 ** TODO Check customizations suggested in the readme
+** TODO Add notes about interactions with other packages in readme
+- Surround
+- Embrace
+- Which-key
+- Snipe
 ** TODO Bind the tab-like movement to some key
 ** TODO Reach out to the original evil-LaTeX-txtobjs author
 ** TODO bind textobjects on local keymap
