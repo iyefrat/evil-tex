@@ -899,11 +899,15 @@ See `evil-surround-pairs-alist' for the format.")
 (defvar evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
 Overrides normal 't' functionality for `s' only.
+'ts*' now executes toggles,
+see `evil-tex-toggle-delimiter-map' for more invormation
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-toggle-override-m t
   "Set to t to bind evil-tex toggles to 'mt*' keybindings.
 Overrides normal `m' functionality for 't' only.
+'mt*' now executes toggles,
+see `evil-tex-toggle-delimiter-map' for more invormation
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-t-functions
