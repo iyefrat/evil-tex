@@ -42,26 +42,6 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
                 res cur))))
     res))
 
-(defun evil-tex--select-math (&rest args)
-  "Return (beg . end) of best LaTeX inline or display math match.
-
-ARGS passed to evil-select-(paren|quote)."
-  (evil-tex-max-key
-   (list
-    (ignore-errors (apply #'evil-select-paren
-                          (regexp-quote "\\(") (regexp-quote "\\)") args))
-    (ignore-errors (apply #'evil-select-paren
-                          (regexp-quote "\\[") (regexp-quote "\\]") args))
-    (ignore-errors (apply #'evil-select-quote ?$ args)))
-   (lambda (arg) (if (and (consp arg) ; selection succeeded
-                          ;; Selection is close enough to point.
-                          ;; evil-select-quote can select things further down in
-                          ;; the buffer.
-                          (<= (- (car arg) 2) (point))
-                          (>= (+ (cadr arg) 3) (point)))
-                     (car arg)
-                   most-negative-fixnum))))
-
 (defun evil-tex--delim-compare (a b)
   "Receive two cons' A B of structure (LR IA BEG END ...).
 where LR is t for e.g. \\left( and nil for e.g. (,
