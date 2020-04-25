@@ -43,7 +43,7 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
     res))
 
 (defun evil-tex--select-math (&rest args)
-  "Return (beg . end) of best math match.
+  "Return (beg . end) of best LaTeX inline or display math match.
 
 ARGS passed to evil-select-(paren|quote)."
   (evil-tex-max-key
@@ -63,12 +63,12 @@ ARGS passed to evil-select-(paren|quote)."
                    most-negative-fixnum))))
 
 (defun evil-tex--delim-compare (a b)
-  "Recieve two cons' A B of structure (LR IA BEG END ...).
+  "Receive two cons' A B of structure (LR IA BEG END ...).
 where LR is t for e.g. \\left( and nil for e.g. (,
  IA is t for -an- text objects and nil for -inner-,
 BEG and END are the coordinates for the begining and end of the potential delim,
 and the _'s are unimportant.
-Compares between the delimiters to find which one has the largest BEG, while
+Compare between the delimiters to find which one has the largest BEG, while
 making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim finds"
 
   (let ((a-lr (nth 0 a))
@@ -90,11 +90,11 @@ making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim
      (t                             nil))))
 
 (defun evil-tex--delim-finder (lr deliml delimr args)
-  "Return delimiter location (and more) for evil-tex--delim-finder.
+  "Return delimiter location (and more) for evil-tex--select-delim.
 LR is t for e.g. \\left( and nil for e.g. (.
 DELIML and DELIMR is a string containing the non \\left part of the delimiter.
 ARGS is the information about the text object needed for the functions to work,
-such as wether the delimiter is an \\left( type or a ( type,
+such as whether the delimiter is an \\left( type or a ( type,
 and if the text object is an -an- or an -inner-"
 
   (let ((delim-pair-lr (ignore-errors
@@ -138,7 +138,7 @@ For example, \\epsilon is empty, \\dv{x} is not.")
 
 (defun evil-tex--select-command ()
   "Return command (macro) text object boundries.
-inner commmand defined to be what is inside {}'s and []'s,
+Inner commmand defined to be what is inside {}'s and []'s,
 or empty if none exist
 
 Return in format (list beg-an end-an beg-inner end-inner is-empty)"
@@ -222,7 +222,7 @@ with envs would force separate lines for \\begin, inner text, and
   "Regexp that matches for LaTeX section commands.")
 
 (defun evil-tex--section-regexp-higher (str)
-  "For section name STR, return regex that only matche higher sections."
+  "For section type STR, return regex that only matches higher sections."
   (cond
    ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
    ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
@@ -234,17 +234,14 @@ with envs would force separate lines for \\begin, inner text, and
 
 (defun evil-tex--select-section ()
   "Return begends for section text object.
-an variant defined from the first character of
-the \\section{} command, to the line above the next
-\\section{} command of equal or higher rank,
-e.g. \\chapter{}. Inner varaind starts after the
-end of the command, and also after an immidiately
-following newline if exists. treats \\section{} and
-\\section*{} the same.
+-an- variant defined from the first character of the \\section{} command,
+to the line above the next \\section{} command of equal or higher rank,
+e.g. \\chapter{}. Inner varaind starts after the end of the command,
+and also after an immidiately following newline if exists.
+Treats \\section{} and \\section*{} the same.
 Return in format (list beg-an end-an beg-inner end-inner).
 
-
-returns ((beg-an . end-an) . (beg-inner . end-inner))"
+Return ((beg-an . end-an) . (beg-inner . end-inner))"
   (let (beg-an end-an beg-inner end-inner what-section)
     (save-excursion
       ;; back searching won't work if we are on the \section itself
@@ -425,7 +422,7 @@ Should be used inside of a 'save-excursion'."
     (delete-overlay an-over) (delete-overlay in-over)))
 
 (defun evil-tex-toggle-section ()
-  "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  "Toggle surrounding section between e.g. \\section{foo} and \\section*{foo}."
   (let ((an-over (make-overlay (car (evil-tex-a-section)) (cadr (evil-tex-a-section))))
         (in-over (make-overlay (car (evil-tex-inner-section)) (cadr (evil-tex-inner-section)))))
     (save-excursion
@@ -484,7 +481,7 @@ Example: (| symbolizes point)
   (evil-select-quote ?$ beg end type count t))
 
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
-  "Select innter \\[ \\] or \\( \\)."
+  "Select inner \\[ \\] or \\( \\)."
   :extend-selection nil
   (evil-select-paren (rx (or "\\(" "\\["))
                      (rx (or "\\)" "\\]"))
@@ -508,12 +505,12 @@ Example: (| symbolizes point)
   (evil-tex--select-delim beg end type count nil))
 
 (evil-define-text-object evil-tex-a-command (count &optional beg end type)
-  "Select a LaTeX section."
+  "Select a LaTeX command (macro)."
   (list (nth 0 (evil-tex--select-command))
         (nth 1 (evil-tex--select-command))))
 
 (evil-define-text-object evil-tex-inner-command (count &optional beg end type)
-  "Select a LaTeX section."
+  "Select inner LaTeX command (macro)."
   (list (nth 2 (evil-tex--select-command))
         (nth 3 (evil-tex--select-command))))
 
@@ -524,7 +521,7 @@ Example: (| symbolizes point)
         (cdr (evil-tex-env-end-begend))))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
-  "Select a LaTeX environment."
+  "Select inner LaTeX environment."
   :extend-selection nil
   (list (cdr (evil-tex-env-beginning-begend))
         (car (evil-tex-env-end-begend))))
@@ -535,7 +532,7 @@ Example: (| symbolizes point)
         (nth 1 (evil-tex--select-section))))
 
 (evil-define-text-object evil-tex-inner-section (count &optional beg end type)
-  "Select a LaTeX section."
+  "Select inner LaTeX section."
   (list (nth 2 (evil-tex--select-section))
         (nth 3 (evil-tex--select-section))))
 
@@ -545,7 +542,7 @@ Example: (| symbolizes point)
         (cdr (evil-tex-script-end-begend "_"))))
 
 (evil-define-text-object evil-tex-inner-subscript (count &optional beg end type)
-  "Select a LaTeX subscript."
+  "Select inner LaTeX subscript."
   :extend-selection nil
   (list (cdr (evil-tex-script-beginning-begend "_"))
         (car (evil-tex-script-end-begend "_"))))
@@ -556,7 +553,7 @@ Example: (| symbolizes point)
         (cdr (evil-tex-script-end-begend "^"))))
 
 (evil-define-text-object evil-tex-inner-superscript (count &optional beg end type)
-  "Select a LaTeX superscript."
+  "Select inner LaTeX superscript."
   :extend-selection nil
   (list (cdr (evil-tex-script-beginning-begend "^"))
         (car (evil-tex-script-end-begend "^"))))
@@ -885,7 +882,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 See `evil-surround-pairs-alist' for the format.")
 
 (defun evil-tex-set-up-surround ()
-  "Configure evil-surround so things like 'csm' would work."
+  "Configure evil-surround so things like 'csm' work."
   (setq-local evil-surround-pairs-alist
               (append evil-tex-surround-delimiters evil-surround-pairs-alist)))
 (defun evil-tex-set-up-embrace ()
@@ -901,12 +898,12 @@ See `evil-surround-pairs-alist' for the format.")
 
 (defvar evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
-overrides normal 't' functionality for `s' only.
+Overrides normal 't' functionality for `s' only.
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-toggle-override-m t
   "Set to t to bind evil-tex toggles to 'mt*' keybindings.
-overrides normal `m' functionality for 't' only.
+Overrides normal `m' functionality for 't' only.
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-t-functions
