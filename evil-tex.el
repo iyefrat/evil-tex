@@ -95,7 +95,7 @@ and if the text object is an -an- or an -inner-"
                         delim-pair-not-lr))))))
 
 (defun evil-tex--select-delim (&rest args)
-  "Return (beg . end) of closes delimiter match.
+  "Return (start . end) of closes delimiter match.
 
 ARGS passed to evil-select-paren, within evil-tex--delim-finder."
   (cddr (evil-tex-max-key
@@ -731,25 +731,25 @@ Don't modify this directly; use `evil-tex-user-cdlatex-accents-map-generator-ali
 See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defun evil-tex-cdlatex-accents:rm ()
-  "Return the (beg . end) that would make text rm style if wrapped between beg and end."
+  "Return the (start . end) that would make text rm style if wrapped between start and end."
   (cons (if (texmathp) "\\mathrm{" "\\textrm{")) "}")
 (defun evil-tex-cdlatex-accents:it ()
-  "Return the (beg . end) that would make text it style if wrapped between beg and end."
+  "Return the (start . end) that would make text it style if wrapped between start and end."
   (cons (if (texmathp) "\\mathit{" "\\textit{")) "}")
 (defun evil-tex-cdlatex-accents:sl ()
-  "Return the (beg . end) that would make text sl style if wrapped between beg and end."
+  "Return the (start . end) that would make text sl style if wrapped between start and end."
   (unless (texmathp) '("\\textsl{" . "}")))
 (defun evil-tex-cdlatex-accents:bold ()
-  "Return the (beg . end) that would make text bold style if wrapped between beg and end."
+  "Return the (start . end) that would make text bold style if wrapped between start and end."
   (cons (if (texmathp) "\\mathbf{" "\\textbf{") "}"))
 (defun evil-tex-cdlatex-accents:emph ()
-  "Return the (beg . end) that would make text emph style if wrapped between beg and end."
+  "Return the (start . end) that would make text emph style if wrapped between start and end."
   (cons (if (texmathp) "\\mathem{" "\\emph{") "}"))
 (defun evil-tex-cdlatex-accents:tt ()
-  "Return the (beg . end) that would make text tt style if wrapped between beg and end."
+  "Return the (start . end) that would make text tt style if wrapped between start and end."
   (cons (if (texmathp) "\\mathtt{" "\\texttt{") "}"))
 (defun evil-tex-cdlatex-accents:sf ()
-  "Return the (beg . end) that would make text sf style if wrapped between beg and end."
+  "Return the (start . end) that would make text sf style if wrapped between start and end."
   (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
 (defvar evil-tex-delim-map-generator-alist
