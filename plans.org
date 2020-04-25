@@ -1,6 +1,7 @@
 #+TITLE: Plans
 
 * TODO End of the Line
+** TODO Text object for table cells
 ** TODO Check customizations suggested in the readme
 ** TODO Add notes about interactions with other packages in readme
 - Surround
