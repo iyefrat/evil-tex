@@ -214,7 +214,7 @@ doing 'cie' you're placed on a separate line.")
    ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 
 (defun evil-tex--select-section ()
-  "Return ((outer-beg . outer-end) . (inner-beg . inner-end)) for section object.
+  "Return (list outer-beg outer-end inner-beg inner-end) for section object.
 
 The outer -an- variant is defined from the first character of the
 \\section{} command, to the line above the next \\section{}
@@ -223,7 +223,7 @@ variant starts after the end of the command, and respects a
 following newline if exists.
 
 \\section{} and \\section*{} are treated the same."
-  (let (beg-an end-an beg-inner end-inner what-section)
+  (let (outer-beg outer-end inner-beg inner-end what-section)
     (save-excursion
       ;; back searching won't work if we are on the \section itself
       (search-backward "\\" (line-beginning-position) t)
@@ -232,18 +232,18 @@ following newline if exists.
         (re-search-backward evil-tex--section-regexp)
         (setq what-section (match-string 0)))
       ;; We are at backslash
-      (setq beg-an (point))
+      (setq outer-beg (point))
       (skip-chars-forward "^{")        ; goto opening brace
       (forward-sexp)                   ; goto closing brace
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
         (forward-line 1))
-      (setq beg-inner (point))
+      (setq inner-beg (point))
       (re-search-forward (concat (evil-tex--section-regexp-higher what-section) "\\|\\\\end{document}"))
       (move-beginning-of-line 1)
-      (setq end-inner (point))
-      (setq end-an (point))
-      (list beg-an end-an beg-inner end-inner))))
+      (setq inner-end (point))
+      (setq outer-end (point))
+      (list outer-beg outer-end inner-beg inner-end))))
 
 (defun evil-tex--goto-script-prefix (subsup)
   "Return goto end of the found SUBSUP prefix.
