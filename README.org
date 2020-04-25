@@ -56,7 +56,7 @@ This package defines an increasing number of text objects:
 | ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
 | ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]].               |                                            |
 | ~d~ | delimiters      | Math delimiters, ~(foo), \left(foo\right), [foo], \left[foo\right]~ etc. | Prompts you with [[#delimiter-keymap][the delim keymap]]          |
-| ~S~ | sections        | LaTeX parts, chapters, ((sub)jjkksections, and (sub)paragraphs           |               |
+| ~S~ | sections        | LaTeX parts, chapters, (sub)sections, and (sub)paragraphs            |               |
 | ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                                      | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
 | ~^~ | superscript     | ~x^a~ ~x^\alpha~ ~x^{...}~                                               | Surrounds with ~^{ }~                      |
 | ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surroudns with ~_{ }~                      |
@@ -108,11 +108,11 @@ delimiters, =tsd= will. See [[#configuration][configuration]]. the provided togg
 
 | Key | Abbreviation | Behaviour                                                                               |
 |-----+--------------+-----------------------------------------------------------------------------------------|
-| mtc | command      | toggle asterisk on command, e.g. =\foo= \Leftrightarrow =\foo*=                         |
-| mtd | delimiter    | toggle between delimiter autosizing, e.g.  =(foo)= \Leftrightarrow =\Left(foo\right)=   |
-| mte | environment  | toggle enviornment asterisk e.g. =\begin{equation}= \Leftrightarrow =\begin{equation*}= |
-| mtm | math         | toggle between inline and display math, i.e. =\(foo\)= \Leftrightarrow =\[foo\]=        |
-| mtS | section      | toggle section text object asterisk, e.g. =\chapter{}= \Leftrightarrow =\chapter*{}=    |
+| mtc | command      | toggle asterisk on command, e.g. ~\foo~ \Leftrightarrow ~\foo*~                         |
+| mtd | delimiter    | toggle between delimiter autosizing, e.g.  ~(foo)~ \Leftrightarrow ~\Left(foo\right)~   |
+| mte | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~ |
+| mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~        |
+| mtS | section      | toggle section text object asterisk, e.g. ~\chapter{}~ \Leftrightarrow ~\chapter*{}~    |
 
 * Configuration
 ** Binding new envs/accents to the keymaps

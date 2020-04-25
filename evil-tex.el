@@ -955,12 +955,36 @@ until one of them returns non-nil.")
 ;;;###autoload
 (define-minor-mode evil-tex-mode
   "Minor mode for latex-specific text objects in evil.
+Also provides evil-surround integration and toggles.
 
-Installs the following additional text objects:
+An overview of the included text objects:
+| Key | Abbreviation    | Text Object Target                                       | Surround behavior                          |
+|-----+-----------------+----------------------------------------------------------+--------------------------------------------|
+| c | command         | TeX marcos: \\foo{...}                                     | Prompts you for a macro                    |
+| e | environment     | \\begin{...} \\end{...} blocks                             | Prompts you with the env keymap            |
+| m | math            | Both inline \\( \\) and display \\[ \\].                   | Surrounds with \\( \\)                     |
+| M | Display math    | N/A                                                        | Surrounds with \\[ \\]                     |
+| $ | dollar          | Old TeX inline maths.                                      |                                            |
+| d | delimiters      | Math delimiters, (foo), \\left(foo\\right),                |                                            |
+|   |                 | [foo], \\left[foo\\right] etc.                             | Prompts you with the delim keymap          |
+| S | sections        | LaTeX parts, chapters, ((sub)sections, and (sub)paragraphs |                                            |
+| ; | CDLaTeX accents | N/A                                                        | Prompts you with the cdlatex accent keymap |
+| ^ | superscript     | x^a x^\\alpha x^{...}                                      | Surrounds with ^{ }                        |
+| _ | subscript       | x_a x_\\alpha x_{...}                                      | Surroudns with _{ }                        |
 
-  \\[evil-tex-a-dollar] TeX math: $ .. $
-  \\[evil-tex-a-command] TeX command/macro: \\foo{..}
-  \\[evil-tex-an-env] LaTeX environment \\begin{foo}..\\end{foo}"
+The text object definitions can be found under evil-tex-a-$NAME and evil-tex-inner-$NAME.
+
+the default provided doggle functionality is as follows:
+
+| Key | Abbreviation | Behaviour                                                                 |
+|-----+--------------+---------------------------------------------------------------------------|
+| mtc | command      | toggle asterisk on command, e.g. \\foo ==> \\foo*                         |
+| mtd | delimiter    | toggle between delimiter autosizing, e.g.  (foo) ==> \\Left(foo\\right)   |
+| mte | environment  | toggle enviornment asterisk e.g. \\begin{equation} ==> \\begin{equation*} |
+| mtm | math         | toggle between inline and display math, i.e. \\(foo\\) ==> \\[foo\\]      |
+| mtS | section      | toggle section text object asterisk, e.g. \\chapter{} ==> \\chapter*{}    |
+
+"
   :init-value nil
   :keymap evil-tex-mode-map
   (when evil-tex-mode
