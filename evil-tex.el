@@ -145,16 +145,17 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
       (list beg-an end-an beg-inner end-inner))))
 
 (defvar evil-tex-include-newlines-in-envs t
-  "Whether to select the newlines when selecting begin/end blocks, and add newlines when surrounding with envs.")
+  "Whether include newlines with env insersion.
+
+When non-nil, env insersions would force separate lines for
+\\begin, inner text, and \\end.")
 
 (defvar evil-tex-select-newlines-with-envs t
-  "Whether to select and insert newlines with env commands.
+  "Whether to select newlines with env commands.
 
-By default, the newline proceeding \\begin{...} and preceding
+When non-nil, the newline proceeding \\begin{...} and preceding
 \\end{...} is selected as part of the delimiter. This way, when
-doing =cie= you're placed on a separate line, and surrounding
-with envs would force separate lines for \\begin, inner text, and
-\\end.")
+doing 'cie' you're placed on a separate line.")
 
 (defun evil-tex-env-beginning-begend ()
   "Return (start . end) of the \\begin{foo} of current env.
@@ -213,15 +214,15 @@ with envs would force separate lines for \\begin, inner text, and
    ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 
 (defun evil-tex--select-section ()
-  "Return begends for section text object.
--an- variant defined from the first character of the \\section{} command,
-to the line above the next \\section{} command of equal or higher rank,
-e.g. \\chapter{}. Inner varaind starts after the end of the command,
-and also after an immidiately following newline if exists.
-Treats \\section{} and \\section*{} the same.
-Return in format (list beg-an end-an beg-inner end-inner).
+  "Return ((outer-beg . outer-end) . (inner-beg . inner-end)) for section object.
 
-Return ((beg-an . end-an) . (beg-inner . end-inner))"
+The outer -an- variant is defined from the first character of the
+\\section{} command, to the line above the next \\section{}
+command of equal or higher rank, e.g. \\chapter{}. The inner
+variant starts after the end of the command, and respects a
+following newline if exists.
+
+\\section{} and \\section*{} are treated the same."
   (let (beg-an end-an beg-inner end-inner what-section)
     (save-excursion
       ;; back searching won't work if we are on the \section itself
@@ -246,7 +247,8 @@ Return ((beg-an . end-an) . (beg-inner . end-inner))"
 
 (defun evil-tex--goto-script-prefix (subsup)
   "Return goto end of the found SUBSUP prefix.
-{(ab|)}_c => {(ab)}_|c"
+{(ab)}_c => {(ab)}_c
+    ^              ^"
   (let ((orig-point (point))
         subsup-end)
     (or
@@ -775,7 +777,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
       "[[" #'evil-tex-go-back-section
       "]]" #'evil-tex-go-forward-section)
     keymap)
-  "Keymap for `evil-tex-mode'.")
+  "Basic keymap for `evil-tex-mode'.")
 
 (defvar evil-tex-env-map
   (evil-tex--populate-surround-kemap
@@ -783,7 +785,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
    (append evil-tex-env-map-generator-alist
            evil-tex-user-env-map-generator-alist)
    evil-tex--env-function-prefix #'evil-tex-format-env-for-surrounding)
-  "Keymap for surrounding with environments.")
+  "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
 (defvar evil-tex-cdlatex-accents-map
   (evil-tex--populate-surround-kemap
@@ -792,7 +794,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
            evil-tex-user-cdlatex-accents-map-generator-alist)
    evil-tex--cdlatex-accents-function-prefix
    #'evil-tex-format-cdlatex-accent-for-surrounding)
-  "Keymap for surrounding with cdlatex accents.")
+  "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
 (defvar evil-tex-delim-map
   (evil-tex--populate-surround-kemap
@@ -801,7 +803,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
            evil-tex-user-delim-map-generator-alist)
    evil-tex--delim-function-prefix
    #'identity)
-  "Keymap for surrounding with delimiters.")
+  "Keymap for surrounding with environments, usually through `evil-tex-delim-map'.")
 
 (defun evil-tex-surround-env-prompt ()
   "Prompt user for an env to surround with using `evil-tex-env-map'."
