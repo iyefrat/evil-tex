@@ -126,9 +126,9 @@ position for figures:
 To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
 #+BEGIN_SRC emacs-lisp
 (setq evil-tex-user-cdlatex-accents-map-generator-alist
-      '(("b" "mathbb")))
+      '(("b" . "mathbb")))
 #+END_SRC
-Same for ~evil-tex-user-cdlatex-accents-map-generator-alist~. The exact format
+Same for ~evil-tex-user-delim-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
 ** Options to enable and disable
  - By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
