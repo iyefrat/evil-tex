@@ -2,6 +2,9 @@
 
 * TODO End of the Line
 ** TODO Text object for table cells
+** TODO fix envs not understanding nesting, adapt delim algorithm
+** TODO unify =$= and =m=, paritally unify =m= and =M=
+unify =m= and =M= for surround deletion and change, but not insertion
 ** DONE Check customizations suggested in the readme
 ** TODO Add notes about interactions with other packages in readme
 - Surround
@@ -10,8 +13,8 @@
 - Snipe
 ** TODO Bind the tab-like movement to some key
 ** TODO Reach out to the original evil-LaTeX-txtobjs author
-** TODO bind textobjects on local keymap
-Currently on global
+** WAIT bind textobjects on local keymap
+waiting on =evil-surround= issue
 ** TODO Go over all documentation, and make it better
 Particularly the one under ~define-minor-mode~.
 Also probably delete =test.tex=
