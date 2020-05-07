@@ -930,7 +930,7 @@ until one of them returns non-nil.")
 
 (when evil-tex-toggle-override-t
   (evil-define-key 'normal evil-tex-mode-map "t"
-    (evil-tex-dispatch-single-key ?t #'evil-tex-read-and-execute-toggle
+    (evil-tex-dispatch-single-key ?s #'evil-tex-read-and-execute-toggle
                                   'evil-tex-t-functions)))
 
 (when evil-tex-toggle-override-m
