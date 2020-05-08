@@ -203,7 +203,7 @@ doing 'cie' you're placed on a separate line.")
   "Regexp that matches for LaTeX section commands.")
 
 (defun evil-tex--section-regexp-higher (str)
-  "For section type STR, return regex that only matches higher sections."
+  "For section type STR, return regex that only match higher sections."
   (cond
    ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
    ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
@@ -318,6 +318,33 @@ a_{n+1}
       (forward-char)
       (cons (point) (point))))))
 
+
+
+(defun evil-tex--select-table-cell ()
+  "Return (list outer-beg outer-end inner-beg inner-end) for table cell."
+  (let (outer-beg outer-end inner-beg inner-end env-beg env-end)
+    (save-excursion
+      (setq env-beg (cdr (evil-tex-env-beginning-begend)))
+      (setq env-end (car (evil-tex-env-end-begend)))
+      ;; back searching won't work if we are on the \section itself
+      (if (ignore-errors (re-search-backward "&|//" env-beg t))
+          (cond
+            ((looking-at "&")    (setq outer-beg (point)
+                                       inner-beg (1+ (point))))
+            ((looking-at "//\n") (setq outer-beg (+ 3 (point))
+                                       inner-beg (+ 4 (point))))
+            ((looking-at "//")   (setq outer-beg (+ 2 (point))
+                                       inner-beg (+ 3 (point)))))
+          (setq outer-beg env-beg inner-beg env-beg))
+      (goto-char inner-beg)
+      (if (ignore-errors (re-search-forward "&|//|\\\\begin" env-end t))
+          (cond
+            ((looking-at "&")    (setq outer-end (point)
+                                       inner-end (1- (point))))
+            ((looking-at "//")   (setq outer-end (point)
+                                       inner-end (- 2 (point))))
+            ((looking-at "\\\\begin")   (progn (LaTeX-find-matching-end))))))))
+ 
 
 ;;; Toggles
 
@@ -496,7 +523,6 @@ Example: (| symbolizes point)
   (list (nth 2 (evil-tex--select-command))
         (nth 3 (evil-tex--select-command))))
 
-
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment."
   (list (car (evil-tex-env-beginning-begend))
@@ -539,6 +565,16 @@ Example: (| symbolizes point)
   :extend-selection nil
   (list (cdr (evil-tex-script-beginning-begend "^"))
         (car (evil-tex-script-end-begend "^"))))
+
+(evil-define-text-object evil-tex-a-table-cell (count &optional beg end type)
+  "Select a LaTeX table cell."
+  (list (nth 0 (evil-tex--select-table-cell))
+        (nth 1 (evil-tex--select-table-cell))))
+
+(evil-define-text-object evil-tex-inner-table-cell (count &optional beg end type)
+  "Select inner LaTeX table cell."
+  (list (nth 2 (evil-tex--select-table-cell))
+        (nth 3 (evil-tex--select-table-cell))))
 
 
 ;;; evil-surround setup
