@@ -803,6 +803,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     (evil-define-key* '(motion normal) keymap
       "[[" #'evil-tex-go-back-section
       "]]" #'evil-tex-go-forward-section)
+    (define-key keymap (kbd "M-n") #'evil-tex-brace-movement)
     keymap)
   "Basic keymap for `evil-tex-mode'.")
 
@@ -859,7 +860,6 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
    which-key-replacement-alist))
 
 (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
-(define-key evil-inner-text-objects-map "$" 'evil-tex-inner-dollar)
 (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-command)
 (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
 (define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
@@ -868,7 +868,6 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-inner-text-objects-map "_" 'evil-tex-inner-subscript)
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
-(define-key evil-outer-text-objects-map "$" 'evil-tex-a-dollar)
 (define-key evil-outer-text-objects-map "c" 'evil-tex-a-command)
 (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
 (define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)

@@ -14,6 +14,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
 - [[#overview][Overview]]
   - [[#text-objects][Text Objects]]
   - [[#toggling][Toggling]]
+  - [[#misc][Misc.]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
   - [[#options-to-enable-and-disable][Options to enable and disable]]
@@ -113,7 +114,15 @@ delimiters, =tsd= will. See [[#configuration][configuration]]. the provided togg
 | mte | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~ |
 | mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~        |
 | mtS | section      | toggle section text object asterisk, e.g. ~\chapter{}~ \Leftrightarrow ~\chapter*{}~    |
+** Misc.
+The binding =M-n= is provided for =cd-latex= like brace movement
 
+=|= marks point.
+
+=\bar{h|}=     -> =M-n= -> =\bar{h}|=
+=\frac{a|}{}=  -> =M-n= -> =\frac{a}{|}=
+=\frac{a|}{b}= -> =M-n= -> =\frac{a}{b|}=
+=\frac{a}{b|}= -> =M-n= -> =\frac{a}{b}|=
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or

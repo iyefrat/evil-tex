@@ -11,7 +11,7 @@ unify =m= and =M= for surround deletion and change, but not insertion
 - Embrace
 - Which-key
 - Snipe
-** TODO Bind the tab-like movement to some key
+** DONE Bind the tab-like movement to some key
 ** TODO Reach out to the original evil-LaTeX-txtobjs author
 ** WAIT bind textobjects on local keymap
 waiting on =evil-surround= issue
