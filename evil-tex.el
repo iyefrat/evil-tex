@@ -479,28 +479,19 @@ Example: (| symbolizes point)
 
 ;;; Text object definitions
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
-(evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
-  "Select inner dollar."
-  :extend-selection nil
-  (evil-select-quote ?$ beg end type count nil))
-
-(evil-define-text-object evil-tex-a-dollar (count &optional beg end type)
-  "Select a dollar."
-  :extend-selection t
-  (evil-select-quote ?$ beg end type count t))
 
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select inner \\[ \\] or \\( \\)."
   :extend-selection nil
-  (evil-select-paren (rx (or "\\(" "\\["))
-                     (rx (or "\\)" "\\]"))
+  (evil-select-paren (rx (or "\\(" "\\[" "$"))
+                     (rx (or "\\)" "\\]" "$"))
                      beg end type count nil))
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
   "Select a \\[ \\] or \\( \\)."
   :extend-selection nil
-  (evil-select-paren (rx (or "\\(" "\\["))
-                     (rx (or "\\)" "\\]"))
+  (evil-select-paren (rx (or "\\(" "\\[" "$"))
+                     (rx (or "\\)" "\\]" "$"))
                      beg end type count t))
 
 (evil-define-text-object evil-tex-a-delim (count &optional beg end type)

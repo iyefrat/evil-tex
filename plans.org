@@ -3,7 +3,7 @@
 * TODO End of the Line
 ** TODO Text object for table cells
 ** TODO fix envs not understanding nesting, adapt delim algorithm
-** TODO unify =$= and =m=, paritally unify =m= and =M=
+** DONE unify =$= and =m=, paritally unify =m= and =M=
 unify =m= and =M= for surround deletion and change, but not insertion
 ** DONE Check customizations suggested in the readme
 ** TODO Add notes about interactions with other packages in readme
