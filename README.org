@@ -116,9 +116,8 @@ delimiters, =tsd= will. See [[#configuration][configuration]]. the provided togg
 | mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~        |
 | mtS | section      | toggle section text object asterisk, e.g. ~\chapter{}~ \Leftrightarrow ~\chapter*{}~    |
 ** Misc.
-The binding =M-n= is provided for =cd-latex= like brace movement
-
-=|= marks point.
+The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement:
+(=|= marks point)
 
 =\bar{h|}=     -> =M-n= -> =\bar{h}|=
 =\frac{a|}{}=  -> =M-n= -> =\frac{a}{|}=
@@ -130,7 +129,7 @@ are defined by functions more complex than regexps, so if you have =evil-embrace
 installed as well, it will still use =evil-surround= for surround bindings.
 
 =evil-tex= also supports =which-key=, and if you are using =ts*= style toggles, it
-plays nice with =evil-snipe= if installed
+plays nicely with =evil-snipe= if installed
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
