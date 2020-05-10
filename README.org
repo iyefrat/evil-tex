@@ -47,6 +47,8 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
 * Installation
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
+
+This package requires =evil=, =cl-lib=, and =auctex=.
 * Overview
 ** Text Objects
 This package defines an increasing number of text objects:
