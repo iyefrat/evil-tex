@@ -15,6 +15,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
   - [[#text-objects][Text Objects]]
   - [[#toggling][Toggling]]
   - [[#misc][Misc.]]
+  - [[#interaction-with-other-packages][Interaction with other packages]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
   - [[#options-to-enable-and-disable][Options to enable and disable]]
@@ -123,6 +124,14 @@ The binding =M-n= is provided for =cd-latex= like brace movement
 =\frac{a|}{}=  -> =M-n= -> =\frac{a}{|}=
 =\frac{a|}{b}= -> =M-n= -> =\frac{a}{b|}=
 =\frac{a}{b|}= -> =M-n= -> =\frac{a}{b}|=
+** Interaction with other packages
+=evil-tex= does not require, but supports =evil-surround=. Many of the text
+objects are defined by functions more complex than regexps, so if you have
+=evil-embrace= installed as well, it will still use =evil-surround= for surround
+bindings.
+
+=evil-tex= also supports =which-key=, and if you are using =ts*= style toggles,
+it plays nice with =evil-snipe= if installed
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
