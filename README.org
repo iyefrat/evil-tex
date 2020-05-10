@@ -96,8 +96,8 @@ The full text object definitions are as follows:
 #+END_SRC LaTeX
 The above rendering might bug out on mobile.
 
-Note that the section objects extends up to the next ~\section{}~ type command
-of equal or higher rank to the one closest to the point from above, and does not
+Note that the section objects extends up to the next ~\section{}~ type command of
+equal or higher rank to the one closest to the point from above, and does not
 distinguish between named and unnamed sections.
 ** Toggling
 There are a few operations one might want to do frequently, but not want to
@@ -125,13 +125,12 @@ The binding =M-n= is provided for =cd-latex= like brace movement
 =\frac{a|}{b}= -> =M-n= -> =\frac{a}{b|}=
 =\frac{a}{b|}= -> =M-n= -> =\frac{a}{b}|=
 ** Interaction with other packages
-=evil-tex= does not require, but supports =evil-surround=. Many of the text
-objects are defined by functions more complex than regexps, so if you have
-=evil-embrace= installed as well, it will still use =evil-surround= for surround
-bindings.
+=evil-tex= does not require, but supports =evil-surround=. Many of the text objects
+are defined by functions more complex than regexps, so if you have =evil-embrace=
+installed as well, it will still use =evil-surround= for surround bindings.
 
-=evil-tex= also supports =which-key=, and if you are using =ts*= style toggles,
-it plays nice with =evil-snipe= if installed
+=evil-tex= also supports =which-key=, and if you are using =ts*= style toggles, it
+plays nice with =evil-snipe= if installed
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
@@ -154,13 +153,13 @@ is documented under the variable ~evil-tex-user-env-map-generator-alist~
   separate line, and surrounding with envs would force separate lines for ~\begin~,
   inner text, and ~\end~.
 
-  If you don't want the  ~\begin{...}~ newline behaviour discribed above,
-  set ~evil-tex-select-newlines-with-envs~ to ~nil~.
-- The toggle bindings are set by default to =mt*=. To turn this off and regain
-  the invaluable =t= mark, set ~evil-tex-toggle-override-m~ to ~nil~.
-- In order to map the toggle bindings to =ts*=, set ~evil-tex-toggle-override-t~
-  to ~t~. This will overide the standard =t= motion, and will rob you of the
-  ability to move to one character before =s= (unless you are willing to do =fsh=).
+  If you don't want the ~\begin{...}~ newline behaviour discribed above, set
+   ~evil-tex-select-newlines-with-envs~ to ~nil~.
+- The toggle bindings are set by default to =mt*=. To turn this off and regain the
+  invaluable =t= mark, set ~evil-tex-toggle-override-m~ to ~nil~.
+- In order to map the toggle bindings to =ts*=, set ~evil-tex-toggle-override-t~ to
+  ~t~. This will overide the standard =t= motion, and will rob you of the ability to
+  move to one character before =s= (unless you are willing to do =fsh=).
 
 *Make sure to set these variables before evil-TeX is loaded!*
 
@@ -169,9 +168,9 @@ is documented under the variable ~evil-tex-user-env-map-generator-alist~
 We would like to thank [[https://github.com/lervag][@lervag]] for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
 which was the main thing we missed about vim. We would also like to thank
 [[https://github.com/hpdeifel/][@hpdeifel]] for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
-package. Lastly, we would like to thank [[i][@hlissner]] helping us with a
-particulary tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this
-plugin would probably not exist.
+package. Lastly, we would like to thank [[i][@hlissner]] helping us with a particulary
+tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this plugin would
+probably not exist.
 
 * Appendix
 ** Environment keymap
@@ -243,13 +242,13 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | 2   | scriptstyle       | yes    |
 | 3   | scriptscriptstyle | yes    |
 ** Delimiter keymap
-| key | delimiter                        |
-|-----+----------------------------------|
+| key | delimiter                      |
+|-----+--------------------------------|
 | b   | ~[foo]~                          |
 | B   | ~\left[foo\right]~               |
 | c   | ~\{foo\}~                        |
 | C   | ~\left\{foo\right\}~             |
-| r   | ~\langle foo\rangle~             |
+| r   | ~\langle foo\rangle~                         |
 | R   | ~\left\langle foo \right\langle~ |
 | p   | ~(foo)~                          |
 | P   | ~\left(foo\right)~               |
