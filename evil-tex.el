@@ -174,7 +174,7 @@ doing 'cie' you're placed on a separate line.")
       (forward-sexp)                   ; goto closing brace
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
-        (forward-line 1))
+        (forward-char))
       (cons beg (point)))))
 
 (defun evil-tex-env-end-begend ()
@@ -192,8 +192,7 @@ doing 'cie' you're placed on a separate line.")
       ;; Now definitely inside the env
       (LaTeX-find-matching-end)        ; we are at closing brace
       (setq end (point))
-      (backward-sexp)                  ; goto opening brace
-      (search-backward "\\")           ; goto backslash
+      (search-backward "\\end")        ; goto backslash
       (when (and evil-tex-select-newlines-with-envs
                  (looking-back "\n" (1- (point))))
         (backward-char))
@@ -329,22 +328,22 @@ a_{n+1}
       ;; back searching won't work if we are on the \section itself
       (if (ignore-errors (re-search-backward "&|//" env-beg t))
           (cond
-            ((looking-at "&")    (setq outer-beg (point)
-                                       inner-beg (1+ (point))))
-            ((looking-at "//\n") (setq outer-beg (+ 3 (point))
-                                       inner-beg (+ 4 (point))))
-            ((looking-at "//")   (setq outer-beg (+ 2 (point))
-                                       inner-beg (+ 3 (point)))))
-          (setq outer-beg env-beg inner-beg env-beg))
+           ((looking-at "&")    (setq outer-beg (point)
+                                      inner-beg (1+ (point))))
+           ((looking-at "//\n") (setq outer-beg (+ 3 (point))
+                                      inner-beg (+ 4 (point))))
+           ((looking-at "//")   (setq outer-beg (+ 2 (point))
+                                      inner-beg (+ 3 (point)))))
+        (setq outer-beg env-beg inner-beg env-beg))
       (goto-char inner-beg)
       (if (ignore-errors (re-search-forward "&|//|\\\\begin" env-end t))
           (cond
-            ((looking-at "&")    (setq outer-end (point)
-                                       inner-end (1- (point))))
-            ((looking-at "//")   (setq outer-end (point)
-                                       inner-end (- 2 (point))))
-            ((looking-at "\\\\begin")   (progn (LaTeX-find-matching-end))))))))
- 
+           ((looking-at "&")    (setq outer-end (point)
+                                      inner-end (1- (point))))
+           ((looking-at "//")   (setq outer-end (point)
+                                      inner-end (- 2 (point))))
+           ((looking-at "\\\\begin")   (progn (LaTeX-find-matching-end))))))))
+
 
 ;;; Toggles
 
