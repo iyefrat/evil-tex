@@ -116,13 +116,13 @@ For vimtex users, or people who don't like the letter =s=, we also provide the
 ability to map the toggles to =ts*= instead, e.g. instead of =mtd= toggling
 delimiters, =tsd= will. See [[#configuration][configuration]]. the provided toggles are:
 
-| Key | Abbreviation | Behaviour                                                                               |
-|-----+--------------+-----------------------------------------------------------------------------------------|
-| mtc | command      | toggle asterisk on command, e.g. ~\foo~ \Leftrightarrow ~\foo*~                         |
-| mtd | delimiter    | toggle between delimiter autosizing, e.g.  ~(foo)~ \Leftrightarrow ~\Left(foo\right)~   |
-| mte | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~ |
-| mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~        |
-| mtS | section      | toggle section text object asterisk, e.g. ~\chapter{}~ \Leftrightarrow ~\chapter*{}~    |
+| Key | Abbreviation | Behaviour                                                                                 |
+|-----+--------------+-------------------------------------------------------------------------------------------|
+| mtc | command      | toggle asterisk on command, e.g. ~\foo~ \Leftrightarrow ~\foo*~                           |
+| mtd | delimiter    | toggle between delimiter autosizing, e.g.  ~(foo)~ \Leftrightarrow ~\Left(foo\right)~     |
+| mte | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~   |
+| mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~          |
+| mtS | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
 ** Misc.
 The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement:
 (=|= marks point)

@@ -231,7 +231,7 @@ following newline if exists.
       (move-beginning-of-line 1)
       (setq inner-end (point))
       (setq outer-end (point))
-      (list outer-beg outer-end inner-beg inner-end))))
+      (list outer-beg outer-end inner-beg inner-end what-section))))
 
 (defun evil-tex--goto-script-prefix (subsup)
   "Return goto end of the found SUBSUP prefix.
@@ -446,14 +446,20 @@ Should be used inside of a 'save-excursion'."
     (delete-overlay an-over) (delete-overlay in-over)))
 
 (defun evil-tex-toggle-section ()
-  "Toggle surrounding section between e.g. \\section{foo} and \\section*{foo}."
-  (let ((an-over (make-overlay (car (evil-tex-a-section)) (cadr (evil-tex-a-section))))
-        (in-over (make-overlay (car (evil-tex-inner-section)) (cadr (evil-tex-inner-section)))))
+  "Enter new name for surrounding section. Meta-n for original name."
+  (let* ((section-info (evil-tex--select-section))
+        (an-over (make-overlay (nth 0 section-info) (nth 1 section-info)))
+        (in-over (make-overlay (nth 2 section-info) (nth 3 section-info)))
+        (section-name (substring-no-properties (nth 4 section-info) 1)))
     (save-excursion
       (goto-char (overlay-start an-over))
       (skip-chars-forward "^{")
-      (backward-char 1)
-      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
+      (let* ((curly (evil-inner-curly))
+            (orig-name (buffer-substring-no-properties (nth 0 curly) (nth 1 curly)))
+            (new-name (read-from-minibuffer (concat section-name " name: ") nil minibuffer-local-ns-map nil nil orig-name)))
+        (replace-region-contents (nth 0 curly)
+                     (nth 1 curly)
+                     (lambda () new-name))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
 
@@ -666,7 +672,7 @@ symbol) until any of them succeeds (returns non-nil.)"
     (cons (concat "\\" command "{") "}")))
 
 (defun evil-tex-prompt-for-env ()
-  "Prompt the user for an env to insert."
+  "Prom{pt} the user for an env to insert."
   (evil-tex-format-env-for-surrounding
    (read-from-minibuffer "env: " nil minibuffer-local-ns-map)))
 
