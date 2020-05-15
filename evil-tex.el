@@ -157,46 +157,36 @@ When non-nil, the newline proceeding \\begin{...} and preceding
 \\end{...} is selected as part of the delimiter. This way, when
 doing 'cie' you're placed on a separate line.")
 
-(defun evil-tex-env-beginning-begend ()
-  "Return (start . end) of the \\begin{foo} of current env.
-
+(defun evil-tex--select-env ()
+  "Return (list outer-beg outer-end inner-beg inner-end) for enviornment object.
+with the -an- text object beign the first and last ^'s,
+ and the -inner- being the inner ones.
 \\begin{equation}
-^               ^"
-  (let (beg)
+^               ^
+foo
+\\end{equation}
+^             ^"
+
+  (let (outer-beg outer-end inner-beg inner-end)
     (save-excursion
-      ;; LaTeX-find-matching-begin doesn't work if on the \begin itself
-      (search-backward "\\" (line-beginning-position) t)
       (unless (looking-at (regexp-quote "\\begin{"))
         (LaTeX-find-matching-begin))
       ;; We are at backslash
-      (setq beg (point))
+      (setq outer-beg (point))
       (skip-chars-forward "^{")        ; goto opening brace
       (forward-sexp)                   ; goto closing brace
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
         (forward-char))
-      (cons beg (point)))))
-
-(defun evil-tex-env-end-begend ()
-  "Return (start . end) of the \\end{foo} of current env.
-
-\\end{equation}
-^             ^"
-  (let (end)
-    (save-excursion
-      ;; LaTeX-find-matching-end doesn't work if on the \begin itself
-      (search-backward "\\" (line-beginning-position) t)
-      (when (looking-at (regexp-quote "\\begin{"))
-        (skip-chars-forward "^{")      ; goto opening brace
-        (forward-sexp))                ; goto closing brace
-      ;; Now definitely inside the env
+      (setq inner-beg (point))
       (LaTeX-find-matching-end)        ; we are at closing brace
-      (setq end (point))
+      (setq outer-end (point))
       (search-backward "\\end")        ; goto backslash
       (when (and evil-tex-select-newlines-with-envs
                  (looking-back "\n" (1- (point))))
         (backward-char))
-      (cons (point) end))))
+      (setq inner-end (point))
+      (list outer-beg outer-end inner-beg inner-end))))
 
 (defvar evil-tex--section-regexp "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
   "Regexp that matches for LaTeX section commands.")
@@ -515,14 +505,13 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment."
-  (list (car (evil-tex-env-beginning-begend))
-        (cdr (evil-tex-env-end-begend))))
+  (list (nth 0 (evil-tex--select-env))
+        (nth 1 (evil-tex--select-env))))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select inner LaTeX environment."
-  :extend-selection nil
-  (list (cdr (evil-tex-env-beginning-begend))
-        (car (evil-tex-env-end-begend))))
+  (list (nth 2 (evil-tex--select-env))
+        (nth 3 (evil-tex--select-env))))
 
 (evil-define-text-object evil-tex-a-section (count &optional beg end type)
   "Select a LaTeX section."

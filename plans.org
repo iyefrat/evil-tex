@@ -2,7 +2,7 @@
 
 * TODO End of the Line
 ** TODO Text object for table cells
-** TODO fix envs not understanding nesting, adapt delim algorithm
+** DONE fix envs not understanding nesting, adapt delim algorithm
 ** DONE unify =$= and =m=, paritally unify =m= and =M=
 unify =m= and =M= for surround deletion and change, but not insertion
 ** DONE Check customizations suggested in the readme
