@@ -166,7 +166,6 @@ with the -an- text object beign the first and last ^'s,
 foo
 \\end{equation}
 ^             ^"
-
   (let (outer-beg outer-end inner-beg inner-end)
     (save-excursion
       (unless (looking-at (regexp-quote "\\begin{"))
@@ -307,32 +306,37 @@ a_{n+1}
       (forward-char)
       (cons (point) (point))))))
 
-
-
 (defun evil-tex--select-table-cell ()
   "Return (list outer-beg outer-end inner-beg inner-end) for table cell."
-  (let (outer-beg outer-end inner-beg inner-end env-beg env-end)
+  (let (outer-beg outer-end inner-beg inner-end env-beg env-end (found-end nil))
     (save-excursion
-      (setq env-beg (cdr (evil-tex-env-beginning-begend)))
-      (setq env-end (car (evil-tex-env-end-begend)))
+      (setq env-beg (nth 2 (evil-tex--select-env)))
+      (setq env-end (nth 3 (evil-tex--select-env)))
       ;; back searching won't work if we are on the \section itself
-      (if (ignore-errors (re-search-backward "&|//" env-beg t))
+      (if (ignore-errors (re-search-backward "&\\|\\\\\\\\" env-beg t))
           (cond
-           ((looking-at "&")    (setq outer-beg (point)
-                                      inner-beg (1+ (point))))
-           ((looking-at "//\n") (setq outer-beg (+ 3 (point))
-                                      inner-beg (+ 4 (point))))
-           ((looking-at "//")   (setq outer-beg (+ 2 (point))
-                                      inner-beg (+ 3 (point)))))
+           ((looking-at "&")          (setq outer-beg (point)
+                                            inner-beg (1+ (point))))
+           ((looking-at "\\\\\\\\\n") (setq outer-beg (+ 3 (point))
+                                            inner-beg (+ 4 (point))))
+           ((looking-at "\\\\\\\\")   (setq outer-beg (+ 2 (point))
+                                            inner-beg (+ 3 (point)))))
         (setq outer-beg env-beg inner-beg env-beg))
       (goto-char inner-beg)
-      (if (ignore-errors (re-search-forward "&|//|\\\\begin" env-end t))
-          (cond
-           ((looking-at "&")    (setq outer-end (point)
-                                      inner-end (1- (point))))
-           ((looking-at "//")   (setq outer-end (point)
-                                      inner-end (- 2 (point))))
-           ((looking-at "\\\\begin")   (progn (LaTeX-find-matching-end))))))))
+      (while (not found-end)
+        (if (ignore-errors (re-search-forward "&\\|\\\\\\\\\\|\\\\begin" env-end t))
+            (progn
+              (backward-char)
+              (cond
+               ((looking-at "&")      (setq outer-end (1+ (point))
+                                            inner-end (point)
+                                            found-end t))
+               ((looking-at "\\\\")   (setq outer-end (1+ (point))
+                                            inner-end (1- (point))
+                                            found-end t))
+               ((looking-at "n")      (LaTeX-find-matching-end))))
+          (setq outer-end env-end inner-end env-end found-end t)))
+      (list outer-beg outer-end inner-beg inner-end))))
 
 
 ;;; Toggles
@@ -854,6 +858,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-inner-text-objects-map "S" 'evil-tex-inner-section)
 (define-key evil-inner-text-objects-map "^" 'evil-tex-inner-superscript)
 (define-key evil-inner-text-objects-map "_" 'evil-tex-inner-subscript)
+(define-key evil-inner-text-objects-map "T" 'evil-tex-inner-table-cell)
 
 (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
 (define-key evil-outer-text-objects-map "c" 'evil-tex-a-command)
@@ -862,6 +867,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
 (define-key evil-outer-text-objects-map "^" 'evil-tex-a-superscript)
 (define-key evil-outer-text-objects-map "_" 'evil-tex-a-subscript)
+(define-key evil-outer-text-objects-map "T" 'evil-tex-a-table-cell)
 
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
@@ -872,7 +878,8 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     (?d . ,#'evil-tex-surround-delim-prompt)
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt)
     (?^ "^{" . "}")
-    (?_ "_{" . "}"))
+    (?_ "_{" . "}")
+    (?T "&" . "&"))
   "Mappings to be used in evil-surround as an interface to evil-tex.
 
 See `evil-surround-pairs-alist' for the format.")
