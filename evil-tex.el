@@ -467,7 +467,7 @@ Should be used inside of a 'save-excursion'."
                                   ": ")
                                  (propertize orig-name 'face 'shadow)
                                  'evil-tex-section-name-history
-                                 nil t))))
+                                 orig-name t))))
         (goto-char (nth 0 curly))
         (delete-region (nth 0 curly) (nth 1 curly))
         (insert new-name)))))
