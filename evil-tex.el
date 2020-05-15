@@ -308,20 +308,35 @@ a_{n+1}
 
 (defun evil-tex--select-table-cell ()
   "Return (list outer-beg outer-end inner-beg inner-end) for table cell."
-  (let (outer-beg outer-end inner-beg inner-end env-beg env-end (found-end nil))
+  (let (
+        outer-beg outer-end
+        inner-beg inner-end
+        env-beg env-end
+        (found-beg nil) (found-end nil))
     (save-excursion
       (setq env-beg (nth 2 (evil-tex--select-env)))
       (setq env-end (nth 3 (evil-tex--select-env)))
-      ;; back searching won't work if we are on the \section itself
-      (if (ignore-errors (re-search-backward "&\\|\\\\\\\\" env-beg t))
+      (when (or (> env-beg (point)) (< env-end (point))) ;; for when you are on \begin or \end of a sub-env.
+        (save-excursion
+          (goto-char (1- (nth 0 (evil-tex--select-env))))
+          (setq env-beg (nth 2 (evil-tex--select-env)))
+          (setq env-end (nth 3 (evil-tex--select-env)))))
+      (while (not found-beg)
+      (if (ignore-errors (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t))
           (cond
            ((looking-at "&")          (setq outer-beg (point)
-                                            inner-beg (1+ (point))))
+                                            inner-beg (1+ (point))
+                                            found-beg t))
            ((looking-at "\\\\\\\\\n") (setq outer-beg (+ 3 (point))
-                                            inner-beg (+ 4 (point))))
+                                            inner-beg (+ 4 (point))
+                                            found-beg t))
            ((looking-at "\\\\\\\\")   (setq outer-beg (+ 2 (point))
-                                            inner-beg (+ 3 (point)))))
-        (setq outer-beg env-beg inner-beg env-beg))
+                                            inner-beg (+ 3 (point))
+                                            found-beg t))
+           ((looking-at "\\\\end")    (LaTeX-find-matching-begin)))
+           (setq outer-beg env-beg
+                 inner-beg env-beg
+                 found-beg t)))
       (goto-char inner-beg)
       (while (not found-end)
         (if (ignore-errors (re-search-forward "&\\|\\\\\\\\\\|\\\\begin" env-end t))
@@ -335,7 +350,9 @@ a_{n+1}
                                             inner-end (1- (point))
                                             found-end t))
                ((looking-at "n")      (LaTeX-find-matching-end))))
-          (setq outer-end env-end inner-end env-end found-end t)))
+          (setq outer-end env-end
+                inner-end env-end
+                found-end t)))
       (list outer-beg outer-end inner-beg inner-end))))
 
 
