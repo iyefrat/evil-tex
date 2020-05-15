@@ -249,13 +249,13 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | 2   | scriptstyle       | yes    |
 | 3   | scriptscriptstyle | yes    |
 ** Delimiter keymap
-| key | delimiter                      |
-|-----+--------------------------------|
+| key | delimiter                        |
+|-----+----------------------------------|
 | b   | ~[foo]~                          |
 | B   | ~\left[foo\right]~               |
 | c   | ~\{foo\}~                        |
 | C   | ~\left\{foo\right\}~             |
-| r   | ~\langle foo\rangle~                         |
+| r   | ~\langle foo\rangle~             |
 | R   | ~\left\langle foo \right\langle~ |
 | p   | ~(foo)~                          |
 | P   | ~\left(foo\right)~               |
