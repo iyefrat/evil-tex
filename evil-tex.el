@@ -202,13 +202,15 @@ foo
    ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 
 (defun evil-tex--select-section ()
-  "Return (outer-beg outer-end inner-beg inner-end) for section object.
+  "Return (outer-beg outer-end inner-beg inner-end type) for section object.
 
 The outer -an- variant is defined from the first character of the
 \\section{} command, to the line above the next \\section{}
 command of equal or higher rank, e.g. \\chapter{}. The inner
 variant starts after the end of the command, and respects a
 following newline if exists.
+
+type is the type of the heading, e.g subsection, chapter*.
 
 \\section{} and \\section*{} are treated the same."
   (let (outer-beg outer-end inner-beg inner-end what-section)
