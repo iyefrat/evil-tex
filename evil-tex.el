@@ -447,22 +447,30 @@ Should be used inside of a 'save-excursion'."
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
+(defvar evil-tex-section-name-history nil
+  "History used for changing section names with `evil-tex-toggle-section'.")
+
 (defun evil-tex-toggle-section ()
   "Enter new name for surrounding section. Meta-n for original name."
-  (let* ((section-info (evil-tex--select-section))
-         (an-over (make-overlay (nth 0 section-info) (nth 1 section-info)))
-         (in-over (make-overlay (nth 2 section-info) (nth 3 section-info)))
-         (section-name (substring-no-properties (nth 4 section-info) 1)))
+  (let ((section-info (evil-tex--select-section)))
     (save-excursion
-      (goto-char (overlay-start an-over))
+      (goto-char (nth 0 section-info))
       (skip-chars-forward "^{")
-      (let* ((curly (evil-inner-curly))
-             (orig-name (buffer-substring-no-properties (nth 0 curly) (nth 1 curly)))
-             (new-name (read-from-minibuffer (concat section-name " name: ") nil minibuffer-local-ns-map nil nil orig-name)))
-        (replace-region-contents (nth 0 curly)
-                                 (nth 1 curly)
-                                 (lambda () new-name))))
-    (delete-overlay an-over) (delete-overlay in-over)))
+      (when-let ((curly (evil-inner-curly))
+                 (orig-name (buffer-substring-no-properties
+                             (nth 0 curly) (nth 1 curly)))
+                 (new-name
+                  (minibuffer-with-setup-hook
+                      (lambda () (add-hook 'pre-command-hook #'evil-ex-remove-default))
+                    (read-string (concat
+                                  (substring-no-properties (nth 4 section-info) 1)
+                                  ": ")
+                                 (propertize orig-name 'face 'shadow)
+                                 'evil-tex-section-name-history
+                                 nil t))))
+        (goto-char (nth 0 curly))
+        (delete-region (nth 0 curly) (nth 1 curly))
+        (insert new-name)))))
 
 
 ;;; Some movement commands
