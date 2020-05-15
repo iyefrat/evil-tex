@@ -322,7 +322,12 @@ a_{n+1}
           (setq env-beg (nth 2 (evil-tex--select-env)))
           (setq env-end (nth 3 (evil-tex--select-env)))))
       (while (not found-beg)
-      (if (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t)
+        (cond ;; incase we are already at &
+           ((looking-at "&")          (setq outer-beg (point)
+                                            inner-beg (1+ (point))
+                                            found-beg t)))
+        (unless found-beg
+          (if (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t)
           (cond
            ((looking-at "&")          (setq outer-beg (point)
                                             inner-beg (1+ (point))
@@ -336,7 +341,7 @@ a_{n+1}
            ((looking-at "\\\\end")    (LaTeX-find-matching-begin)))
            (setq outer-beg env-beg
                  inner-beg env-beg
-                 found-beg t)))
+                 found-beg t))))
       (goto-char inner-beg)
       (while (not found-end)
         (if (re-search-forward "&\\|\\\\\\\\\\|\\\\begin" env-end t)
