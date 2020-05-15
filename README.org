@@ -60,10 +60,11 @@ This package defines an increasing number of text objects:
 | ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
 | ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]].               |                                            |
 | ~d~ | delimiters      | Math delimiters, ~(foo), \left(foo\right), [foo], \left[foo\right]~ etc. | Prompts you with [[#delimiter-keymap][the delim keymap]]          |
-| ~S~ | sections        | LaTeX parts, chapters, (sub)sections, and (sub)paragraphs            |               |
+| ~S~ | sections        | LaTeX parts, chapters, (sub)sections, and (sub)paragraphs                |                                            |
 | ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                                      | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |
 | ~^~ | superscript     | ~x^a~ ~x^\alpha~ ~x^{...}~                                               | Surrounds with ~^{ }~                      |
-| ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surroudns with ~_{ }~                      |
+| ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surrounds with ~_{ }~                      |
+| ~T~ | table cell      | LaTeX table/align cells, e.g. ~&foo&~.                                   | Surrounds with ~& &~                       |
 
 The full text object definitions are as follows:
 
@@ -94,7 +95,12 @@ The full text object definitions are as follows:
      \chapter*{bar}        \chapter*{bar}
 
     a^{foo}    a^{foo}    a^b    a^b    a^\bar    a^\bar
-     └────┘       └─┘      └╵      ╵     └───┘      └──┘
+     └────┘       └─┘      └╵      ╵     └───┘      └──┘ 
+       a^          i^      a^      i^     a^         i^
+       
+    & foobar &    & foobar &    & foobar \\    & foobar \\    
+    └────────┘     └──────┘     └─────────┘     └──────┘  
+        aT            iT            aT            iT
 #+END_SRC LaTeX
 The above rendering might bug out on mobile.
 
