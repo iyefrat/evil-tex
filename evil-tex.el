@@ -127,14 +127,14 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
         beg-inner end-inner (is-empty nil))
     (save-excursion
       (goto-char beg-an)
-      (if (ignore-errors (re-search-forward "{\\|\\[" end-an))
+      (if (re-search-forward "{\\|\\[" end-an t)
           (setq evil-tex--last-command-empty nil)
         (setq evil-tex--last-command-empty t)))
     (unless beg-an
       (user-error "No surrounding command found"))
     (save-excursion
       (goto-char beg-an)
-      (if (ignore-errors (re-search-forward "{\\|\\[" end-an))
+      (if (re-search-forward "{\\|\\[" end-an t)
           (setq beg-inner (point))
         (setq beg-inner end-an))) ;goto opeing brace if exists.
     (save-excursion
@@ -322,7 +322,7 @@ a_{n+1}
           (setq env-beg (nth 2 (evil-tex--select-env)))
           (setq env-end (nth 3 (evil-tex--select-env)))))
       (while (not found-beg)
-      (if (ignore-errors (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t))
+      (if (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t)
           (cond
            ((looking-at "&")          (setq outer-beg (point)
                                             inner-beg (1+ (point))
@@ -339,7 +339,7 @@ a_{n+1}
                  found-beg t)))
       (goto-char inner-beg)
       (while (not found-end)
-        (if (ignore-errors (re-search-forward "&\\|\\\\\\\\\\|\\\\begin" env-end t))
+        (if (re-search-forward "&\\|\\\\\\\\\\|\\\\begin" env-end t)
             (progn
               (backward-char)
               (cond
