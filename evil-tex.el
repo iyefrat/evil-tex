@@ -323,25 +323,25 @@ a_{n+1}
           (setq env-end (nth 3 (evil-tex--select-env)))))
       (while (not found-beg)
         (cond ;; incase we are already at &
-           ((looking-at "&")          (setq outer-beg (point)
-                                            inner-beg (1+ (point))
-                                            found-beg t)))
+         ((looking-at "&")          (setq outer-beg (point)
+                                          inner-beg (1+ (point))
+                                          found-beg t)))
         (unless found-beg
           (if (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t)
-          (cond
-           ((looking-at "&")          (setq outer-beg (point)
-                                            inner-beg (1+ (point))
-                                            found-beg t))
-           ((looking-at "\\\\\\\\\n") (setq outer-beg (+ 3 (point))
-                                            inner-beg (+ 4 (point))
-                                            found-beg t))
-           ((looking-at "\\\\\\\\")   (setq outer-beg (+ 2 (point))
-                                            inner-beg (+ 3 (point))
-                                            found-beg t))
-           ((looking-at "\\\\end")    (LaTeX-find-matching-begin)))
-           (setq outer-beg env-beg
-                 inner-beg env-beg
-                 found-beg t))))
+              (cond
+               ((looking-at "&")          (setq outer-beg (point)
+                                                inner-beg (1+ (point))
+                                                found-beg t))
+               ((looking-at "\\\\\\\\\n") (setq outer-beg (+ 3 (point))
+                                                inner-beg (+ 4 (point))
+                                                found-beg t))
+               ((looking-at "\\\\\\\\")   (setq outer-beg (+ 2 (point))
+                                                inner-beg (+ 3 (point))
+                                                found-beg t))
+               ((looking-at "\\\\end")    (LaTeX-find-matching-begin)))
+            (setq outer-beg env-beg
+                  inner-beg env-beg
+                  found-beg t))))
       (goto-char inner-beg)
       (while (not found-end)
         (if (re-search-forward "&\\|\\\\\\\\\\|\\\\begin" env-end t)
@@ -448,18 +448,18 @@ Should be used inside of a 'save-excursion'."
 (defun evil-tex-toggle-section ()
   "Enter new name for surrounding section. Meta-n for original name."
   (let* ((section-info (evil-tex--select-section))
-        (an-over (make-overlay (nth 0 section-info) (nth 1 section-info)))
-        (in-over (make-overlay (nth 2 section-info) (nth 3 section-info)))
-        (section-name (substring-no-properties (nth 4 section-info) 1)))
+         (an-over (make-overlay (nth 0 section-info) (nth 1 section-info)))
+         (in-over (make-overlay (nth 2 section-info) (nth 3 section-info)))
+         (section-name (substring-no-properties (nth 4 section-info) 1)))
     (save-excursion
       (goto-char (overlay-start an-over))
       (skip-chars-forward "^{")
       (let* ((curly (evil-inner-curly))
-            (orig-name (buffer-substring-no-properties (nth 0 curly) (nth 1 curly)))
-            (new-name (read-from-minibuffer (concat section-name " name: ") nil minibuffer-local-ns-map nil nil orig-name)))
+             (orig-name (buffer-substring-no-properties (nth 0 curly) (nth 1 curly)))
+             (new-name (read-from-minibuffer (concat section-name " name: ") nil minibuffer-local-ns-map nil nil orig-name)))
         (replace-region-contents (nth 0 curly)
-                     (nth 1 curly)
-                     (lambda () new-name))))
+                                 (nth 1 curly)
+                                 (lambda () new-name))))
     (delete-overlay an-over) (delete-overlay in-over)))
 
 
