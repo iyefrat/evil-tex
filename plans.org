@@ -1,5 +1,4 @@
 #+TITLE: Plans
-
 * TODO End of the Line
 ** DONE Text object for table cells
 ** DONE fix envs not understanding nesting, adapt delim algorithm
@@ -14,7 +13,7 @@ unify =m= and =M= for surround deletion and change, but not insertion
 ** DONE Bind the tab-like movement to some key
 ** DONE change =mtS= functionality to change name of section
 ** TODO fix sub/superscript textobjects
-** TODO Reach out to the original evil-LaTeX-txtobjs author
+** DONE Reach out to the original evil-LaTeX-txtobjs author
 ** WAIT bind textobjects on local keymap
 waiting on =evil-surround= issue
 ** TODO Go over all documentation, and make it better
