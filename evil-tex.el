@@ -510,6 +510,15 @@ Example: (| symbolizes point)
 
 ;;; Text object definitions
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
+(evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
+  "Select inner dollar."
+  :extend-selection nil
+  (evil-select-paren "QQ" "QQ" beg end type count nil))
+
+(evil-define-text-object evil-tex-a-dollar (count &optional beg end type)
+  "Select a dollar."
+  :extend-selection t
+  (evil-select-paren "QQ" "QQ" beg end type count t))
 
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select inner \\[ \\] or \\( \\)."
@@ -896,7 +905,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   "Outer text object keymap for `evil-tex-mode'.")
 
 (define-key evil-tex-inner-text-objects-map "e" #'evil-tex-inner-env)
-(define-key evil-tex-inner-text-objects-map "$" #'evil-tex-inner-dollar)
+(define-key evil-tex-inner-text-objects-map "Q" #'evil-tex-inner-dollar)
 (define-key evil-tex-inner-text-objects-map "c" #'evil-tex-inner-command)
 (define-key evil-tex-inner-text-objects-map "m" #'evil-tex-inner-math)
 (define-key evil-tex-inner-text-objects-map "d" #'evil-tex-inner-delim)
@@ -905,7 +914,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-tex-inner-text-objects-map "_" #'evil-tex-inner-subscript)
 
 (define-key evil-tex-outer-text-objects-map "e" #'evil-tex-an-env)
-(define-key evil-tex-outer-text-objects-map "$" #'evil-tex-a-dollar)
+(define-key evil-tex-outer-text-objects-map "Q" #'evil-tex-a-dollar)
 (define-key evil-tex-outer-text-objects-map "c" #'evil-tex-a-command)
 (define-key evil-tex-outer-text-objects-map "m" #'evil-tex-a-math)
 (define-key evil-tex-outer-text-objects-map "d" #'evil-tex-a-delim)
@@ -917,10 +926,10 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-operator-state-local-map "ie" #'evil-tex-inner-env)
 (define-key evil-visual-state-local-map   "ae" #'evil-tex-an-env)
 (define-key evil-operator-state-local-map "ae" #'evil-tex-an-env)
-(define-key evil-visual-state-local-map   "i$" #'evil-tex-inner-dollar)
-(define-key evil-operator-state-local-map "i$" #'evil-tex-inner-dollar)
-(define-key evil-visual-state-local-map   "a$" #'evil-tex-a-dollar)
-(define-key evil-operator-state-local-map "a$" #'evil-tex-a-dollar)
+(define-key evil-visual-state-local-map   "iQ" #'evil-tex-inner-dollar)
+(define-key evil-operator-state-local-map "iQ" #'evil-tex-inner-dollar)
+(define-key evil-visual-state-local-map   "aQ" #'evil-tex-a-dollar)
+(define-key evil-operator-state-local-map "aQ" #'evil-tex-a-dollar)
 (define-key evil-visual-state-local-map   "ic" #'evil-tex-inner-command)
 (define-key evil-operator-state-local-map "ic" #'evil-tex-inner-command)
 (define-key evil-visual-state-local-map   "ac" #'evil-tex-a-command)
@@ -946,13 +955,25 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 (define-key evil-visual-state-local-map   "a_" #'evil-tex-a-subscript)
 (define-key evil-operator-state-local-map "a_" #'evil-tex-a-subscript)
 
+(defun evil-org--populate-textobjects-bindings ()
+  "Text objects."
+  (evil-define-key '(visual operator) evil-org-mode-map
+    "ae" #'evil-org-an-object
+    "ie" #'evil-org-inner-object
+    "aE" #'evil-org-an-element
+    "iE" #'evil-org-inner-element
+    "ir" #'evil-org-inner-greater-element
+    "ar" #'evil-org-a-greater-element
+    "aR" #'evil-org-a-subtree
+    "iR" #'evil-org-inner-subtree))
+
 (setq evil-surround-inner-text-object-map-local-list (list evil-tex-inner-text-objects-map ))
 (setq evil-surround-outer-text-object-map-local-list (list evil-tex-outer-text-objects-map ))
 
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
-    (?$ "$" . "$")
+    (?Q "QQ" . "QQ")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
     (?d . ,#'evil-tex-surround-delim-prompt)
