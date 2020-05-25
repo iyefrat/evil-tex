@@ -510,10 +510,6 @@ Example: (| symbolizes point)
 
 ;;; Text object definitions
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
-(evil-define-text-object evil-tex-inner-dollar (count &optional beg end type)
-  "Select inner dollar."
-  :extend-selection nil
-  (evil-select-paren "QQ" "QQ" beg end type count nil))
 
 (evil-define-text-object evil-tex-a-dollar (count &optional beg end type)
   "Select a dollar."
@@ -903,77 +899,69 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defvar evil-tex-outer-text-objects-map (make-sparse-keymap)
   "Outer text object keymap for `evil-tex-mode'.")
+(if (boundp  'evil-surround-local-inner-text-object-map-list)
+    (progn ;; deifines everything on local keymaps if evil-surround is new enough
+      (define-key evil-tex-inner-text-objects-map "e" #'evil-tex-inner-env)
+      (define-key evil-tex-inner-text-objects-map "c" #'evil-tex-inner-command)
+      (define-key evil-tex-inner-text-objects-map "m" #'evil-tex-inner-math)
+      (define-key evil-tex-inner-text-objects-map "d" #'evil-tex-inner-delim)
+      (define-key evil-tex-inner-text-objects-map "S" #'evil-tex-inner-section)
+      (define-key evil-tex-inner-text-objects-map "^" #'evil-tex-inner-superscript)
+      (define-key evil-tex-inner-text-objects-map "_" #'evil-tex-inner-subscript)
+      (define-key evil-tex-inner-text-objects-map "T" #'evil-tex-inner-table-cell)
 
-(define-key evil-tex-inner-text-objects-map "e" #'evil-tex-inner-env)
-(define-key evil-tex-inner-text-objects-map "Q" #'evil-tex-inner-dollar)
-(define-key evil-tex-inner-text-objects-map "c" #'evil-tex-inner-command)
-(define-key evil-tex-inner-text-objects-map "m" #'evil-tex-inner-math)
-(define-key evil-tex-inner-text-objects-map "d" #'evil-tex-inner-delim)
-(define-key evil-tex-inner-text-objects-map "S" #'evil-tex-inner-section)
-(define-key evil-tex-inner-text-objects-map "^" #'evil-tex-inner-superscript)
-(define-key evil-tex-inner-text-objects-map "_" #'evil-tex-inner-subscript)
+      (define-key evil-tex-outer-text-objects-map "e" #'evil-tex-an-env)
+      (define-key evil-tex-outer-text-objects-map "c" #'evil-tex-a-command)
+      (define-key evil-tex-outer-text-objects-map "m" #'evil-tex-a-math)
+      (define-key evil-tex-outer-text-objects-map "d" #'evil-tex-a-delim)
+      (define-key evil-tex-outer-text-objects-map "S" #'evil-tex-a-section)
+      (define-key evil-tex-outer-text-objects-map "^" #'evil-tex-a-superscript)
+      (define-key evil-tex-outer-text-objects-map "_" #'evil-tex-a-subscript)
+      (define-key evil-tex-outer-text-objects-map "T" #'evil-tex-a-table-cell)
 
-(define-key evil-tex-outer-text-objects-map "e" #'evil-tex-an-env)
-(define-key evil-tex-outer-text-objects-map "Q" #'evil-tex-a-dollar)
-(define-key evil-tex-outer-text-objects-map "c" #'evil-tex-a-command)
-(define-key evil-tex-outer-text-objects-map "m" #'evil-tex-a-math)
-(define-key evil-tex-outer-text-objects-map "d" #'evil-tex-a-delim)
-(define-key evil-tex-outer-text-objects-map "S" #'evil-tex-a-section)
-(define-key evil-tex-outer-text-objects-map "^" #'evil-tex-a-superscript)
-(define-key evil-tex-outer-text-objects-map "_" #'evil-tex-a-subscript)
+      (evil-define-key '(visual operator) 'evil-tex-mode
+        "ie" #'evil-tex-inner-env
+        "ae" #'evil-tex-an-env
+        "ic" #'evil-tex-inner-command
+        "ac" #'evil-tex-a-command
+        "im" #'evil-tex-inner-math
+        "am" #'evil-tex-a-math
+        "id" #'evil-tex-inner-delim
+        "ad" #'evil-tex-a-delim
+        "iS" #'evil-tex-inner-section
+        "aS" #'evil-tex-a-section
+        "i^" #'evil-tex-inner-superscript
+        "a^" #'evil-tex-a-superscript
+        "i_" #'evil-tex-inner-subscript
+        "a_" #'evil-tex-a-subscript
+        "iT" #'evil-tex-inner-table-cell
+        "aT" #'evil-tex-a-table-cell)
 
-(define-key evil-visual-state-local-map   "ie" #'evil-tex-inner-env)
-(define-key evil-operator-state-local-map "ie" #'evil-tex-inner-env)
-(define-key evil-visual-state-local-map   "ae" #'evil-tex-an-env)
-(define-key evil-operator-state-local-map "ae" #'evil-tex-an-env)
-(define-key evil-visual-state-local-map   "iQ" #'evil-tex-inner-dollar)
-(define-key evil-operator-state-local-map "iQ" #'evil-tex-inner-dollar)
-(define-key evil-visual-state-local-map   "aQ" #'evil-tex-a-dollar)
-(define-key evil-operator-state-local-map "aQ" #'evil-tex-a-dollar)
-(define-key evil-visual-state-local-map   "ic" #'evil-tex-inner-command)
-(define-key evil-operator-state-local-map "ic" #'evil-tex-inner-command)
-(define-key evil-visual-state-local-map   "ac" #'evil-tex-a-command)
-(define-key evil-operator-state-local-map "ac" #'evil-tex-a-command)
-(define-key evil-visual-state-local-map   "im" #'evil-tex-inner-math)
-(define-key evil-operator-state-local-map "im" #'evil-tex-inner-math)
-(define-key evil-visual-state-local-map   "am" #'evil-tex-a-math)
-(define-key evil-operator-state-local-map "am" #'evil-tex-a-math)
-(define-key evil-visual-state-local-map   "id" #'evil-tex-inner-delim)
-(define-key evil-operator-state-local-map "id" #'evil-tex-inner-delim)
-(define-key evil-visual-state-local-map   "ad" #'evil-tex-a-delim)
-(define-key evil-operator-state-local-map "ad" #'evil-tex-a-delim)
-(define-key evil-visual-state-local-map   "iS" #'evil-tex-inner-section)
-(define-key evil-operator-state-local-map "iS" #'evil-tex-inner-section)
-(define-key evil-visual-state-local-map   "aS" #'evil-tex-a-section)
-(define-key evil-operator-state-local-map "aS" #'evil-tex-a-section)
-(define-key evil-visual-state-local-map   "i^" #'evil-tex-inner-superscript)
-(define-key evil-operator-state-local-map "i^" #'evil-tex-inner-superscript)
-(define-key evil-visual-state-local-map   "a^" #'evil-tex-a-superscript)
-(define-key evil-operator-state-local-map "a^" #'evil-tex-a-superscript)
-(define-key evil-visual-state-local-map   "i_" #'evil-tex-inner-subscript)
-(define-key evil-operator-state-local-map "i_" #'evil-tex-inner-subscript)
-(define-key evil-visual-state-local-map   "a_" #'evil-tex-a-subscript)
-(define-key evil-operator-state-local-map "a_" #'evil-tex-a-subscript)
+      (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map ))
+      (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map )))
+  ;; pollutes the global namespace if evil-surround is too old
+  (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
+  (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-command)
+  (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
+  (define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
+  (define-key evil-inner-text-objects-map "S" 'evil-tex-inner-section)
+  (define-key evil-inner-text-objects-map "^" 'evil-tex-inner-superscript)
+  (define-key evil-inner-text-objects-map "_" 'evil-tex-inner-subscript)
+  (define-key evil-inner-text-objects-map "T" 'evil-tex-inner-table-cell)
 
-(defun evil-org--populate-textobjects-bindings ()
-  "Text objects."
-  (evil-define-key '(visual operator) evil-org-mode-map
-    "ae" #'evil-org-an-object
-    "ie" #'evil-org-inner-object
-    "aE" #'evil-org-an-element
-    "iE" #'evil-org-inner-element
-    "ir" #'evil-org-inner-greater-element
-    "ar" #'evil-org-a-greater-element
-    "aR" #'evil-org-a-subtree
-    "iR" #'evil-org-inner-subtree))
+  (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
+  (define-key evil-outer-text-objects-map "c" 'evil-tex-a-command)
+  (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
+  (define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)
+  (define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
+  (define-key evil-outer-text-objects-map "^" 'evil-tex-a-superscript)
+  (define-key evil-outer-text-objects-map "_" 'evil-tex-a-subscript)
+  (define-key evil-outer-text-objects-map "T" 'evil-tex-a-table-cell))
 
-(setq evil-surround-inner-text-object-map-local-list (list evil-tex-inner-text-objects-map ))
-(setq evil-surround-outer-text-object-map-local-list (list evil-tex-outer-text-objects-map ))
 
 (defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
-    (?Q "QQ" . "QQ")
     (?c . ,#'evil-tex-surround-command-prompt)
     (?e . ,#'evil-tex-surround-env-prompt)
     (?d . ,#'evil-tex-surround-delim-prompt)

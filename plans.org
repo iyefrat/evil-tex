@@ -14,7 +14,7 @@ unify =m= and =M= for surround deletion and change, but not insertion
 ** DONE change =mtS= functionality to change name of section
 ** TODO fix sub/superscript textobjects
 ** DONE Reach out to the original evil-LaTeX-txtobjs author
-** WAIT bind textobjects on local keymap
+** DONE bind textobjects on local keymap
 waiting on =evil-surround= issue
 ** TODO Go over all documentation, and make it better
 Particularly the one under ~define-minor-mode~.

@@ -132,7 +132,7 @@ The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement:
 =\frac{a|}{b}= -> =M-n= -> =\frac{a}{b|}=
 =\frac{a}{b|}= -> =M-n= -> =\frac{a}{b}|=
 ** Interaction with other packages
-=evil-tex= does not require, but supports =evil-surround=. Many of the text objects
+=evil-tex= does not require, but supports =evil-surround= (using git HEAD is preferred, but not required). Many of the text objects
 are defined by functions more complex than regexps, so if you have =evil-embrace=
 installed as well, it will still use =evil-surround= for surround bindings.
 
