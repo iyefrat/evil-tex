@@ -2,11 +2,11 @@
 #+DATE:    February 1, 2020
 #+STARTUP: inlineimages nofold
 
-LaTeX integration for =evil-mode=. Provides text objects that work well with
-=evil-surround=, LaTeX oriented section movement, prompts for quickly
-entering environments or [[https://github.com/cdominik/cdlatex][cdlatex]] like accents, and useful toggles.
+evil toolbox for LaTeX editing. Provides many text objects fully utilizing
+[[https://github.com/emacs-evil/evil-surround][evil-surround]], some useful movements, and keymaps for quickly entering
+environments or [[https://github.com/cdominik/cdlatex][cdlatex]]-like accents. And useful toggles.
 
-Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]].
+Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]].
 
 * Table of Contents :TOC_3:noexport:
 - [[#incomplete-showcase][Incomplete Showcase]]
@@ -15,15 +15,18 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
   - [[#text-objects][Text Objects]]
   - [[#toggling][Toggling]]
   - [[#misc][Misc.]]
+    - [[#m-n][=M-n=]]
+    - [[#-and-][=]]= and =[[=]]
   - [[#interaction-with-other-packages][Interaction with other packages]]
 - [[#configuration][Configuration]]
   - [[#binding-new-envsaccents-to-the-keymaps][Binding new envs/accents to the keymaps]]
-  - [[#options-to-enable-and-disable][Options to enable and disable]]
+  - [[#options-to-toggle][Options to toggle]]
 - [[#acknowledgements][Acknowledgements]]
 - [[#appendix][Appendix]]
-  - [[#environment-keymap][Environment keymap]]
-  - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
-  - [[#delimiter-keymap][Delimiter keymap]]
+  - [[#keymaps][Keymaps]]
+    - [[#environment-keymap][Environment keymap]]
+    - [[#cdlatex-accent-keymap][cdlatex accent keymap]]
+    - [[#delimiter-keymap][Delimiter keymap]]
 
 * Incomplete Showcase
 =|= marks point.
@@ -48,7 +51,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]. Successor of [
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
 
-This package requires =evil=, =cl-lib=, and =auctex=.
+This package requires =evil= and =auctex=.
 * Overview
 ** Text Objects
 This package defines an increasing number of text objects:
@@ -102,19 +105,20 @@ The full text object definitions are as follows:
     └────────┘     └──────┘     └─────────┘     └──────┘  
         aT            iT            aT            iT
 #+END_SRC LaTeX
-The above rendering might bug out on mobile.
+/The diagram rendering might bug out on mobile./
 
-Note that the section objects extends up to the next ~\section{}~ type command of
-equal or higher rank to the one closest to the point from above, and does not
+/Note/: the section objects extends up to the next ~\section{}~ type command
+of equal or higher rank to the one closest to the point from above, and does not
 distinguish between named and unnamed sections.
 ** Toggling
-There are a few operations one might want to do frequently, but not want to
-press many keys for. To this end we provide a few toggles, bound by default to
-=mt*= (for /"magnificent toggle"/), as you have 25 other marks to choose from.
+There are a few operations one might want to toggle between frequently, without
+pressing too many keys. To this end we provide a few toggles, bound by default
+to =mt*= (for /"magnificent toggle"/), as you have 25 other marks to choose
+from.
 
-For vimtex users, or people who don't like the letter =s=, we also provide the
-ability to map the toggles to =ts*= instead, e.g. instead of =mtd= toggling
-delimiters, =tsd= will. See [[#configuration][configuration]]. the provided toggles are:
+For vimtex users, or people who have something against the letter =s=, we also
+provide the ability to map the toggles to =ts= instead of =mt= e.g. instead of
+=mtd= toggling delimiters, =tsd= will. See [[#configuration][configuration]]. The toggles are:
 
 | Key | Abbreviation | Behaviour                                                                                 |
 |-----+--------------+-------------------------------------------------------------------------------------------|
@@ -124,25 +128,28 @@ delimiters, =tsd= will. See [[#configuration][configuration]]. the provided togg
 | mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~          |
 | mtS | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
 ** Misc.
-The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement:
-(=|= marks point)
+*** =M-n=
+The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement, useful
+for quick navigation in marco arguments without going to normal mode.
 
-=\bar{h|}=     -> =M-n= -> =\bar{h}|=
-=\frac{a|}{}=  -> =M-n= -> =\frac{a}{|}=
-=\frac{a|}{b}= -> =M-n= -> =\frac{a}{b|}=
-=\frac{a}{b|}= -> =M-n= -> =\frac{a}{b}|=
+~\bar{h|}~     \to =M-n= \to ~\bar{h}|~
+~\frac{a|}{}~  \to =M-n= \to ~\frac{a}{|}~
+~\frac{a|}{b}~ \to =M-n= \to ~\frac{a}{b|}~
+~\frac{a}{b|}~ \to =M-n= \to ~\frac{a}{b}|~
+*** =]]= and =[[=
+=]]= and =[[= jump between section headings (=\section=, =\subsection*=, etc).
 ** Interaction with other packages
-=evil-tex= does not require, but supports =evil-surround= (using git HEAD is preferred, but not required). Many of the text objects
-are defined by functions more complex than regexps, so if you have =evil-embrace=
-installed as well, it will still use =evil-surround= for surround bindings.
+=evil-tex= does not require, but supports =evil-surround= (using git HEAD is
+preferred, to leverage [[https://github.com/emacs-evil/evil-surround/pull165][#165]]). [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]] is also supported, we took the
+necessary steps to make it leave us alone in case its enabled.
 
-=evil-tex= also supports =which-key=, and if you are using =ts*= style toggles, it
-plays nicely with =evil-snipe= if installed.
+=evil-tex= also supports =which-key= to show the keys in [[#keymaps][keymaps]]. Likewise, the
+toggles under =ts= play with [[https:/github.com/hlissner/evil-snipe][evil-snipe]] as expected.
 * Configuration
 ** Binding new envs/accents to the keymaps
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
 ~evil-tex-user-cdlatex-accents-map-generator-alist~. For example, to add default
-position for figures:
+~[!ht]~ position for figures:
 #+BEGIN_SRC emacs-lisp
 (setq evil-tex-user-env-map-generator-alist
       '(("f" "\\begin{figure}[!ht]\n" . "\n\\end{figure}")))
@@ -154,19 +161,18 @@ To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
 #+END_SRC
 Same for ~evil-tex-user-delim-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
-** Options to enable and disable
+** Options to toggle
  - By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
-  selected as part of the delimiter. This way, when doing =cie= you're placed on a
-  separate line, and surrounding with envs would force separate lines for ~\begin~,
-  inner text, and ~\end~.
-
-  If you don't want the ~\begin{...}~ newline behaviour discribed above, set
+   selected as part of the delimiter. This way, when doing =cie= you're placed on
+   a separate line, and surrounding with envs would force separate lines for
+   ~\begin~, inner text, and ~\end~. To disable this newline behaviour, set
    ~evil-tex-select-newlines-with-envs~ to ~nil~.
-- The toggle bindings are set by default to =mt*=. To turn this off and regain the
+- The toggle bindings are set by default to =mt=. To turn this off and regain the
   invaluable =t= mark, set ~evil-tex-toggle-override-m~ to ~nil~.
-- In order to map the toggle bindings to =ts*=, set ~evil-tex-toggle-override-t~ to
-  ~t~. This will overide the standard =t= motion, and will rob you of the ability to
-  move to one character before =s= (unless you are willing to do =fsh=).
+- In order to use =ts= for toggle bindings, set ~evil-tex-toggle-override-t~ to
+  ~t~. This will overide the standard =t= motion, and will rob you of the
+  ability to move to one character before =s= (although you can always do =fs
+  h=).
 
 *Make sure to set these variables before evil-TeX is loaded!*
 
@@ -175,12 +181,13 @@ is documented under the variable ~evil-tex-user-env-map-generator-alist~
 We would like to thank [[https://github.com/lervag][@lervag]] for writing the excellent [[https://github.com/lervag/vimtex][vimtex]] vim plugin,
 which was the main thing we missed about vim. We would also like to thank
 [[https://github.com/hpdeifel/][@hpdeifel]] for writing [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]], which laid the groundwork for this
-package. Lastly, we would like to thank [[https://github.com/hlissner/][@hlissner]] helping us with a particulary
-tricky bit of elisp, and also writing [[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this plugin would
-probably not exist.
+package and helped us get started with elisp. Lastly, we would like to thank
+[[https://github.com/hlissner/][@hlissner]] helping us with a particulary tricky bit of elisp, and also writing
+[[https://github.com/hlissner/doom-emacs][Doom Emacs]] without which this plugin would probably not exist.
 
 * Appendix
-** Environment keymap
+** Keymaps
+*** Environment keymap
 Giving a prefix argument would prompt for options.
 | Category                  | env         | key alias |
 |---------------------------+-------------+-----------|
@@ -214,7 +221,7 @@ Giving a prefix argument would prompt for options.
 |                           | question    | tq        |
 |                           | remark      | tr        |
 |                           | theorem     | tt        |
-** cdlatex accent keymap
+*** cdlatex accent keymap
 See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlatex]]. "style?" implies that the braces come before the macro, e.g
 ={\displaystyle ...}=
 | key | macro             | style? |
@@ -248,7 +255,7 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | 1   | displaystyle      | yes    |
 | 2   | scriptstyle       | yes    |
 | 3   | scriptscriptstyle | yes    |
-** Delimiter keymap
+*** Delimiter keymap
 | key | delimiter                        |
 |-----+----------------------------------|
 | b   | ~[foo]~                          |
