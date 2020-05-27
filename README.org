@@ -30,23 +30,17 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 
 * Incomplete Showcase
 =|= marks point.
-
+#+BEGIN_VERSE
 =\ti|lde{h}= \to cic /(change inner command)/ \to =\tilde{|}=
-
 =\tilde{h|}= \to cscc bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
-
 =\dv|{}= \to cscc pdv SPC /(change surrounding command to =pdv=)/ \to =\pdv{}=
-
 =\eps|ilon= \to cscc mu SPC /(change surrounding command to =mu=)/ \to =\mu=
-
 =\(\sum_{i=1}^{n} i^2|\)= \to cim /(change inner math)/ \to =\(|\)=
-
 =\(\sum_{i=1}^{n} i^2|\)= \to mtm /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
-
 =\[a|^2\]= \to csmeA /(change surrounding math to environment =align*=)/ \to
 =\begin{align*}\n a^2 \n\end{align}=
-
 =(\mu|_\nu)= \to csddP /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
+#+END_VERSE
 * Installation
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
@@ -131,11 +125,12 @@ provide the ability to map the toggles to =ts= instead of =mt= e.g. instead of
 *** =M-n=
 The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement, useful
 for quick navigation in marco arguments without going to normal mode.
-
+#+BEGIN_VERSE
 ~\bar{h|}~     \to =M-n= \to ~\bar{h}|~
 ~\frac{a|}{}~  \to =M-n= \to ~\frac{a}{|}~
 ~\frac{a|}{b}~ \to =M-n= \to ~\frac{a}{b|}~
 ~\frac{a}{b|}~ \to =M-n= \to ~\frac{a}{b}|~
+#+END_VERSE
 *** =]​]= and =[​[=
 =]​]= and =[​[= jump between section headings (=\section=, =\subsection*=, etc).
 ** Interaction with other packages
