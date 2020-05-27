@@ -133,8 +133,11 @@ The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement, useful
 for quick navigation in marco arguments without going to normal mode.
 
 ~\bar{h|}~     \to =M-n= \to ~\bar{h}|~
+
 ~\frac{a|}{}~  \to =M-n= \to ~\frac{a}{|}~
+
 ~\frac{a|}{b}~ \to =M-n= \to ~\frac{a}{b|}~
+
 ~\frac{a}{b|}~ \to =M-n= \to ~\frac{a}{b}|~
 *** =]​]= and =[​[=
 =]​]= and =[​[= jump between section headings (=\section=, =\subsection*=, etc).
