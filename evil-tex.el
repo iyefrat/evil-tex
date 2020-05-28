@@ -606,11 +606,12 @@ Example: (| symbolizes point)
 ;;; evil-surround setup
 
 (defun evil-tex--populate-surround-keymap (keymap generator-alist prefix
-                                                 single-strings-fn)
+                                                  single-strings-fn &optional cons-fn)
   "Populate KEYMAP with keys and callbacks from GENERATOR-ALIST.
 see `evil-tex-env-map-generator-alist' the the alist fromat.
 PREFIX is the prefix to give the generated functions created
-by (lambda () (interactive) (SINGLE-STRINGS-FN env)).
+by (lambda () (interactive) (SINGLE-STRINGS-FN env)) if the input is a string,
+and by (lambda () (interactive) (CONS-FN env)) if it's a cons
 Return KEYMAP."
 
   (dolist (pair generator-alist)
@@ -624,7 +625,9 @@ Return KEYMAP."
         (define-key keymap key name))
        ((consp env)
         (setq name (intern (concat prefix (car env))))
-        (fset name (lambda () (interactive) env))
+        (if cons-fn
+            (fset name (lambda () (interactive) (funcall cons-fn env)))
+          (fset name (lambda () (interactive) env)))
         (define-key keymap key name))
        ((or (functionp env) (not env))
         (define-key keymap key env)))))
@@ -675,6 +678,13 @@ symbol) until any of them succeeds (returns non-nil.)"
         (format "%s\\end{%s}"
                 (if evil-tex-include-newlines-in-envs "\n" "")
                 env-name)))
+
+(defun evil-tex-format-env-cons-for-surrounding (env-cons)
+  "Format ENV-CONS for surrounding.
+Add newlines if `evil-tex-include-newlines-in-envs' is t"
+  (if evil-tex-include-newlines-in-envs
+      (cons (concat (car env-cons) "\n")  (concat "\n" (cdr env-cons)))
+    (env-cons)))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
   "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
@@ -752,6 +762,8 @@ A cons: then the text would be wrapped between the car and the
 cdr. For example, you can make a cons of
 '(\\begin{figure}[!ht] . \\end{figure})
 to have default placements for the figure.
+Note that these definition will respect `evil-tex-include-newlines-in-envs', so
+there is no need to manually include \\n's.
 
 A function: then the function would be called, and the result is
 assumed to be a cons. The text is wrapped in the resulted cons.")
@@ -847,7 +859,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
    (make-sparse-keymap)
    (append evil-tex-env-map-generator-alist
            evil-tex-user-env-map-generator-alist)
-   evil-tex--env-function-prefix #'evil-tex-format-env-for-surrounding)
+   evil-tex--env-function-prefix #'evil-tex-format-env-for-surrounding #'evil-tex-format-env-cons-for-surrounding)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
 (defvar evil-tex-cdlatex-accents-map
