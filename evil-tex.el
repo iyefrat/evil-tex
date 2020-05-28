@@ -119,12 +119,12 @@ For example, \\epsilon is empty, \\dv{x} is not.")
 (defun evil-tex--select-command ()
   "Return command (macro) text object boundries.
 Inner commmand defined to be what is inside {}'s and []'s,
-or empty if none exist
+or empty if none exist.
 
-Return in format (list beg-an end-an beg-inner end-inner is-empty)"
+Return in format (list beg-an end-an beg-inner end-inner)"
   (let ((beg-an (TeX-find-macro-start))
         (end-an (TeX-find-macro-end))
-        beg-inner end-inner (is-empty nil))
+        beg-inner end-inner)
     (save-excursion
       (goto-char beg-an)
       (if (re-search-forward "{\\|\\[" end-an t)
@@ -139,7 +139,7 @@ Return in format (list beg-an end-an beg-inner end-inner is-empty)"
         (setq beg-inner end-an))) ;goto opeing brace if exists.
     (save-excursion
       (goto-char end-an)
-      (when (and (looking-back "}\\|\\]" (- (point) 2)) (not is-empty))
+      (when (looking-back "}\\|\\]" (- (point) 2))
         (backward-char))
       (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
       (list beg-an end-an beg-inner end-inner))))
