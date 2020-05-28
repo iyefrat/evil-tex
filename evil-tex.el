@@ -172,12 +172,12 @@ foo
         (LaTeX-find-matching-begin))
       ;; We are at backslash
       (setq outer-beg (point))
-      (skip-chars-forward "^{")        ; goto opening brace
-      (forward-sexp)                   ; goto closing brace
+      (goto-char (TeX-find-macro-end))
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
         (forward-char))
       (setq inner-beg (point))
+      (goto-char (1+ outer-beg))
       (LaTeX-find-matching-end)        ; we are at closing brace
       (setq outer-end (point))
       (search-backward "\\end")        ; goto backslash

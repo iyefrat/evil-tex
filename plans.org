@@ -20,7 +20,7 @@ if you use the ~cons~ definition in the ~envs-alist~, you need to include the
 ~\n~'s in order for it to format correctly. This not only breaks the newline
 variable convention, it also causes ~which-key~ to bug out as it takes ~\n~ to
 be part of the name
-** TODO Make =cse= respect options like [foo] when newline is on
+** DONE Make =cse= respect options like [foo] when newline is on
 ** TODO Go over all documentation, and make it better
 Particularly the one under ~define-minor-mode~.
 Also probably delete =test.tex=
