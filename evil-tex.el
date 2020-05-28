@@ -50,7 +50,6 @@ BEG and END are the coordinates for the begining and end of the potential delim,
 and the _'s are unimportant.
 Compare between the delimiters to find which one has the largest BEG, while
 making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim finds"
-
   (let ((a-lr (nth 0 a))
         (b-lr (nth 0 b))
         (ia (nth 1 a))
@@ -76,7 +75,6 @@ DELIML and DELIMR is a string containing the non \\left part of the delimiter.
 ARGS is the information about the text object needed for the functions to work,
 such as whether the delimiter is an \\left( type or a ( type,
 and if the text object is an -an- or an -inner-"
-
   (let ((delim-pair-lr (ignore-errors
                          (apply #'evil-select-paren
                                 (regexp-quote (concat "\\left" deliml))
@@ -614,7 +612,6 @@ PREFIX is the prefix to give the generated functions created
 by (lambda () (interactive) (SINGLE-STRINGS-FN env)) if the input is a string,
 and by (lambda () (interactive) (CONS-FN env)) if it's a cons
 Return KEYMAP."
-
   (dolist (pair generator-alist)
     (let* ((key (car pair))
            (env (cdr pair))
