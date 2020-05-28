@@ -161,11 +161,12 @@ doing 'cie' you're placed on a separate line.")
   "Return (list outer-beg outer-end inner-beg inner-end) for enviornment object.
 with the -an- text object beign the first and last ^'s,
  and the -inner- being the inner ones.
-\\begin{equation}
-^               ^
-foo
-\\end{equation}
-^             ^"
+Moves the inner ^'s to before/after the newline if `evil-tex-select-newlines-with-envs' is t.
+\\begin{foo}{bar}[baz]
+^                    ^
+qux
+\\end{foo}
+^        ^"
   (let (outer-beg outer-end inner-beg inner-end)
     (save-excursion
       (unless (looking-at (regexp-quote "\\begin{"))
