@@ -170,6 +170,12 @@ is documented under the variable ~evil-tex-user-env-map-generator-alist~
    a separate line, and surrounding with envs would force separate lines for
    ~\begin~, inner text, and ~\end~. To disable this newline behaviour, set
    ~evil-tex-select-newlines-with-envs~ to ~nil~.
+- Similarly, empty environments are inserted (using surround) with newlines by
+  default. This way, when doing =ysiwee=, the environment is inserted above and
+  below the word. To disable this and have it surround the text object in the
+  same line, set ~evil-tex-select-newlines-in-envs~ to ~nil~. Note that this
+  will not insert newlines environment name changes such as =cseea= even if they
+  were already there.
 - The toggle bindings are set by default to =mt=. To turn this off and regain the
   invaluable =t= mark, set ~evil-tex-toggle-override-m~ to ~nil~.
 - In order to use =ts= for toggle bindings, set ~evil-tex-toggle-override-t~ to

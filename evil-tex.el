@@ -671,9 +671,9 @@ symbol) until any of them succeeds (returns non-nil.)"
   "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
   (cons (format "\\begin{%s}%s"
                 env-name
-                (when evil-tex-include-newlines-in-envs "\n"))
+                (if evil-tex-include-newlines-in-envs "\n" ""))
         (format "%s\\end{%s}"
-                (when evil-tex-include-newlines-in-envs "\n")
+                (if evil-tex-include-newlines-in-envs "\n" "")
                 env-name)))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
