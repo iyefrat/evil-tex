@@ -605,7 +605,7 @@ Example: (| symbolizes point)
 
 ;;; evil-surround setup
 
-(defun evil-tex--populate-surround-kemap (keymap generator-alist prefix
+(defun evil-tex--populate-surround-keymap (keymap generator-alist prefix
                                                  single-strings-fn)
   "Populate KEYMAP with keys and callbacks from GENERATOR-ALIST.
 see `evil-tex-env-map-generator-alist' the the alist fromat.
@@ -843,7 +843,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   "Basic keymap for `evil-tex-mode'.")
 
 (defvar evil-tex-env-map
-  (evil-tex--populate-surround-kemap
+  (evil-tex--populate-surround-keymap
    (make-sparse-keymap)
    (append evil-tex-env-map-generator-alist
            evil-tex-user-env-map-generator-alist)
@@ -851,7 +851,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
 (defvar evil-tex-cdlatex-accents-map
-  (evil-tex--populate-surround-kemap
+  (evil-tex--populate-surround-keymap
    (make-sparse-keymap)
    (append evil-tex-cdlatex-accents-map-generator-alist
            evil-tex-user-cdlatex-accents-map-generator-alist)
@@ -860,7 +860,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
 (defvar evil-tex-delim-map
-  (evil-tex--populate-surround-kemap
+  (evil-tex--populate-surround-keymap
    (make-sparse-keymap)
    (append evil-tex-delim-map-generator-alist
            evil-tex-user-delim-map-generator-alist)
