@@ -1003,14 +1003,14 @@ See `evil-surround-pairs-alist' for the format.")
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
 Overrides normal 't' functionality for `s' only.
 'ts*' now executes toggles,
-see `evil-tex-toggle-delimiter-map' for more invormation
+see `evil-tex-toggle-map' for more invormation
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-toggle-override-m t
   "Set to t to bind evil-tex toggles to 'mt*' keybindings.
 Overrides normal `m' functionality for 't' only.
 'mt*' now executes toggles,
-see `evil-tex-toggle-delimiter-map' for more invormation
+see `evil-tex-toggle-map' for more invormation
 Needs to be defined before loading evil-tex.")
 
 (defvar evil-tex-t-functions
@@ -1034,7 +1034,7 @@ until one of them returns non-nil.")
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
 
-(defvar evil-tex-toggle-delimiter-map
+(defvar evil-tex-toggle-map
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap "d" #'evil-tex-toggle-delim)
     (define-key keymap "e" #'evil-tex-toggle-env)
@@ -1045,8 +1045,8 @@ until one of them returns non-nil.")
   "Keymap for delimiter surrounding.")
 
 (defun evil-tex-read-and-execute-toggle ()
-  "Prompt user with `evil-tex-toggle-delimiter-map' to toggle something."
-  (evil-tex-read-with-keymap evil-tex-toggle-delimiter-map))
+  "Prompt user with `evil-tex-toggle-map' to toggle something."
+  (evil-tex-read-with-keymap evil-tex-toggle-map))
 
 (when evil-tex-toggle-override-t
   (evil-define-key 'normal evil-tex-mode-map "t"
