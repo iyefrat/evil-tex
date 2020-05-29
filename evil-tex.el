@@ -1045,8 +1045,7 @@ until one of them returns non-nil.")
 
 (defun evil-tex-read-and-execute-toggle ()
   "Prompt user with `evil-tex-toggle-delimiter-map' to toggle something."
-  (save-excursion
-    (evil-tex-read-with-keymap evil-tex-toggle-delimiter-map)))
+  (evil-tex-read-with-keymap evil-tex-toggle-delimiter-map))
 
 (when evil-tex-toggle-override-t
   (evil-define-key 'normal evil-tex-mode-map "t"
