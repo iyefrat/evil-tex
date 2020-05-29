@@ -437,7 +437,8 @@ Should be used inside of a 'save-excursion'."
 (defun evil-tex-toggle-command ()
   "Toggle command between \\foo and \\foo*."
   (let ((an-over (make-overlay (car (evil-tex-a-command)) (cadr (evil-tex-a-command))))
-        (in-over (make-overlay (car (evil-tex-inner-command)) (cadr (evil-tex-inner-command)))))
+        (in-over (make-overlay (car (evil-tex-inner-command))
+                               (cadr (evil-tex-inner-command)))))
     (save-excursion
       (goto-char (overlay-start in-over))
       ;;(skip-chars-forward "^{")
