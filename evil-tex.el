@@ -837,14 +837,14 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
   (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
 (defvar evil-tex-delim-map-generator-alist
-  `(("p"  "(" . ")")
-    ("P"  "\\left(" . "\\right)")
-    ("s"  "[" . "]")
-    ("S"  "\\left[" . "\\right]")
-    ("c"  "\\{" . "\\}")
-    ("C"  "\\left\\{" . "\\right\\}")
-    ("r"  "\\langle" . "\\rangle")
-    ("R"  "\\left\\langle" . "\\right\\rangle"))
+  `(("P"  "(" . ")")
+    ("p"  "\\left(" . "\\right)")
+    ("S"  "[" . "]")
+    ("s"  "\\left[" . "\\right]")
+    ("C"  "\\{" . "\\}")
+    ("c"  "\\left\\{" . "\\right\\}")
+    ("R"  "\\langle" . "\\rangle")
+    ("r"  "\\left\\langle" . "\\right\\rangle"))
   "Initial alist used to generate `evil-tex-delim-map'.
 
 Don't modify this directly; use `evil-tex-user-delim-map-generator-alist'")
