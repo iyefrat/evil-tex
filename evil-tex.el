@@ -388,6 +388,7 @@ Should be used inside of a 'save-excursion'."
 
 (defun evil-tex-toggle-delim ()
   "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right) ."
+  (interactive)
   (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
         (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
     (save-excursion
@@ -417,6 +418,7 @@ Should be used inside of a 'save-excursion'."
 
 (defun evil-tex-toggle-env ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
+  (interactive)
   (let ((an-over (make-overlay (car (evil-tex-an-env)) (cadr (evil-tex-an-env))))
         (in-over (make-overlay (car (evil-tex-inner-env)) (cadr (evil-tex-inner-env)))))
     (save-excursion
@@ -432,6 +434,7 @@ Should be used inside of a 'save-excursion'."
 
 (defun evil-tex-toggle-math ()
   "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
+  (interactive)
   (let ((an-over (make-overlay (car (evil-tex-a-math)) (cadr (evil-tex-a-math))))
         (in-over (make-overlay (car (evil-tex-inner-math)) (cadr (evil-tex-inner-math)))))
     (save-excursion
@@ -445,6 +448,7 @@ Should be used inside of a 'save-excursion'."
 
 (defun evil-tex-toggle-command ()
   "Toggle command between \\foo and \\foo*."
+  (interactive)
   (let ((an-over (make-overlay (car (evil-tex-a-command)) (cadr (evil-tex-a-command))))
         (in-over (make-overlay (car (evil-tex-inner-command))
                                (cadr (evil-tex-inner-command)))))
@@ -461,6 +465,8 @@ Should be used inside of a 'save-excursion'."
 
 (defun evil-tex-toggle-section ()
   "Enter new name for surrounding section. Meta-n for original name."
+  (interactive)                         ; Sadly can't use interactive for the
+                                        ; new name, as we need orig-name first
   (let ((section-info (evil-tex--select-section)))
     (save-excursion
       (goto-char (nth 0 section-info))
@@ -660,7 +666,7 @@ pressed isn't found."
      ((or (not map-result) (numberp map-result))
       (user-error "%s not found in keymap" key))
      ((functionp map-result)
-      (funcall map-result))
+      (call-interactively map-result))
      ((keymapp map-result)
       (evil-tex-read-with-keymap map-result)))))
 
@@ -678,8 +684,10 @@ symbol) until any of them succeeds (returns non-nil.)"
        (run-hook-with-args-until-success ,fallbacks
                                          count key))))
 
-(defun evil-tex-format-env-for-surrounding (env-name)
+(defun evil-tex-get-env-for-surrounding (env-name)
   "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
+  (interactive (list (read-from-minibuffer "env: " nil
+                                           minibuffer-local-ns-map)))
   (cons (format "\\begin{%s}%s"
                 env-name
                 (if evil-tex-include-newlines-in-envs "\n" ""))
@@ -704,11 +712,6 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
       (cons (concat "\\" command "") "")
     (cons (concat "\\" command "{") "}")))
 
-(defun evil-tex-prompt-for-env ()
-  "Prom{pt} the user for an env to insert."
-  (evil-tex-format-env-for-surrounding
-   (read-from-minibuffer "env: " nil minibuffer-local-ns-map)))
-
 (defvar evil-tex--env-function-prefix "evil-tex-envs:"
   "Prefix used when generating env functions from `evil-tex-env-map-generator-alist'.")
 
@@ -719,7 +722,7 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
   "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
 
 (defvar evil-tex-env-map-generator-alist
-  `(("x" . ,#'evil-tex-prompt-for-env)
+  `(("x" . ,#'evil-tex-get-env-for-surrounding)
     ("e" . "equation")
     ("E" . "equation*")
     ("f" . "figure")
@@ -816,24 +819,31 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defun evil-tex-cdlatex-accents:rm ()
   "Return the (start . end) that would make text rm style if wrapped between start and end."
+  (interactive)
   (cons (if (texmathp) "\\mathrm{" "\\textrm{")) "}")
 (defun evil-tex-cdlatex-accents:it ()
   "Return the (start . end) that would make text it style if wrapped between start and end."
+  (interactive)
   (cons (if (texmathp) "\\mathit{" "\\textit{")) "}")
 (defun evil-tex-cdlatex-accents:sl ()
   "Return the (start . end) that would make text sl style if wrapped between start and end."
+  (interactive)
   (unless (texmathp) '("\\textsl{" . "}")))
 (defun evil-tex-cdlatex-accents:bold ()
   "Return the (start . end) that would make text bold style if wrapped between start and end."
+  (interactive)
   (cons (if (texmathp) "\\mathbf{" "\\textbf{") "}"))
 (defun evil-tex-cdlatex-accents:emph ()
   "Return the (start . end) that would make text emph style if wrapped between start and end."
+  (interactive)
   (cons (if (texmathp) "\\mathem{" "\\emph{") "}"))
 (defun evil-tex-cdlatex-accents:tt ()
   "Return the (start . end) that would make text tt style if wrapped between start and end."
+  (interactive)
   (cons (if (texmathp) "\\mathtt{" "\\texttt{") "}"))
 (defun evil-tex-cdlatex-accents:sf ()
   "Return the (start . end) that would make text sf style if wrapped between start and end."
+  (interactive)
   (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
 
 (defvar evil-tex-delim-map-generator-alist
