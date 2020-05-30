@@ -158,7 +158,7 @@ Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
 ~[!ht]~ position for figures:
 #+BEGIN_SRC emacs-lisp
 (setq evil-tex-user-env-map-generator-alist
-      '(("f" "\\begin{figure}[!ht]\n" . "\n\\end{figure}")))
+      '(("f" "\\begin{figure}[!ht]" . "\\end{figure}")))
 #+END_SRC
 To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
 #+BEGIN_SRC emacs-lisp
