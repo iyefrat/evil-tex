@@ -21,7 +21,7 @@ if you use the ~cons~ definition in the ~envs-alist~, you need to include the
 variable convention, it also causes ~which-key~ to bug out as it takes ~\n~ to
 be part of the name
 ** DONE Make =cse= respect options like [foo] when newline is on
-** TODO fix env textobject edge case
+** DONE fix env textobject edge case
 for =[foo]='s after a newline that are considered inputs here.
 ** TODO Consider using ~interactive~ for keymap reads
 Its more fluent in elisp.

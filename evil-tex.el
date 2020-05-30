@@ -171,7 +171,9 @@ qux
         (LaTeX-find-matching-begin))
       ;; We are at backslash
       (setq outer-beg (point))
-      (goto-char (TeX-find-macro-end))
+      (if (>= (line-end-position) (TeX-find-macro-end));; makes env surround start be one line at most
+          (goto-char (TeX-find-macro-end))
+        (goto-char (line-end-position)))
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
         (forward-char))
