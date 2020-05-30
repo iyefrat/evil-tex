@@ -13,7 +13,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 - [[#installation][Installation]]
 - [[#overview][Overview]]
   - [[#text-objects][Text Objects]]
-  - [[#toggling][Toggling]]
+  - [[#toggles][Toggles]]
   - [[#misc][Misc.]]
     - [[#m-n][=M-n=]]
     - [[#-and-][=]​]= and =[​[=]]
@@ -112,7 +112,7 @@ The full text object definitions are as follows:
 /Note/: the section objects extends up to the next ~\section{}~ type command
 of equal or higher rank to the one closest to the point from above, and does not
 distinguish between named and unnamed sections.
-** Toggling
+** Toggles
 There are a few operations one might want to toggle between frequently, without
 pressing too many keys. To this end we provide a few toggles, bound by default
 to =mt*= (for /"magnificent toggle"/), as you have 25 other marks to choose
