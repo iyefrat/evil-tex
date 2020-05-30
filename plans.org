@@ -12,7 +12,7 @@ unify =m= and =M= for surround deletion and change, but not insertion
 - Snipe
 ** DONE Bind the tab-like movement to some key
 ** DONE change =mtS= functionality to change name of section
-** TODO fix sub/superscript textobjects
+** DONE fix sub/superscript textobjects
 ** DONE Reach out to the original evil-LaTeX-txtobjs author
 ** DONE bind textobjects on local keymap
 ** DONE Bug when defining custom envs:

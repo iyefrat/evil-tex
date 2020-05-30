@@ -258,17 +258,22 @@ type is the type of the heading, e.g subsection, chapter*.
                (backward-sexp)
                (setq beg (point)))
               ;; \command^
-              ((and (search-backward "\\" (line-beginning-position) t)
-                    (looking-at "\\\\[A-Za-z@*]+")
-                    (eq end (match-end 0)))
+              ((save-excursion (and (search-backward "\\" (line-beginning-position) t)
+                                    (looking-at "\\\\[A-Za-z@*]+")
+                                    (eq end (match-end 0))))
+               (search-backward "\\" (line-beginning-position) t)
                (setq beg (match-beginning 0)))
               ;; a^
               (t
                (setq beg (1- (point)))))
            ;; require point to be inside the base bounds
+           (print beg)
+           (print orig-point)
+           (print end)
            (<= beg orig-point end))))
      ;; subsup before point
-     (when (search-backward subsup (line-beginning-position 0))
+     (when (progn (goto-char orig-point)
+                  (search-backward subsup (line-beginning-position 0)))
        (setq subsup-end (match-end 0)))
      (user-error "No surrounding %s found" subsup))
     (goto-char subsup-end)))
