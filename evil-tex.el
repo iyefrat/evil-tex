@@ -877,7 +877,7 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
    (make-sparse-keymap)
    (append evil-tex-env-map-generator-alist
            evil-tex-user-env-map-generator-alist)
-   evil-tex--env-function-prefix #'evil-tex-format-env-for-surrounding #'evil-tex-format-env-cons-for-surrounding)
+   evil-tex--env-function-prefix #'evil-tex-get-env-for-surrounding #'evil-tex-format-env-cons-for-surrounding)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
 (defvar evil-tex-cdlatex-accents-map
