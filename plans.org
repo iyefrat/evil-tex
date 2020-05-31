@@ -23,6 +23,8 @@ be part of the name
 ** DONE Make =cse= respect options like [foo] when newline is on
 ** DONE fix env textobject edge case
 for =[foo]='s after a newline that are considered inputs here.
+** TODO Get rid of code duplication when binding textobjects
+** TODO Consider using ~defcustom~ instead of ~defvar~
 ** TODO Consider using ~interactive~ for keymap reads
 Its more fluent in elisp.
 ** TODO Go over all documentation, and make it better
