@@ -381,7 +381,11 @@ the remaining IN-OVER with new delimiters DELIML and DELIMR.
 Should be used inside of a 'save-excursion'."
   (progn (delete-region (overlay-start an-over) (overlay-start in-over))
          (goto-char (overlay-start an-over))
+         ; move the inner overlay out of the way of the insertion so it doesn't get written over if it has size zero.
+         (move-overlay in-over (1+ (overlay-start in-over)) (1+ (overlay-end in-over)))
          (insert deliml)
+         ; move back
+         (move-overlay in-over (1- (overlay-start in-over)) (1- (overlay-end in-over)))
          (delete-region (overlay-end in-over) (overlay-end an-over))
          (goto-char (overlay-end in-over))
          (insert delimr)))
