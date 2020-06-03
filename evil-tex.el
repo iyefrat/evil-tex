@@ -381,8 +381,9 @@ a_{n+1}
 (defun evil-tex-toggle-delim ()
   "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right) ."
   (interactive)
-  (let ((left-over (make-overlay (car (evil-tex-a-delim)) (car (evil-tex-inner-delim))))
-        (right-over (make-overlay (cadr (evil-tex-inner-delim)) (cadr (evil-tex-a-delim)))))
+  (let* ((outer (evil-tex-a-delim)) (inner (evil-tex-inner-delim))
+        (left-over (make-overlay (car outer) (car inner)))
+        (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
       (goto-char (overlay-start left-over))
       (cl-destructuring-bind (l . r)
@@ -412,8 +413,9 @@ a_{n+1}
 (defun evil-tex-toggle-env ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
   (interactive)
-  (let ((left-over (make-overlay (car (evil-tex-an-env)) (car (evil-tex-inner-env))))
-        (right-over (make-overlay (cadr (evil-tex-inner-env)) (cadr (evil-tex-an-env)))))
+  (let* ((outer (evil-tex-an-env)) (inner (evil-tex-inner-env))
+        (left-over (make-overlay (car outer) (car inner)))
+        (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
       (goto-char (overlay-start left-over))
       (skip-chars-forward "^}")
@@ -429,8 +431,9 @@ a_{n+1}
 (defun evil-tex-toggle-math ()
   "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
   (interactive)
-  (let ((left-over (make-overlay (car (evil-tex-a-math)) (car (evil-tex-inner-math))))
-        (right-over (make-overlay (cadr (evil-tex-inner-math)) (cadr (evil-tex-a-math)))))
+  (let* ((outer (evil-tex-a-math)) (inner (evil-tex-inner-math))
+        (left-over (make-overlay (car outer) (car inner)))
+        (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
       (goto-char (overlay-start left-over))
       (cond
