@@ -318,8 +318,7 @@ a_{n+1}
 
 (defun evil-tex--select-table-cell ()
   "Return (outer-beg outer-end inner-beg inner-end) for table cell."
-  (let (
-        outer-beg outer-end
+  (let (outer-beg outer-end
         inner-beg inner-end
         env-beg env-end
         (found-beg nil) (found-end nil))
