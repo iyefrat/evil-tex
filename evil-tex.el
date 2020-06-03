@@ -436,10 +436,10 @@ a_{n+1}
       (goto-char (overlay-start left-over))
       (cond
        ((looking-at (regexp-quote "\\("))
-        (evil-tex--overlay-replace left-over "\\[")
+        (evil-tex--overlay-replace left-over  "\\[")
         (evil-tex--overlay-replace right-over "\\]" ))
        ((looking-at (regexp-quote "\\["))
-        (evil-tex--overlay-replace left-over "\\(")
+        (evil-tex--overlay-replace left-over  "\\(")
         (evil-tex--overlay-replace right-over "\\)" ))))
     (delete-overlay left-over) (delete-overlay right-over)))
 
