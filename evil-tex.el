@@ -549,33 +549,29 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-a-command (count &optional beg end type)
   "Select a LaTeX command (macro)."
-  (list (nth 0 (evil-tex--select-command))
-        (nth 1 (evil-tex--select-command))))
+  (nbutlast (evil-tex--select-command) 2))
 
 (evil-define-text-object evil-tex-inner-command (count &optional beg end type)
   "Select inner LaTeX command (macro)."
-  (list (nth 2 (evil-tex--select-command))
-        (nth 3 (evil-tex--select-command))))
+  (last (evil-tex--select-command) 2))
 
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment."
-  (list (nth 0 (evil-tex--select-env))
-        (nth 1 (evil-tex--select-env))))
+  (nbutlast (evil-tex--select-env) 2))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select inner LaTeX environment."
-  (list (nth 2 (evil-tex--select-env))
-        (nth 3 (evil-tex--select-env))))
+  (last (evil-tex--select-env) 2))
 
 (evil-define-text-object evil-tex-a-section (count &optional beg end type)
   "Select a LaTeX section."
-  (list (nth 0 (evil-tex--select-section))
-        (nth 1 (evil-tex--select-section))))
+  ;; evil-tex--select-section returns section type too
+  (nbutlast (evil-tex--select-section) 3))
 
 (evil-define-text-object evil-tex-inner-section (count &optional beg end type)
   "Select inner LaTeX section."
-  (list (nth 2 (evil-tex--select-section))
-        (nth 3 (evil-tex--select-section))))
+  ;; evil-tex--select-section returns section type too
+  (last (nbutlast (evil-tex--select-section)) 2))
 
 (evil-define-text-object evil-tex-a-subscript (count &optional beg end type)
   "Select a LaTeX subscript."
@@ -601,13 +597,11 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-a-table-cell (count &optional beg end type)
   "Select a LaTeX table cell."
-  (list (nth 0 (evil-tex--select-table-cell))
-        (nth 1 (evil-tex--select-table-cell))))
+  (nbutlast (evil-tex--select-table-cell) 2))
 
 (evil-define-text-object evil-tex-inner-table-cell (count &optional beg end type)
   "Select inner LaTeX table cell."
-  (list (nth 2 (evil-tex--select-table-cell))
-        (nth 3 (evil-tex--select-table-cell))))
+  (last (evil-tex--select-table-cell) 2))
 
 
 ;;; evil-surround setup
