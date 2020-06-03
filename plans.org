@@ -24,7 +24,7 @@ be part of the name
 ** DONE fix env textobject edge case
 for =[foo]='s after a newline that are considered inputs here.
 ** DONE fix bug of =tsd= on ~()~
-** TODO think about changing overlays in toggles
+** DONE think about changing overlays in toggles
 currently we have =an-over= and =in-over=, =right-over= and =left-over= might
 make more sense in some cases.
 ** DONE No need to get rid of code duplication when binding textobjects

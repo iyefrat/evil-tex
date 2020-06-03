@@ -373,31 +373,19 @@ a_{n+1}
 
 ;;; Toggles
 
-(defun evil-tex--regexp-overlay-replace (deliml delimr an-over in-over)
-  "Replace surround area with new delimiters.
-Take the surround area defined by overlays AN-OVER and IN-OVER,
-delete the parts of AN-OVER that don't overlap with IN-OVER, and surround
-the remaining IN-OVER with new delimiters DELIML and DELIMR.
-Should be used inside of a 'save-excursion'."
-  (progn (delete-region (overlay-start an-over) (overlay-start in-over))
-         (goto-char (overlay-start an-over))
-         ; move the inner overlay out of the way of the insertion so it doesn't
-         ; get written over if it has size zero.
-         (move-overlay in-over (1+ (overlay-start in-over)) (1+ (overlay-end in-over)))
-         (insert deliml)
-         ; move back
-         (move-overlay in-over (1- (overlay-start in-over)) (1- (overlay-end in-over)))
-         (delete-region (overlay-end in-over) (overlay-end an-over))
-         (goto-char (overlay-end in-over))
-         (insert delimr)))
+(defun evil-tex--overlay-replace (over string)
+  "Replace text in overlay OVER with STRING."
+  (goto-char (overlay-start over))
+  (insert string)
+  (delete-region (point) (overlay-end over)))
 
 (defun evil-tex-toggle-delim ()
   "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right) ."
   (interactive)
-  (let ((an-over (make-overlay (car (evil-tex-a-delim)) (cadr (evil-tex-a-delim))))
-        (in-over (make-overlay (car (evil-tex-inner-delim)) (cadr (evil-tex-inner-delim)))))
+  (let ((left-over (make-overlay (car (evil-tex-a-delim)) (car (evil-tex-inner-delim))))
+        (right-over (make-overlay (cadr (evil-tex-inner-delim)) (cadr (evil-tex-a-delim)))))
     (save-excursion
-      (goto-char (overlay-start an-over))
+      (goto-char (overlay-start left-over))
       (cl-destructuring-bind (l . r)
           (cond
            ((looking-at (regexp-quote "("))
@@ -418,52 +406,51 @@ Should be used inside of a 'save-excursion'."
             '("\\langle" . "\\rangle"))
            (t
             (user-error "No surrounding delimiter found")))
-        (evil-tex--regexp-overlay-replace l r an-over in-over)))
-    (delete-overlay an-over) (delete-overlay in-over)))
+        (evil-tex--overlay-replace left-over  l)
+        (evil-tex--overlay-replace right-over r)))
+    (delete-overlay left-over) (delete-overlay right-over)))
 
 (defun evil-tex-toggle-env ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
   (interactive)
-  (let ((an-over (make-overlay (car (evil-tex-an-env)) (cadr (evil-tex-an-env))))
-        (in-over (make-overlay (car (evil-tex-inner-env)) (cadr (evil-tex-inner-env)))))
+  (let ((left-over (make-overlay (car (evil-tex-an-env)) (car (evil-tex-inner-env))))
+        (right-over (make-overlay (cadr (evil-tex-inner-env)) (cadr (evil-tex-an-env)))))
     (save-excursion
-      (goto-char (overlay-start an-over))
+      (goto-char (overlay-start left-over))
       (skip-chars-forward "^}")
       (backward-char 1)
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))
-      (goto-char (overlay-end in-over))
+      (print right-over)
+      (goto-char (overlay-start right-over))
       (skip-chars-forward "^}")
       (backward-char 1)
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
-    (delete-overlay an-over) (delete-overlay in-over)))
+    (delete-overlay left-over) (delete-overlay right-over)))
 
 (defun evil-tex-toggle-math ()
   "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
   (interactive)
-  (let ((an-over (make-overlay (car (evil-tex-a-math)) (cadr (evil-tex-a-math))))
-        (in-over (make-overlay (car (evil-tex-inner-math)) (cadr (evil-tex-inner-math)))))
+  (let ((left-over (make-overlay (car (evil-tex-a-math)) (car (evil-tex-inner-math))))
+        (right-over (make-overlay (cadr (evil-tex-inner-math)) (cadr (evil-tex-a-math)))))
     (save-excursion
-      (goto-char (overlay-start an-over))
+      (goto-char (overlay-start left-over))
       (cond
        ((looking-at (regexp-quote "\\("))
-        (evil-tex--regexp-overlay-replace "\\[" "\\]" an-over in-over))
+        (evil-tex--overlay-replace left-over "\\[")
+        (evil-tex--overlay-replace right-over "\\]" ))
        ((looking-at (regexp-quote "\\["))
-        (evil-tex--regexp-overlay-replace "\\(" "\\)" an-over in-over))))
-    (delete-overlay an-over) (delete-overlay in-over)))
+        (evil-tex--overlay-replace left-over "\\(")
+        (evil-tex--overlay-replace right-over "\\)" ))))
+    (delete-overlay left-over) (delete-overlay right-over)))
 
 (defun evil-tex-toggle-command ()
   "Toggle command between \\foo and \\foo*."
   (interactive)
-  (let ((an-over (make-overlay (car (evil-tex-a-command)) (cadr (evil-tex-a-command))))
-        (in-over (make-overlay (car (evil-tex-inner-command))
-                               (cadr (evil-tex-inner-command)))))
-    (save-excursion
-      (goto-char (overlay-start in-over))
-      ;;(skip-chars-forward "^{")
-      (backward-char 1)
-      (when (eq ?{ (char-after)) (backward-char 1) )
-      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
-    (delete-overlay an-over) (delete-overlay in-over)))
+  (save-excursion
+    (goto-char (car (evil-tex-inner-command)))
+    (backward-char 1)
+    (when (or (eq ?{ (char-after)) (eq ?\[ (char-after))) (backward-char 1) )
+    (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))))
 
 (defvar evil-tex-section-name-history nil
   "History used for changing section names with `evil-tex-toggle-section'.")
@@ -957,19 +944,12 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
       (evil-define-key '(visual operator) 'evil-tex-mode
         "ie" #'evil-tex-inner-env
-        "ae" #'evil-tex-an-env
         "ic" #'evil-tex-inner-command
-        "ac" #'evil-tex-a-command
         "im" #'evil-tex-inner-math
-        "am" #'evil-tex-a-math
         "id" #'evil-tex-inner-delim
-        "ad" #'evil-tex-a-delim
         "iS" #'evil-tex-inner-section
-        "aS" #'evil-tex-a-section
         "i^" #'evil-tex-inner-superscript
-        "a^" #'evil-tex-a-superscript
         "i_" #'evil-tex-inner-subscript
-        "a_" #'evil-tex-a-subscript
         "iT" #'evil-tex-inner-table-cell
         "ae" #'evil-tex-an-env
         "ac" #'evil-tex-a-command
