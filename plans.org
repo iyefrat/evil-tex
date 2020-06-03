@@ -28,6 +28,7 @@ for =[foo]='s after a newline that are considered inputs here.
 currently we have =an-over= and =in-over=, =right-over= and =left-over= might
 make more sense in some cases.
 ** DONE No need to get rid of code duplication when binding textobjects
+** TODO refactor =evil-tex--select-table-cell= because dear god
 ** TODO Consider using ~defcustom~ instead of ~defvar~
 ** TODO Consider using ~interactive~ for keymap reads
 Its more fluent in elisp.
