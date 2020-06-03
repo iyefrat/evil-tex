@@ -566,12 +566,12 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-a-section (count &optional beg end type)
   "Select a LaTeX section."
   ;; evil-tex--select-section returns section type too
-  (nbutlast (evil-tex--select-section) 3)) ;;because it also returns section name
+  (nbutlast (evil-tex--select-section) 3))
 
 (evil-define-text-object evil-tex-inner-section (count &optional beg end type)
   "Select inner LaTeX section."
   ;; evil-tex--select-section returns section type too
-  (last (nbutlast (evil-tex--select-section)) 2)) ;;because it also returns section name
+  (last (nbutlast (evil-tex--select-section)) 2))
 
 (evil-define-text-object evil-tex-a-subscript (count &optional beg end type)
   "Select a LaTeX subscript."
