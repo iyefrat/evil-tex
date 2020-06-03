@@ -13,6 +13,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 - [[#installation][Installation]]
 - [[#overview][Overview]]
   - [[#text-objects][Text Objects]]
+    - [[#notes][Notes]]
   - [[#toggles][Toggles]]
   - [[#misc][Misc.]]
     - [[#m-n][=M-n=]]
@@ -104,14 +105,17 @@ The full text object definitions are as follows:
        a^          i^      a^      i^     a^         i^
        
     & foobar &    & foobar &    & foobar \\    & foobar \\    
-    └────────┘     └──────┘     └─────────┘     └──────┘  
+    └───────┘      └──────┘     └───────┘       └──────┘
         aT            iT            aT            iT
 #+END_SRC LaTeX
 /The diagram rendering might bug out on mobile./
 
-/Note/: the section objects extends up to the next ~\section{}~ type command
-of equal or higher rank to the one closest to the point from above, and does not
-distinguish between named and unnamed sections.
+*** Notes
+- The section objects extends up to the next ~\section{}~ type command of equal
+  or higher rank to the one closest to the point from above, and does not
+  distinguish between named and unnamed sections.
+  - =aT= will always only contain the second delimiter, unless it is the first
+    cell of its line, then it will only contain the right delimiter.
 ** Toggles
 There are a few operations one might want to toggle between frequently, without
 pressing too many keys. To this end we provide a few toggles, bound by default

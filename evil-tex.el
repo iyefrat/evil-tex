@@ -318,36 +318,55 @@ a_{n+1}
 
 (defun evil-tex--select-table-cell ()
   "Return (outer-beg outer-end inner-beg inner-end) for table cell."
-  (let (outer-beg outer-end
+  (let ((env (evil-tex--select-env))
+        outer-beg outer-end
         inner-beg inner-end
         env-beg env-end
+        (cell-at-line-beg nil)
         (found-beg nil) (found-end nil))
     (save-excursion
-      (setq env-beg (nth 2 (evil-tex--select-env)))
-      (setq env-end (nth 3 (evil-tex--select-env)))
-      (when (or (> env-beg (point)) (< env-end (point))) ;; for when you are on \begin or \end of a sub-env.
+      (setq env-beg (nth 2 env))
+      (setq env-end (nth 3 env))
+      (when (or (> env-beg (point)) (<= env-end (point))) ;; for when you are on \begin or \end of a sub-env.
         (save-excursion
-          (goto-char (1- (nth 0 (evil-tex--select-env))))
-          (setq env-beg (nth 2 (evil-tex--select-env)))
-          (setq env-end (nth 3 (evil-tex--select-env)))))
+          (goto-char (1- (nth 0 env)))
+          (setq env (evil-tex--select-env))
+          (setq env-beg (nth 2 env))
+          (setq env-end (nth 3 env))))
       (while (not found-beg)
-        (cond ;; incase we are already at &
-         ((looking-at "&")          (setq outer-beg (point)
-                                          inner-beg (1+ (point))
-                                          found-beg t)))
-        (unless found-beg
+        (cond
+         ((looking-at "&")
+          (setq outer-beg (point)
+                inner-beg (1+ (point))
+                found-beg t))
+         ((looking-at "\\\\end") ;; HACK there has to be a better way to check if i'm inside a string and if so move to the end
+          (forward-char 4))
+         ((and (looking-at "end") (looking-back "\\\\" (- (point) 1)))
+          (forward-char 3))
+         ((and (looking-at "nd") (looking-back "\\\\e" (- (point) 2)))
+          (forward-char 2))
+         ((and (looking-at "d") (looking-back "\\\\en" (- (point) 3)))
+         (forward-char)))
+
+        (unless found-beg ;; repeatd searches to jump over nested envs
           (if (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t)
               (cond
-               ((looking-at "&")          (setq outer-beg (point)
-                                                inner-beg (1+ (point))
-                                                found-beg t))
-               ((looking-at "\\\\\\\\\n") (setq outer-beg (+ 3 (point))
-                                                inner-beg (+ 4 (point))
-                                                found-beg t))
-               ((looking-at "\\\\\\\\")   (setq outer-beg (+ 2 (point))
-                                                inner-beg (+ 3 (point))
-                                                found-beg t))
-               ((looking-at "\\\\end")    (LaTeX-find-matching-begin)))
+               ((looking-at "&")
+                (setq outer-beg (point)
+                      inner-beg (1+ (point))
+                      found-beg t))
+               ;; \\ and end of line, with allowence for whitespace and comments
+               ((looking-at "\\\\\\\\\\(\s*\\(%.*\\)?\\)?\n")
+                (setq outer-beg (+ 3 (point))
+                      inner-beg (+ 3 (point))
+                      cell-at-line-beg t
+                      found-beg t))
+               ((looking-at "\\\\\\\\")
+                (setq outer-beg (point)
+                      inner-beg (+ 2 (point))
+                      found-beg t))
+               ((looking-at "\\\\end")
+                (LaTeX-find-matching-begin)))
             (setq outer-beg env-beg
                   inner-beg env-beg
                   found-beg t))))
@@ -357,13 +376,16 @@ a_{n+1}
             (progn
               (backward-char)
               (cond
-               ((looking-at "&")      (setq outer-end (1+ (point))
-                                            inner-end (point)
-                                            found-end t))
-               ((looking-at "\\\\")   (setq outer-end (1+ (point))
-                                            inner-end (1- (point))
-                                            found-end t))
-               ((looking-at "n")      (LaTeX-find-matching-end))))
+               ((looking-at "&")
+                (setq outer-end (if cell-at-line-beg (1+ (point)) (point))
+                      inner-end (point)
+                      found-end t))
+               ((looking-at "\\\\")
+                (setq outer-end (1- (point))
+                      inner-end (1- (point))
+                      found-end t))
+               ((looking-at "n")
+                (LaTeX-find-matching-end))))
           (setq outer-end env-end
                 inner-end env-end
                 found-end t)))
@@ -382,8 +404,8 @@ a_{n+1}
   "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right) ."
   (interactive)
   (let* ((outer (evil-tex-a-delim)) (inner (evil-tex-inner-delim))
-        (left-over (make-overlay (car outer) (car inner)))
-        (right-over (make-overlay (cadr inner) (cadr outer))))
+         (left-over (make-overlay (car outer) (car inner)))
+         (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
       (goto-char (overlay-start left-over))
       (cl-destructuring-bind (l . r)
@@ -414,8 +436,8 @@ a_{n+1}
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
   (interactive)
   (let* ((outer (evil-tex-an-env)) (inner (evil-tex-inner-env))
-        (left-over (make-overlay (car outer) (car inner)))
-        (right-over (make-overlay (cadr inner) (cadr outer))))
+         (left-over (make-overlay (car outer) (car inner)))
+         (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
       (goto-char (overlay-start left-over))
       (skip-chars-forward "^}")
@@ -432,8 +454,8 @@ a_{n+1}
   "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
   (interactive)
   (let* ((outer (evil-tex-a-math)) (inner (evil-tex-inner-math))
-        (left-over (make-overlay (car outer) (car inner)))
-        (right-over (make-overlay (cadr inner) (cadr outer))))
+         (left-over (make-overlay (car outer) (car inner)))
+         (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
       (goto-char (overlay-start left-over))
       (cond
@@ -959,8 +981,8 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
         "a_" #'evil-tex-a-subscript
         "aT" #'evil-tex-a-table-cell)
 
-      (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map ))
-      (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map )))
+      (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map))
+      (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map)))
   ;; pollutes the global namespace if evil-surround is too old
   (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
   (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-command)
