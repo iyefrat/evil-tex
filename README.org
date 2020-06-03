@@ -20,10 +20,9 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
     - [[#-and-][=]​]= and =[​[=]]
   - [[#interaction-with-other-packages][Interaction with other packages]]
 - [[#configuration][Configuration]]
-  - [[#binding-things-to-the-keymaps][Binding things to the keymaps]]
-    - [[#adding-envs-and-accents][Adding envs and accents]]
-    - [[#adding-toggles][Adding toggles]]
-  - [[#options-to-toggle][Options to toggle]]
+  - [[#custom-env-and-accent-surround-insertions][Custom env and accent surround insertions]]
+  - [[#custom-toggles][Custom Toggles]]
+  - [[#user-options][User Options]]
 - [[#acknowledgements][Acknowledgements]]
 - [[#appendix][Appendix]]
   - [[#keymaps][Keymaps]]
@@ -155,8 +154,7 @@ necessary steps to make it leave us alone in case its enabled.
 =evil-tex= also supports =which-key= to show the keys in [[#keymaps][keymaps]]. Likewise, the
 toggles under =ts= play with [[https:/github.com/hlissner/evil-snipe][evil-snipe]] as expected.
 * Configuration
-** Binding things to the keymaps
-*** Adding envs and accents
+** Custom env and accent surround insertions
 Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
 ~evil-tex-user-cdlatex-accents-map-generator-alist~. For example, to add default
 ~[!ht]~ position for figures:
@@ -171,10 +169,10 @@ To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
 #+END_SRC
 Same for ~evil-tex-user-delim-map-generator-alist~. The exact format
 is documented under the variable ~evil-tex-user-env-map-generator-alist~
-*** Adding toggles
+** Custom Toggles
 Just bind your function to ~evil-tex-toggle-map~, its a normal keymap. Nothing
 fancy here.
-** Options to toggle
+** User Options
  - By default, the newline proceeding ~\begin{...}~ and preceding ~\end{...}~ is
    selected as part of the delimiter. This way, when doing =cie= you're placed on
    a separate line, and surrounding with envs would force separate lines for
