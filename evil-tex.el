@@ -516,6 +516,7 @@ If given, go ARG sections up."
   "Go forward to the closest part/section/subsection etc.
 If given, go ARG sections down."
   (interactive)
+  ;; skip current looked-at section
   (when (looking-at evil-tex--section-regexp)
     (goto-char (match-end 0)))
   (when (re-search-forward evil-tex--section-regexp nil arg)
