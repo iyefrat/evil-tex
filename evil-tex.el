@@ -934,7 +934,8 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defvar evil-tex-outer-text-objects-map (make-sparse-keymap)
   "Outer text object keymap for `evil-tex-mode'.")
-(if (boundp  'evil-surround-local-inner-text-object-map-list)
+(if (and (boundp  'evil-surround-local-inner-text-object-map-list)
+         (boundp  'evil-surround-local-outer-text-object-map-list))
     (progn ;; deifines everything on local keymaps if evil-surround is new enough
       (define-key evil-tex-inner-text-objects-map "e" #'evil-tex-inner-env)
       (define-key evil-tex-inner-text-objects-map "c" #'evil-tex-inner-command)
