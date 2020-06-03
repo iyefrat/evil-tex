@@ -970,6 +970,13 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
         "i_" #'evil-tex-inner-subscript
         "a_" #'evil-tex-a-subscript
         "iT" #'evil-tex-inner-table-cell
+        "ae" #'evil-tex-an-env
+        "ac" #'evil-tex-a-command
+        "am" #'evil-tex-a-math
+        "ad" #'evil-tex-a-delim
+        "aS" #'evil-tex-a-section
+        "a^" #'evil-tex-a-superscript
+        "a_" #'evil-tex-a-subscript
         "aT" #'evil-tex-a-table-cell)
 
       (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map ))
