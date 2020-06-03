@@ -803,34 +803,37 @@ Don't modify this directly; use `evil-tex-user-cdlatex-accents-map-generator-ali
   "Your alist for modifications of `evil-tex-cdlatex-accents-map'.
 See `evil-tex-user-env-map-generator-alist' for format specification.")
 
+(defmacro evil-tex--texmathp-dispatch (math-format regular-format)
+  "Return cons for wrapping text in.
+
+If inside math, wrap with the marco constructed by MATH-FORMAT (string).
+Otherwise, with the macro constructed by REGULAR-FORMAT."
+  `(if (texmathp)
+       '(,(format "\\%s{" math-format) . "}")
+     '(,(format "\\%s{" regular-format) . "}")))
+
 (defun evil-tex-cdlatex-accents:rm ()
   "Return the (start . end) that would make text rm style if wrapped between start and end."
-  (interactive)
-  (cons (if (texmathp) "\\mathrm{" "\\textrm{")) "}")
+  (interactive) (evil-tex--texmathp-dispatch "mathrm" "textrm"))
 (defun evil-tex-cdlatex-accents:it ()
   "Return the (start . end) that would make text it style if wrapped between start and end."
-  (interactive)
-  (cons (if (texmathp) "\\mathit{" "\\textit{")) "}")
+  (interactive) (evil-tex--texmathp-dispatch "mathit" "textit"))
 (defun evil-tex-cdlatex-accents:sl ()
   "Return the (start . end) that would make text sl style if wrapped between start and end."
   (interactive)
   (unless (texmathp) '("\\textsl{" . "}")))
 (defun evil-tex-cdlatex-accents:bold ()
   "Return the (start . end) that would make text bold style if wrapped between start and end."
-  (interactive)
-  (cons (if (texmathp) "\\mathbf{" "\\textbf{") "}"))
+  (interactive) (evil-tex--texmathp-dispatch "mathbf" "textbf"))
 (defun evil-tex-cdlatex-accents:emph ()
   "Return the (start . end) that would make text emph style if wrapped between start and end."
-  (interactive)
-  (cons (if (texmathp) "\\mathem{" "\\emph{") "}"))
+  (interactive) (evil-tex--texmathp-dispatch "mathem" "emph"))
 (defun evil-tex-cdlatex-accents:tt ()
   "Return the (start . end) that would make text tt style if wrapped between start and end."
-  (interactive)
-  (cons (if (texmathp) "\\mathtt{" "\\texttt{") "}"))
+  (interactive) (evil-tex--texmathp-dispatch "mathtt" "texttt"))
 (defun evil-tex-cdlatex-accents:sf ()
   "Return the (start . end) that would make text sf style if wrapped between start and end."
-  (interactive)
-  (cons (if (texmathp) "\\mathsf{" "\\textsf{") "}"))
+  (interactive) (evil-tex--texmathp-dispatch "mathsf" "textsf"))
 
 (defvar evil-tex-delim-map-generator-alist
   `(("P"  "(" . ")")
