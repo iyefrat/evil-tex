@@ -119,7 +119,7 @@ For example, \\epsilon is empty, \\dv{x} is not.")
 Inner commmand defined to be what is inside {}'s and []'s,
 or empty if none exist.
 
-Return in format (list beg-an end-an beg-inner end-inner)"
+Return in format (beg-an end-an beg-inner end-inner)"
   (let ((beg-an (TeX-find-macro-start))
         (end-an (TeX-find-macro-end))
         beg-inner end-inner)
@@ -156,7 +156,7 @@ When non-nil, the newline proceeding \\begin{...} and preceding
 doing 'cie' you're placed on a separate line.")
 
 (defun evil-tex--select-env ()
-  "Return (list outer-beg outer-end inner-beg inner-end) for enviornment object.
+  "Return (outer-beg outer-end inner-beg inner-end) for enviornment object.
 with the -an- text object beign the first and last ^'s,
  and the -inner- being the inner ones.
 Moves the inner ^'s to before/after the newline if `evil-tex-select-newlines-with-envs' is t.
@@ -317,7 +317,7 @@ a_{n+1}
       (cons (point) (point))))))
 
 (defun evil-tex--select-table-cell ()
-  "Return (list outer-beg outer-end inner-beg inner-end) for table cell."
+  "Return (outer-beg outer-end inner-beg inner-end) for table cell."
   (let (
         outer-beg outer-end
         inner-beg inner-end
