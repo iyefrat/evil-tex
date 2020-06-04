@@ -639,8 +639,10 @@ PREFIX is the prefix to give the generated functions created
 by (lambda () (interactive) (SINGLE-STRINGS-FN env)) if the input is a string,
 and by (lambda () (interactive) (CONS-FN env)) if it's a cons
 Return KEYMAP."
-  (cl-loop for (key . env) in generator-alist do
-    (let (name)
+  (dolist (pair generator-alist)
+    (let ((key (car pair))
+          (env (cdr pair))
+          name)
       (cond
        ((stringp env)
         (setq name (intern (concat prefix env)))
