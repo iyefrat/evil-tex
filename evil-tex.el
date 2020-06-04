@@ -730,31 +730,6 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
 (defvar evil-tex--delim-function-prefix "evil-tex-delims:"
   "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
 
-(defvar evil-tex-user-env-map-generator-alist nil
-  "Your alist for modifications of `evil-tex-env-map'.
-
-See `evil-tex-cdlatex-accents-map-generator-alist' for what it
-should look like.
-
-Each item is a cons. The car is the key (a string) to the
-keymap. The cdr can be:
-
-A string: then the inserted env would be an env
-with that name
-
-A cons: then the text would be wrapped between the car and the
-cdr. For example, you can make a cons of
-'(\\begin{figure}[!ht] . \\end{figure})
-to have default placements for the figure.
-Note that these definition will respect `evil-tex-include-newlines-in-envs', so
-there is no need to manually include \\n's.
-
-A function: then the function would be called, and the result is
-assumed to be a cons. The text is wrapped in the resulted cons.")
-
-(defvar evil-tex-user-cdlatex-accents-map-generator-alist nil
-  "Your alist for modifications of `evil-tex-cdlatex-accents-map'.
-See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defmacro evil-tex--texmathp-dispatch (math-format regular-format)
   "Return cons for wrapping text in.
@@ -787,10 +762,6 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
 (defun evil-tex-cdlatex-accents:sf ()
   "Return the (start . end) that would make text sf style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathsf" "textsf"))
-
-(defvar evil-tex-user-delim-map-generator-alist nil
-  "Your alist for modifications of `evil-tex-delim-map'.
-See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defvar evil-tex-mode-map
   (let ((keymap (make-sparse-keymap)))
