@@ -885,12 +885,12 @@ Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
 
 (defun evil-tex-bind-to-delim-map (key-generator-alist &optional keymap)
   "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-delim-map', or to KEYMAP if given.
-Format is identical to `evil-tex-bind-to-env-map', see it for explaination.")
-(evil-tex--populate-surround-keymap
- (or keymap evil-tex-cdlatex-accents-map)
- key-generator-alist
- evil-tex--delim-function-prefix
- #'identity)
+Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
+  (evil-tex--populate-surround-keymap
+   (or keymap evil-tex-cdlatex-accents-map)
+   key-generator-alist
+   evil-tex--delim-function-prefix
+   #'identity))
 
 (defvar evil-tex-delim-map
   (let ((keymap (make-sparse-keymap)))
