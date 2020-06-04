@@ -167,8 +167,8 @@ Same for ~evil-tex-bind-to-cdlatex-accents-map~ and ~evil-tex-bind-to-delim-map~
 (evil-tex-bind-to-cdlatex-accents-map '(("b" . "fbox")))
 (evil-tex-bind-to-delim-keymap '(("h" "\\huge(" . "\\huge)")))
 #+END_SRC
-Same for ~evil-tex-user-delim-map-generator-alist~. The exact format
-Take a look at the docstring of ~evil-tex-bind-to-env-map~ for the full available format.
+Same for ~evil-tex-user-delim-map-generator-alist~. For the complete format take
+a look at the documentation of ~evil-tex-bind-to-env-map~.
 ** Custom Toggles
 Just bind your function to ~evil-tex-toggle-map~, its a normal keymap. Nothing
 fancy here.
