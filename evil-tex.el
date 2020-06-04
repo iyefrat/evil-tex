@@ -339,7 +339,7 @@ a_{n+1}
           (setq outer-beg (point)
                 inner-beg (1+ (point))
                 found-beg t))
-         ((looking-at "\\\\end") ;; HACK there has to be a better way to check if i'm inside a string and if so move to the end
+         ((looking-at "\\\\end")
           (forward-char 4))
          ((and (looking-at "end") (looking-back "\\\\" (- (point) 1)))
           (forward-char 3))
