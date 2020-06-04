@@ -829,7 +829,7 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
 
 (defvar evil-tex-cdlatex-accents-map
   (let ((keymap (make-sparse-keymap)))
-    (evil-tex-bind-to-env-map
+    (evil-tex-bind-to-cdlatex-accents-map
      '(("." . "dot")
        (":" . "ddot")
        ("~" . "tilde")
@@ -873,7 +873,7 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
 
 (defvar evil-tex-delim-map
   (let ((keymap (make-sparse-keymap)))
-    (evil-tex-bind-to-env-map
+    (evil-tex-bind-to-delim-map
      '(("P"  "(" . ")")
        ("p"  "\\left(" . "\\right)")
        ("S"  "[" . "]")
