@@ -97,14 +97,13 @@ and if the text object is an -an- or an -inner-"
 
 ARGS passed to evil-select-paren, within evil-tex--delim-finder."
   (cddr (evil-tex-max-key
-         (list (evil-tex--delim-finder nil "(" ")" args)
-               (evil-tex--delim-finder t "(" ")" args) ; when t finds \left(foo\right) instead
-               (evil-tex--delim-finder nil "[" "]" args)
-               (evil-tex--delim-finder t "[" "]" args)
-               (evil-tex--delim-finder nil "\\{" "\\}" args)
-               (evil-tex--delim-finder t "\\{" "\\}" args)
-               (evil-tex--delim-finder nil "\\langle" "\\rangle" args)
-               (evil-tex--delim-finder t "\\langle" "\\rangle" args))
+         (cl-loop for (l r) in (list '( "(" ")" ) '( "[" "]" ) '( "\\{" "\\}" ) '( "\\langle" "\\rangle" ))
+                  collect (evil-tex--delim-finder nil l r args)
+                  collect (evil-tex--delim-finder t   l r args)
+                  collect (evil-tex--delim-finder nil (concat "\\bigl" l) (concat "\\bigr" r) args)
+                  collect (evil-tex--delim-finder nil (concat "\\biggl" l) (concat "\\biggr" r) args)
+                  collect (evil-tex--delim-finder nil (concat "\\Bigl" l) (concat "\\Bigr" r) args)
+                  collect (evil-tex--delim-finder nil (concat "\\Biggl" l) (concat "\\Biggr" r) args))
          (lambda (arg) (when (consp arg) ; check if selection succeeded
                          arg))
          #'evil-tex--delim-compare)))
