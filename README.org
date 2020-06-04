@@ -155,20 +155,20 @@ necessary steps to make it leave us alone in case its enabled.
 toggles under =ts= play with [[https:/github.com/hlissner/evil-snipe][evil-snipe]] as expected.
 * Configuration
 ** Custom env and accent surround insertions
-Should be done by setting ~evil-tex-user-env-map-generator-alist~ or
-~evil-tex-user-cdlatex-accents-map-generator-alist~. For example, to add default
-~[!ht]~ position for figures:
+Should be done by using ~evil-tex-bind-to-(env|cdlatex-accents|delim)-map~.
+example, to add a ~quote~ environment and have a default ~[!ht]~ position for
+figures:
 #+BEGIN_SRC emacs-lisp
-(setq evil-tex-user-env-map-generator-alist
-      '(("f" "\\begin{figure}[!ht]" . "\\end{figure}")))
+(evil-tex-bind-to-env-map '(("q" . "quote")
+                            ("f" "\\begin{figure}[!ht]" . "\\end{figure}")))
 #+END_SRC
-To add your own accent to ~evil-tex-user-cdlatex-accents-map-generator-alist~:
+Same for ~evil-tex-bind-to-cdlatex-accents-map~ and ~evil-tex-bind-to-delim-map~
 #+BEGIN_SRC emacs-lisp
-(setq evil-tex-user-cdlatex-accents-map-generator-alist
-      '(("b" . "mathbb")))
+(evil-tex-bind-to-cdlatex-accents-map '(("b" . "fbox")))
+(evil-tex-bind-to-delim-keymap '(("h" "\\huge(" . "\\huge)")))
 #+END_SRC
 Same for ~evil-tex-user-delim-map-generator-alist~. The exact format
-is documented under the variable ~evil-tex-user-env-map-generator-alist~
+Take a look at the docstring of ~evil-tex-bind-to-env-map~ for the full available format.
 ** Custom Toggles
 Just bind your function to ~evil-tex-toggle-map~, its a normal keymap. Nothing
 fancy here.
@@ -190,8 +190,6 @@ fancy here.
   ~t~. This will overide the standard =t= motion, and will rob you of the
   ability to move to one character before =s= (although you can always do =fs
   h=).
-
-*Make sure to set these variables before evil-TeX is loaded!*
 
 * Acknowledgements
 

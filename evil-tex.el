@@ -773,7 +773,26 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   "Basic keymap for `evil-tex-mode'.")
 
 (defun evil-tex-bind-to-env-map (key-generator-alist &optional keymap)
-  "TODO"
+  "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-env-map', or to KEYMAP if given.
+
+See the definition of `evil-tex-env-map' for an example of what
+it should look like.
+
+Each item is in KEY-GENERATOR-ALIST a cons. The car is the key (a
+string) to the keymap. The cdr should be any of:
+
+- A string: then the inserted env would be an env with that name
+
+- A cons: then the text would be wrapped between the car and the
+cdr. For example, you can make a cons of
+'(\\begin{figure}[!ht] . \\end{figure})
+to have default placements for the figure.
+Note that these definition will respect `evil-tex-include-newlines-in-envs', so
+there is no need to manually include \\n's.
+
+- A function: then the function would be called, and the result
+is assumed to be a cons. The text is wrapped in the resulted
+cons."
   (evil-tex--populate-surround-keymap
    (or keymap evil-tex-env-map)
    key-generator-alist
@@ -820,7 +839,8 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
 (defun evil-tex-bind-to-cdlatex-accents-map (key-generator-alist &optional keymap)
-  "TODO"
+  "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-cdlatex-accents-map', or to KEYMAP if given.
+Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
   (evil-tex--populate-surround-keymap
    (or keymap evil-tex-cdlatex-accents-map)
    key-generator-alist
@@ -863,13 +883,14 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
     keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
-(defun evil-tex-bind-to-delim-keymap (key-generator-alist &optional keymap)
-  "TODO"
-  (evil-tex--populate-surround-keymap
-   (or keymap evil-tex-cdlatex-accents-map)
-   key-generator-alist
-   evil-tex--delim-function-prefix
-   #'identity))
+(defun evil-tex-bind-to-delim-map (key-generator-alist &optional keymap)
+  "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-delim-map', or to KEYMAP if given.
+Format is identical to `evil-tex-bind-to-env-map', see it for explaination.")
+(evil-tex--populate-surround-keymap
+ (or keymap evil-tex-cdlatex-accents-map)
+ key-generator-alist
+ evil-tex--delim-function-prefix
+ #'identity)
 
 (defvar evil-tex-delim-map
   (let ((keymap (make-sparse-keymap)))
