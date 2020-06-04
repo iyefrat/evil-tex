@@ -884,30 +884,50 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
     keymap)
   "Basic keymap for `evil-tex-mode'.")
 
-(defvar evil-tex-env-map
+(defun evil-tex-bind-to-env-map (key-generator-alist &optional keymap)
+  "TODO"
   (evil-tex--populate-surround-keymap
-   (make-sparse-keymap)
-   (append evil-tex-env-map-generator-alist
-           evil-tex-user-env-map-generator-alist)
-   evil-tex--env-function-prefix #'evil-tex-get-env-for-surrounding #'evil-tex-format-env-cons-for-surrounding)
+   (or keymap evil-tex-env-map)
+   key-generator-alist
+   evil-tex--env-function-prefix
+   #'evil-tex-get-env-for-surrounding
+   #'evil-tex-format-env-cons-for-surrounding))
+
+(defvar evil-tex-env-map
+  (let ((keymap (make-sparse-keymap)))
+    (evil-tex-bind-to-env-map evil-tex-cdlatex-accents-map-generator-alist
+                              keymap)
+    keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
-(defvar evil-tex-cdlatex-accents-map
+(defun evil-tex-bind-to-cdlatex-accents-map (key-generator-alist &optional keymap)
+  "TODO"
   (evil-tex--populate-surround-keymap
-   (make-sparse-keymap)
-   (append evil-tex-cdlatex-accents-map-generator-alist
-           evil-tex-user-cdlatex-accents-map-generator-alist)
+   (or keymap evil-tex-cdlatex-accents-map)
+   key-generator-alist
    evil-tex--cdlatex-accents-function-prefix
-   #'evil-tex-format-cdlatex-accent-for-surrounding)
+   #'evil-tex-format-cdlatex-accent-for-surrounding))
+
+(defvar evil-tex-cdlatex-accents-map
+  (let ((keymap (make-sparse-keymap)))
+    (evil-tex-bind-to-env-map evil-tex-cdlatex-accents-map-generator-alist
+                              keymap)
+    keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
-(defvar evil-tex-delim-map
+(defun evil-tex-bind-to-delim-keymap (key-generator-alist &optional keymap)
+  "TODO"
   (evil-tex--populate-surround-keymap
-   (make-sparse-keymap)
-   (append evil-tex-delim-map-generator-alist
-           evil-tex-user-delim-map-generator-alist)
+   (or keymap evil-tex-cdlatex-accents-map)
+   key-generator-alist
    evil-tex--delim-function-prefix
-   #'identity)
+   #'identity))
+
+(defvar evil-tex-delim-map
+  (let ((keymap (make-sparse-keymap)))
+    (evil-tex-bind-to-env-map evil-tex-cdlatex-accents-map-generator-alist
+                              keymap)
+    keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-delim-map'.")
 
 (defun evil-tex-surround-env-prompt ()
