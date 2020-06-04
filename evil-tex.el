@@ -346,7 +346,7 @@ a_{n+1}
          ((and (looking-at "nd") (looking-back "\\\\e" (- (point) 2)))
           (forward-char 2))
          ((and (looking-at "d") (looking-back "\\\\en" (- (point) 3)))
-         (forward-char)))
+          (forward-char)))
 
         (unless found-beg ;; repeatd searches to jump over nested envs
           (if (re-search-backward "&\\|\\\\\\\\\\|\\\\end" env-beg t)
@@ -1131,7 +1131,9 @@ the default provided doggle functionality is as follows:
     (eval-after-load 'evil-surround
       #'evil-tex-set-up-surround)
     (eval-after-load 'evil-embrace
-      #'evil-tex-set-up-embrace)))
+      #'evil-tex-set-up-embrace)
+    (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map))
+    (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map))))
 
 (provide 'evil-tex)
 ;;; evil-tex ends here
