@@ -30,9 +30,11 @@ make more sense in some cases.
 ** DONE No need to get rid of code duplication when binding textobjects
 ** DONE refactor =evil-tex--select-table-cell= because dear god
 ** TODO add various =\big='s to the delim text object, prob with a macro.
-** TODO Consider using ~defcustom~ instead of ~defvar~
-** TODO Consider using ~interactive~ for keymap reads
-Its more fluent in elisp.
+** WAIT Consider using ~defcustom~ instead of ~defvar~
+Waiting for an expert opinion
+** DONE Consider using ~interactive~ for keymap reads
+Its more fluent in elisp. Nothing to do anymore, because ~evil-surround~ doesn't
+call the functions it reads interactively so
 ** TODO Go over all documentation, and make it better
 Particularly the one under ~define-minor-mode~.
 Also probably delete =test.tex=
