@@ -318,14 +318,15 @@ a_{n+1}
 
 (defun evil-tex--select-table-cell ()
   "Return (outer-beg outer-end inner-beg inner-end) for table cell."
-  (let* ((env (evil-tex--select-env))
-         outer-beg outer-end
-         inner-beg inner-end
-         (env-beg (nth 2 env))
-         (env-end (nth 3 env))
-         (cell-at-line-beg nil)
-         (found-beg nil) (found-end nil))
+  (let ((env (evil-tex--select-env))
+        outer-beg outer-end
+        inner-beg inner-end
+        env-beg env-end
+        (cell-at-line-beg nil)
+        (found-beg nil) (found-end nil))
     (save-excursion
+      (setq env-beg (nth 2 env))
+      (setq env-end (nth 3 env))
       (when (or (> env-beg (point)) (<= env-end (point))) ;; for when you are on \begin or \end of a sub-env.
         (save-excursion
           (goto-char (1- (nth 0 env)))
