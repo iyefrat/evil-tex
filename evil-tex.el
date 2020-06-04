@@ -730,42 +730,6 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
 (defvar evil-tex--delim-function-prefix "evil-tex-delims:"
   "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
 
-(defvar evil-tex-env-map-generator-alist
-  `(("x" . ,#'evil-tex-get-env-for-surrounding)
-    ("e" . "equation")
-    ("E" . "equation*")
-    ("f" . "figure")
-    ("i" . "itemize")
-    ("I" . "enumerate")
-    ("b" . "frame")
-    ("a" . "align")
-    ("A" . "align*")
-    ("n" . "alignat")
-    ("N" . "alignat*")
-    ("r" . "eqnarray")
-    ("l" . "flalign")
-    ("L" . "flalign*")
-    ("g" . "gather")
-    ("G" . "gather*")
-    ("m" . "multline")
-    ("M" . "multline*")
-    ("c" . "cases")
-    ("z" . "tikzpicture")
-    ;; prefix t - theorems
-    ("ta" . "axiom")
-    ("tc" . "corollary")
-    ("td" . "definition")
-    ("te" . "examples")
-    ("ts" . "exercise")
-    ("tl" . "lemma")
-    ("tp" . "proof")
-    ("tq" . "question")
-    ("tr" . "remark")
-    ("tt" . "theorem"))
-  "Initial alist used to generate `evil-tex-env-map'.
-
-Don't modify this directly; use `evil-tex-user-env-map-generator-alist'")
-
 (defvar evil-tex-user-env-map-generator-alist nil
   "Your alist for modifications of `evil-tex-env-map'.
 
@@ -787,40 +751,6 @@ there is no need to manually include \\n's.
 
 A function: then the function would be called, and the result is
 assumed to be a cons. The text is wrapped in the resulted cons.")
-
-(defvar evil-tex-cdlatex-accents-map-generator-alist
-  `(("." . "dot")
-    (":" . "ddot")
-    ("~" . "tilde")
-    ("N" . "widetilde")
-    ("^" . "hat")
-    ("H" . "widehat")
-    ("-" . "bar")
-    ("T" . "overline")
-    ("_" . "underline")
-    ("{" . "overbrace")
-    ("}" . "underbrace")
-    (">" . "vec")
-    ("/" . "grave")
-    ("\"". "acute")
-    ("v" . "check")
-    ("u" . "breve")
-    ("m" . "mbox")
-    ("c" . "mathcal")
-    ("r" . ,#'evil-tex-cdlatex-accents:rm)
-    ("i" . ,#'evil-tex-cdlatex-accents:it)
-    ("l" . ,#'evil-tex-cdlatex-accents:sl)
-    ("b" . ,#'evil-tex-cdlatex-accents:bold)
-    ("e" . ,#'evil-tex-cdlatex-accents:emph)
-    ("y" . ,#'evil-tex-cdlatex-accents:tt)
-    ("f" . ,#'evil-tex-cdlatex-accents:sf)
-    ("0"   "{\\textstyle " . "}")
-    ("1"   "{\\displaystyle " . "}")
-    ("2"   "{\\scriptstyle " . "}")
-    ("3"   "{\\scriptscriptstyle " . "}"))
-  "Initial alist used to generate `evil-tex-cdlatex-accents-map'.
-
-Don't modify this directly; use `evil-tex-user-cdlatex-accents-map-generator-alist'")
 
 (defvar evil-tex-user-cdlatex-accents-map-generator-alist nil
   "Your alist for modifications of `evil-tex-cdlatex-accents-map'.
@@ -858,19 +788,6 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   "Return the (start . end) that would make text sf style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathsf" "textsf"))
 
-(defvar evil-tex-delim-map-generator-alist
-  `(("P"  "(" . ")")
-    ("p"  "\\left(" . "\\right)")
-    ("S"  "[" . "]")
-    ("s"  "\\left[" . "\\right]")
-    ("C"  "\\{" . "\\}")
-    ("c"  "\\left\\{" . "\\right\\}")
-    ("R"  "\\langle" . "\\rangle")
-    ("r"  "\\left\\langle" . "\\right\\rangle"))
-  "Initial alist used to generate `evil-tex-delim-map'.
-
-Don't modify this directly; use `evil-tex-user-delim-map-generator-alist'")
-
 (defvar evil-tex-user-delim-map-generator-alist nil
   "Your alist for modifications of `evil-tex-delim-map'.
 See `evil-tex-user-env-map-generator-alist' for format specification.")
@@ -895,8 +812,39 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defvar evil-tex-env-map
   (let ((keymap (make-sparse-keymap)))
-    (evil-tex-bind-to-env-map evil-tex-cdlatex-accents-map-generator-alist
-                              keymap)
+    (evil-tex-bind-to-env-map
+     '(("x" . evil-tex-get-env-for-surrounding)
+       ("e" . "equation")
+       ("E" . "equation*")
+       ("f" . "figure")
+       ("i" . "itemize")
+       ("I" . "enumerate")
+       ("b" . "frame")
+       ("a" . "align")
+       ("A" . "align*")
+       ("n" . "alignat")
+       ("N" . "alignat*")
+       ("r" . "eqnarray")
+       ("l" . "flalign")
+       ("L" . "flalign*")
+       ("g" . "gather")
+       ("G" . "gather*")
+       ("m" . "multline")
+       ("M" . "multline*")
+       ("c" . "cases")
+       ("z" . "tikzpicture")
+       ;; prefix t - theorems
+       ("ta" . "axiom")
+       ("tc" . "corollary")
+       ("td" . "definition")
+       ("te" . "examples")
+       ("ts" . "exercise")
+       ("tl" . "lemma")
+       ("tp" . "proof")
+       ("tq" . "question")
+       ("tr" . "remark")
+       ("tt" . "theorem"))
+     keymap)
     keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
 
@@ -910,8 +858,37 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defvar evil-tex-cdlatex-accents-map
   (let ((keymap (make-sparse-keymap)))
-    (evil-tex-bind-to-env-map evil-tex-cdlatex-accents-map-generator-alist
-                              keymap)
+    (evil-tex-bind-to-env-map
+     '(("." . "dot")
+       (":" . "ddot")
+       ("~" . "tilde")
+       ("N" . "widetilde")
+       ("^" . "hat")
+       ("H" . "widehat")
+       ("-" . "bar")
+       ("T" . "overline")
+       ("_" . "underline")
+       ("{" . "overbrace")
+       ("}" . "underbrace")
+       (">" . "vec")
+       ("/" . "grave")
+       ("\"". "acute")
+       ("v" . "check")
+       ("u" . "breve")
+       ("m" . "mbox")
+       ("c" . "mathcal")
+       ("r" . evil-tex-cdlatex-accents:rm)
+       ("i" . evil-tex-cdlatex-accents:it)
+       ("l" . evil-tex-cdlatex-accents:sl)
+       ("b" . evil-tex-cdlatex-accents:bold)
+       ("e" . evil-tex-cdlatex-accents:emph)
+       ("y" . evil-tex-cdlatex-accents:tt)
+       ("f" . evil-tex-cdlatex-accents:sf)
+       ("0"   "{\\textstyle " . "}")
+       ("1"   "{\\displaystyle " . "}")
+       ("2"   "{\\scriptstyle " . "}")
+       ("3"   "{\\scriptscriptstyle " . "}"))
+     keymap)
     keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
@@ -925,8 +902,16 @@ See `evil-tex-user-env-map-generator-alist' for format specification.")
 
 (defvar evil-tex-delim-map
   (let ((keymap (make-sparse-keymap)))
-    (evil-tex-bind-to-env-map evil-tex-cdlatex-accents-map-generator-alist
-                              keymap)
+    (evil-tex-bind-to-env-map
+     '(("P"  "(" . ")")
+       ("p"  "\\left(" . "\\right)")
+       ("S"  "[" . "]")
+       ("s"  "\\left[" . "\\right]")
+       ("C"  "\\{" . "\\}")
+       ("c"  "\\left\\{" . "\\right\\}")
+       ("R"  "\\langle" . "\\rangle")
+       ("r"  "\\left\\langle" . "\\right\\rangle"))
+     keymap)
     keymap)
   "Keymap for surrounding with environments, usually through `evil-tex-delim-map'.")
 
