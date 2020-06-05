@@ -143,18 +143,22 @@ Return in format (beg-an end-an beg-inner end-inner)"
       (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
       (list beg-an end-an beg-inner end-inner))))
 
-(defvar evil-tex-include-newlines-in-envs t
+(defcustom evil-tex-include-newlines-in-envs t
   "Whether include newlines with env insersion.
 
 When non-nil, env insersions would force separate lines for
-\\begin, inner text, and \\end.")
+\\begin, inner text, and \\end."
+  :type 'boolean
+  :group 'evil-tex)
 
-(defvar evil-tex-select-newlines-with-envs t
+(defcustom evil-tex-select-newlines-with-envs t
   "Whether to select newlines with env commands.
 
 When non-nil, the newline proceeding \\begin{...} and preceding
 \\end{...} is selected as part of the delimiter. This way, when
-doing 'cie' you're placed on a separate line.")
+doing 'cie' you're placed on a separate line."
+  :type 'boolean
+  :group 'evil-tex)
 
 (defun evil-tex--select-env ()
   "Return (outer-beg outer-end inner-beg inner-end) for enviornment object.
@@ -570,11 +574,6 @@ Example: (| symbolizes point)
 
 ;;; Text object definitions
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
-
-(evil-define-text-object evil-tex-a-dollar (count &optional beg end type)
-  "Select a dollar."
-  :extend-selection t
-  (evil-select-paren "QQ" "QQ" beg end type count t))
 
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select inner \\[ \\] or \\( \\)."
@@ -1023,10 +1022,8 @@ explaination."
         "aS" #'evil-tex-a-section
         "a^" #'evil-tex-a-superscript
         "a_" #'evil-tex-a-subscript
-        "aT" #'evil-tex-a-table-cell)
+        "aT" #'evil-tex-a-table-cell))
 
-      (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map))
-      (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map)))
   ;; pollutes the global namespace if evil-surround is too old
   ;; i.e before https://github.com/emacs-evil/evil-surround/pull/165
   (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
@@ -1069,8 +1066,8 @@ See `evil-surround-pairs-alist' for the format.")
   ;; making use of https://github.com/emacs-evil/evil-surround/pull/165
   (when (and (boundp evil-surround-local-inner-text-object-map-list)
              (boundp evil-surround-local-outer-text-object-map-list))
-    (push evil-surround-local-inner-text-object-map-list evil-tex-inner-text-objects-map)
-    (push evil-surround-local-outer-text-object-map-list evil-tex-outer-text-objects-map)))
+    (push evil-tex-inner-text-objects-map evil-surround-local-inner-text-object-map-list)
+    (push evil-tex-outer-text-objects-map evil-surround-local-outer-text-object-map-list)))
 
 (defun evil-tex-set-up-embrace ()
   "Configure evil-embrace not to steal our evil-surround keybinds."
@@ -1083,21 +1080,25 @@ See `evil-surround-pairs-alist' for the format.")
 
 ;;; Set up text object toggling.
 
-(defvar evil-tex-toggle-override-t nil
+(defcustom evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts' keybindings.
 
 Override normal 't' functionality for 's' only, so 'st' now
 executes toggles from `evil-tex-toggle-map'.
 
-Set this before loading evil-tex!")
+Set this before loading evil-tex!"
+  :type 'boolean
+  :group 'evil-tex)
 
-(defvar evil-tex-toggle-override-m t
+(defcustom evil-tex-toggle-override-m t
   "Set to t to bind evil-tex toggles to 'mt*' keybindings.
 
 Override normal `m' functionality for 't' only, so 'mt' now
 executes toggles from `evil-tex-toggle-map'.
 
-Set this before loading evil-tex!")
+Set this before loading evil-tex!"
+  :type 'boolean
+  :group 'evil-tex)
 
 (defvar evil-tex-t-functions
   (list (defun evil-tex-try-evil-snipe (count key)
