@@ -158,14 +158,16 @@ doing 'cie' you're placed on a separate line.")
 
 (defun evil-tex--select-env ()
   "Return (outer-beg outer-end inner-beg inner-end) for enviornment object.
-with the -an- text object beign the first and last ^'s,
-and the -inner- being the inner ones.
-Moves the inner ^'s to before/after the newline if `evil-tex-select-newlines-with-envs' is t.
-\\begin{foo}{bar}[baz]
-^                    ^
+
+If `evil-tex-select-newlines-in-envs' is non-nil, the inner
+variant would NOT include newlines proceeding the \\begin and
+preceding the \\end.
+
+\\begin{foobar}{bar}[baz]
+^outer-beg              ^inner-beg
 qux
-\\end{foo}
-^        ^"
+\\end{foobar}
+^inner-end  ^outer-end"
   (let (outer-beg outer-end inner-beg inner-end)
     (save-excursion
       (unless (looking-at (regexp-quote "\\begin{"))
@@ -191,11 +193,12 @@ qux
       (setq inner-end (point))
       (list outer-beg outer-end inner-beg inner-end))))
 
-(defvar evil-tex--section-regexp "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
-  "Regexp that matches for LaTeX section commands.")
+(defvar evil-tex--section-regexp
+  "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
+  "Regexp for matches for LaTeX heading markup.")
 
 (defun evil-tex--section-regexp-higher (str)
-  "For section type STR, return regex that only match higher sections."
+  "For heading of type STR, return a regexp for matching headings with an equal or more important level."
   (cond
    ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
    ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
@@ -208,15 +211,16 @@ qux
 (defun evil-tex--select-section ()
   "Return (outer-beg outer-end inner-beg inner-end type) for section object.
 
-The outer -an- variant is defined from the first character of the
-\\section{} command, to the line above the next \\section{}
-command of equal or higher rank, e.g. \\chapter{}. The inner
-variant starts after the end of the command, and respects a
-following newline if exists.
+The outer variant is defined from the first character of the
+heading command, down to the line above the next heading of equal
+or higher importance.
 
-type is the type of the heading, e.g subsection, chapter*.
+The inner variant starts after the end of the command, and
+respects a following newline if exists.
 
-\\section{} and \\section*{} are treated the same."
+'type' is the type of the heading, e.g subsection, chapter*.
+
+Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
   (let (outer-beg outer-end inner-beg inner-end what-section)
     (save-excursion
       ;; back searching won't work if we are on the \section itself
@@ -227,8 +231,8 @@ type is the type of the heading, e.g subsection, chapter*.
         (setq what-section (match-string 0)))
       ;; We are at backslash
       (setq outer-beg (point))
-      (skip-chars-forward "^{")        ; goto opening brace
-      (forward-sexp)                   ; goto closing brace
+      (skip-chars-forward "^{")         ; goto opening brace
+      (forward-sexp)                    ; goto closing brace
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
         (forward-line 1))
@@ -240,7 +244,7 @@ type is the type of the heading, e.g subsection, chapter*.
       (list outer-beg outer-end inner-beg inner-end what-section))))
 
 (defun evil-tex--goto-script-prefix (subsup)
-  "Return goto end of the found SUBSUP prefix.
+  "Go to end of the found SUBSUP (\"^\" or \"_\").
 {(ab)}_c => {(ab)}_c
     ^              ^"
   (let ((orig-point (point))
@@ -462,6 +466,8 @@ a_{n+1}
 
 (defun evil-tex-toggle-math-align ()
   "Toggle surrounding math between display and align*.
+
+Respect the value of `evil-tex-include-newlines-in-envs'.
 
 \\(foo\\), \\[foo\\] -> \\begin{align*}foo\\end{align*}
 \\begin{align*}foo\\end{align*} -> \\[foo\\]"
@@ -711,7 +717,11 @@ symbol) until any of them succeeds (returns non-nil.)"
                                          count key))))
 
 (defun evil-tex-get-env-for-surrounding (env-name)
-  "Format ENV-NAME for surrounding: return a cons of \\begin{ENV-NAME} . \end{ENV-NAME}."
+  "Format strings the env named ENV-NAME for surrounding.
+
+Return a cons of (\"\\begin{ENV-NAME}\" . \"\\end{ENV-NAME}\").
+
+Respect the value of `evil-tex-include-newlines-in-envs'."
   (interactive (list (read-from-minibuffer "env: " nil
                                            minibuffer-local-ns-map)))
   (cons (format "\\begin{%s}%s"
@@ -793,7 +803,9 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   "Basic keymap for `evil-tex-mode'.")
 
 (defun evil-tex-bind-to-env-map (key-generator-alist &optional keymap)
-  "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-env-map', or to KEYMAP if given.
+  "Bind envs from KEY-GENERATOR-ALIST.
+
+Bind to `evil-tex-env-map', or to KEYMAP if given.
 
 See the definition of `evil-tex-env-map' for an example of what
 it should look like.
@@ -803,16 +815,16 @@ string) to the keymap. The cdr should be any of:
 
 - A string: then the inserted env would be an env with that name
 
-- A cons: then the text would be wrapped between the car and the
-cdr. For example, you can make a cons of
-'(\\begin{figure}[!ht] . \\end{figure})
+- A cons of strigs: then the text would be wrapped between the
+car and the cdr. For example, you can make a cons of
+\(\"\\begin{figure}[!ht]\" . \"\\end{figure}\")
 to have default placements for the figure.
-Note that these definition will respect `evil-tex-include-newlines-in-envs', so
-there is no need to manually include \\n's.
+Note that these definitions will respect `evil-tex-include-newlines-in-envs', so
+there is no need to manually include newlines in provided strings.
 
 - A function: then the function would be called, and the result
 is assumed to be a cons. The text is wrapped in the resulted
-cons."
+cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
   (evil-tex--populate-surround-keymap
    (or keymap evil-tex-env-map)
    key-generator-alist
@@ -856,11 +868,16 @@ cons."
        ("tt" . "theorem"))
      keymap)
     keymap)
-  "Keymap for surrounding with environments, usually through `evil-tex-surround-env-prompt'.")
+  "Keymap for surrounding with environments.
+Used in `evil-tex-surround-env-prompt'.")
 
 (defun evil-tex-bind-to-cdlatex-accents-map (key-generator-alist &optional keymap)
-  "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-cdlatex-accents-map', or to KEYMAP if given.
-Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
+  "Bind accent macros from KEY-GENERATOR-ALIST.
+
+Bind to `evil-tex-cdlatex-accents-map', or to KEYMAP if given.
+
+Format is identical to `evil-tex-bind-to-env-map', see that for
+explaination."
   (evil-tex--populate-surround-keymap
    (or keymap evil-tex-cdlatex-accents-map)
    key-generator-alist
@@ -904,8 +921,12 @@ Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
   "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
 (defun evil-tex-bind-to-delim-map (key-generator-alist &optional keymap)
-  "Bind envs from KEY-GENERATOR-ALIST to `evil-tex-delim-map', or to KEYMAP if given.
-Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
+  "Bind delimiters from KEY-GENERATOR-ALIST.
+
+Bind to `evil-tex-delim-map', or to KEYMAP if given.
+
+Format is identical to `evil-tex-bind-to-env-map', see that for
+explaination."
   (evil-tex--populate-surround-keymap
    (or keymap evil-tex-cdlatex-accents-map)
    key-generator-alist
@@ -1056,18 +1077,20 @@ See `evil-surround-pairs-alist' for the format.")
 ;;; Set up text object toggling.
 
 (defvar evil-tex-toggle-override-t nil
-  "Set to t to bind evil-tex toggles to 'ts*' keybindings.
-Overrides normal 't' functionality for `s' only.
-'ts*' now executes toggles,
-see `evil-tex-toggle-map' for more invormation
-Needs to be defined before loading evil-tex.")
+  "Set to t to bind evil-tex toggles to 'ts' keybindings.
+
+Override normal 't' functionality for 's' only, so 'st' now
+executes toggles from `evil-tex-toggle-map'.
+
+Set this before loading evil-tex!")
 
 (defvar evil-tex-toggle-override-m t
   "Set to t to bind evil-tex toggles to 'mt*' keybindings.
-Overrides normal `m' functionality for 't' only.
-'mt*' now executes toggles,
-see `evil-tex-toggle-map' for more invormation
-Needs to be defined before loading evil-tex.")
+
+Override normal `m' functionality for 't' only, so 'mt' now
+executes toggles from `evil-tex-toggle-map'.
+
+Set this before loading evil-tex!")
 
 (defvar evil-tex-t-functions
   (list (defun evil-tex-try-evil-snipe (count key)
@@ -1076,7 +1099,7 @@ Needs to be defined before loading evil-tex.")
             (evil-snipe-t count (list key))
             t)
           #'evil-find-char-to))
-  "List of functions that should run on 't' key by default.
+  "Functions that should run the evil normal-state 't' key by default.
 
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
@@ -1085,7 +1108,7 @@ until one of them returns non-nil.")
   (list (lambda (_count key)
           (evil-set-marker key)
           t))
-  "List of functions that should run on 'm' key by default.
+  "Functions that should run on the evil normal-state 'm' key by default.
 
 The functions are called one by one, with arguments (count key),
 until one of them returns non-nil.")
@@ -1117,44 +1140,17 @@ until one of them returns non-nil.")
 
 ;;;###autoload
 (define-minor-mode evil-tex-mode
-  "Minor mode for latex-specific text objects in evil.
-Also provides evil-surround integration and toggles.
+  "evil toolbox for LaTeX editing. Provides many text objects
+fully utilizing evil-surround, some useful movements, and keymaps
+for quickly entering environments or cdlatex-like accents. And
+useful toggles.
 
-An overview of the included text objects:
-| Key | Abbreviation    | Text Object Target                                                       | Surround behavior                          |
-|-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
-| c | command         | TeX marcos: \foo{...}                                                      | Prompts you for a macro                    |
-| e | environment     | \begin{...} \end{...} blocks                                               | Prompts you with the env keymap            |
-| m | math            | Both inline \\( \\) and display \\[ \\].                                   | Surrounds with \\( \\)                     |
-| M | Display math    | N/A                                                                        | Surrounds with \\[ \\]                     |
-| $ | dollar          | Old TeX inline maths.                                                      |                                            |
-| d | delimiters      | Math delimiters, (foo), \\left(foo\\right), [foo], \\left[foo\\right] etc. | Prompts you with the delim keymap          |
-| S | sections        | LaTeX parts, chapters, (sub)sections, and (sub)paragraphs                  |                                            |
-| ; | CDLaTeX accents | N/A                                                                        | Prompts you with the cdlatex accent keymap |
-| ^ | superscript     | x^a x^\alpha x^{...}                                                       | Surrounds with ^{ }                        |
-| _ | subscript       | x_a x_\alpha x_{...}                                                       | Surrounds with _{ }                        |
-| T | table cell      | LaTeX table/align cells, e.g. &foo&.                                       | Surrounds with & &                         |
-
-The text object definitions can be found under evil-tex-a-$NAME and evil-tex-inner-$NAME.
-
-The default provided doggle functionality is as follows:
-
-| Key | Abbreviation | Behaviour                                                                                   |
-|-----+--------------+---------------------------------------------------------------------------------------------|
-| mtc | command      | toggle asterisk on command, e.g. \\foo \\Leftrightarrow \\foo*                              |
-| mtd | delimiter    | toggle between delimiter autosizing, e.g.  (foo) \\Leftrightarrow \\Left(foo\\right)        |
-| mte | environment  | toggle enviornment asterisk e.g. \\begin{equation} \\Leftrightarrow \\begin{equation*}      |
-| mtm | math         | toggle between inline and display math, i.e. \\(foo\\) \\Leftrightarrow \\[foo\\]           |
-| mtM | math align*  | toggle between align* env and display math                                                  |
-| mtS | section      | \"toggle\" section name, by entering a new one from the minibuffer. =M-n= for original name |
-
-"
+See URL `https://github.com/itai33/evil-tex' for the full feature
+list."
   :init-value nil
   :keymap evil-tex-mode-map
   (when evil-tex-mode
     (evil-normalize-keymaps)
-    ;; (set-keymap-parent evil-tex-outer-map evil-outer-text-objects-map)
-    ;; (set-keymap-parent evil-tex-inner-map evil-inner-text-objects-map)
     (eval-after-load 'evil-surround
       #'evil-tex-set-up-surround)
     (eval-after-load 'evil-embrace
