@@ -128,18 +128,22 @@ Return in format (beg-an end-an beg-inner end-inner)"
       (setq end-inner (point)) ; set end of inner to be {|} only in command is not empty
       (list beg-an end-an beg-inner end-inner))))
 
-(defvar evil-tex-include-newlines-in-envs t
+(defcustom evil-tex-include-newlines-in-envs t
   "Whether include newlines with env insersion.
 
 When non-nil, env insersions would force separate lines for
-\\begin, inner text, and \\end.")
+\\begin, inner text, and \\end."
+  :type 'boolean
+  :group 'evil-tex)
 
-(defvar evil-tex-select-newlines-with-envs t
+(defcustom evil-tex-select-newlines-with-envs t
   "Whether to select newlines with env commands.
 
 When non-nil, the newline proceeding \\begin{...} and preceding
 \\end{...} is selected as part of the delimiter. This way, when
-doing 'cie' you're placed on a separate line.")
+doing 'cie' you're placed on a separate line."
+  :type 'boolean
+  :group 'evil-tex)
 
 (defun evil-tex--select-env ()
   "Return (outer-beg outer-end inner-beg inner-end) for enviornment object.
@@ -1037,19 +1041,23 @@ See `evil-surround-pairs-alist' for the format.")
 
 ;;; Set up text object toggling.
 
-(defvar evil-tex-toggle-override-t nil
+(defcustom evil-tex-toggle-override-t nil
   "Set to t to bind evil-tex toggles to 'ts*' keybindings.
 Overrides normal 't' functionality for `s' only.
 'ts*' now executes toggles,
 see `evil-tex-toggle-map' for more invormation
-Needs to be defined before loading evil-tex.")
+Needs to be defined before loading evil-tex."
+  :type 'boolean
+  :group 'evil-tex)
 
-(defvar evil-tex-toggle-override-m t
+(defcustom evil-tex-toggle-override-m t
   "Set to t to bind evil-tex toggles to 'mt*' keybindings.
 Overrides normal `m' functionality for 't' only.
 'mt*' now executes toggles,
 see `evil-tex-toggle-map' for more invormation
-Needs to be defined before loading evil-tex.")
+Needs to be defined before loading evil-tex."
+  :type 'boolean
+  :group 'evil-tex)
 
 (defvar evil-tex-t-functions
   (list (defun evil-tex-try-evil-snipe (count key)
