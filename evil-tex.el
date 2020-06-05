@@ -981,10 +981,8 @@ Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
         "aS" #'evil-tex-a-section
         "a^" #'evil-tex-a-superscript
         "a_" #'evil-tex-a-subscript
-        "aT" #'evil-tex-a-table-cell)
+        "aT" #'evil-tex-a-table-cell))
 
-      (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map))
-      (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map)))
   ;; pollutes the global namespace if evil-surround is too old
   ;; i.e before https://github.com/emacs-evil/evil-surround/pull/165
   (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
@@ -1027,8 +1025,8 @@ See `evil-surround-pairs-alist' for the format.")
   ;; making use of https://github.com/emacs-evil/evil-surround/pull/165
   (when (and (boundp evil-surround-local-inner-text-object-map-list)
              (boundp evil-surround-local-outer-text-object-map-list))
-    (push evil-surround-local-inner-text-object-map-list evil-tex-inner-text-objects-map)
-    (push evil-surround-local-outer-text-object-map-list evil-tex-outer-text-objects-map)))
+    (push evil-tex-inner-text-objects-map evil-surround-local-inner-text-object-map-list)
+    (push evil-tex-outer-text-objects-map evil-surround-local-outer-text-object-map-list)))
 
 (defun evil-tex-set-up-embrace ()
   "Configure evil-embrace not to steal our evil-surround keybinds."
