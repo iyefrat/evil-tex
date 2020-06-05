@@ -43,24 +43,13 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
     res))
 
 (defun evil-tex--delim-compare (x y)
-  "Receive two cons' X Y of structure (LR IA BEG END ...).
-where LR is t for e.g. \\left( and nil for e.g. (,
- IA is t for -an- text objects and nil for -inner-,
-BEG and END are the coordinates for the begining and end of the potential delim,
-and the _'s are unimportant.
-Compare between the delimiters to find which one has the largest BEG, while
-making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim finds
-
-(outer-beg outer-end inner-beg inner-end)
-TODO update docs"
+  "Return t if the X delims are closer the point than Y.
+X and Y have the format of (left-outer right-outer left-inner right-inner),
+ chose [[\\left(]] over \\left[[(]], etc."
   (let ((lax (nth 0 x))
-        (rax (nth 1 x))
         (lix (nth 2 x))
-        (rix (nth 3 x))
         (lay (nth 0 y))
-        (ray (nth 1 y))
-        (liy (nth 2 y))
-        (riy (nth 3 y)))
+        (liy (nth 2 y)))
     ;;(print (append x y))
     (cond
      ((not x)                        nil)
@@ -70,12 +59,9 @@ TODO update docs"
      (t nil))))
 
 (defun evil-tex--delim-finder (deliml delimr args)
-  "Return delimiter location (and more) for evil-tex--select-delim.
-LR is t for e.g. \\left( and nil for e.g. (.
-DELIML and DELIMR is a string containing the non \\left part of the delimiter.
-ARGS is the information about the text object needed for the functions to work,
-such as whether the delimiter is an \\left( type or a ( type,
-and if the text object is an -an- or an -inner- TODO update docs"
+  "Return delimiter locations for evil-tex--select-delim.
+DELIML and DELIMR are strings of the left and right delimiters respectively.
+ARGS is the information about the text object needed for the functions to work"
   (let ((delim-pair-outer (ignore-errors
                             (apply #'evil-select-paren
                                    (regexp-quote deliml)
@@ -416,7 +402,8 @@ a_{n+1}
                  "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
                 (replace-regexp-in-string
                  "\\\\\\(right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
-             (t (cons (concat "\\left" left-str) (concat "\\right" right-str))))
+             (t (cons (concat "\\left" left-str)
+                      (concat "\\right" right-str))))
           (evil-tex--overlay-replace left-over  l)
           (evil-tex--overlay-replace right-over r)))
       (delete-overlay left-over) (delete-overlay right-over))))
