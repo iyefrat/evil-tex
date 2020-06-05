@@ -9,7 +9,8 @@
 ;; Version: 0.0.1
 ;; Keywords:
 ;; Homepage: https://github.com/itai33/evil-tex
-;; Package-Requires: ((evil "1.0") (auctex "11.88") (cl-lib "0.5"))
+;; Package-Requires: ((emacs "25.1") (evil "1.0") (auctex "11.88") (cl-lib "0.5"))
+;; Keywords: tex, emulation, vi, evil, wp
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -1141,4 +1142,4 @@ The default provided doggle functionality is as follows:
       #'evil-tex-set-up-embrace)))
 
 (provide 'evil-tex)
-;;; evil-tex ends here
+;;; evil-tex.el ends here
