@@ -994,7 +994,13 @@ See `evil-surround-pairs-alist' for the format.")
 (defun evil-tex-set-up-surround ()
   "Configure evil-surround so things like 'csm' work."
   (setq-local evil-surround-pairs-alist
-              (append evil-tex-surround-delimiters evil-surround-pairs-alist)))
+              (append evil-tex-surround-delimiters evil-surround-pairs-alist))
+  ;; making use of https://github.com/emacs-evil/evil-surround/pull/165
+  (when (and (boundp evil-surround-local-inner-text-object-map-list)
+             (boundp evil-surround-local-outer-text-object-map-list))
+    (push evil-surround-local-inner-text-object-map-list evil-tex-inner-text-objects-map)
+    (push evil-surround-local-outer-text-object-map-list evil-tex-outer-text-objects-map)))
+
 (defun evil-tex-set-up-embrace ()
   "Configure evil-embrace not to steal our evil-surround keybinds."
   (setq-local evil-embrace-evil-surround-keys
@@ -1107,9 +1113,7 @@ the default provided doggle functionality is as follows:
     (eval-after-load 'evil-surround
       #'evil-tex-set-up-surround)
     (eval-after-load 'evil-embrace
-      #'evil-tex-set-up-embrace)
-    (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map))
-    (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map))))
+      #'evil-tex-set-up-embrace)))
 
 (provide 'evil-tex)
 ;;; evil-tex ends here
