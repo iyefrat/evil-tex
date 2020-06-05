@@ -79,20 +79,22 @@ ARGS is the information about the text object needed for the functions to work"
 
 ARGS passed to evil-select-paren, within evil-tex--delim-finder."
   (evil-tex-max-key
-   (cl-loop for (l r) in (list '( "(" ")" )
-                               '( "[" "]" )
-                               '( "\\{" "\\}" )
-                               '( "\\langle" "\\rangle" ))
-            append (cl-loop for (pre-l pre-r) in (list '( "" "" )
-                                                       '( "\\left" "\\right"  )
-                                                       '( "\\bigl" "\\bigr"   ) '( "\\big" "\\big"   )
-                                                       '( "\\biggl" "\\biggr" ) '( "\\bigg" "\\bigg" )
-                                                       '( "\\Bigl" "\\Bigr"   ) '( "\\Big" "\\Big"   )
-                                                       '( "\\Biggl" "\\Biggr" ) '( "\\Bigg" "\\Bigg" ))
+   (cl-loop for (l r)
+            in (list '( "(" ")" )
+                     '( "[" "]" )
+                     '( "\\{" "\\}" )
+                     '( "\\langle" "\\rangle" ))
+            append (cl-loop for (pre-l pre-r)
+                            in (list '( "" "" )
+                                     '( "\\left" "\\right"  )
+                                     '( "\\bigl" "\\bigr"   ) '( "\\big" "\\big"   )
+                                     '( "\\biggl" "\\biggr" ) '( "\\bigg" "\\bigg" )
+                                     '( "\\Bigl" "\\Bigr"   ) '( "\\Big" "\\Big"   )
+                                     '( "\\Biggl" "\\Biggr" ) '( "\\Bigg" "\\Bigg" ))
                             collect (evil-tex--delim-finder (concat pre-l l) (concat pre-r r) args)))
-                            (lambda (arg) (when (consp arg) ; check if selection succeeded
-                                            arg))
-                            #'evil-tex--delim-compare))
+   (lambda (arg) (when (consp arg) ; check if selection succeeded
+                   arg))
+   #'evil-tex--delim-compare))
 
 (defvar evil-tex--last-command-empty nil
   "Global to hold if the last command text object used was empty.
@@ -400,9 +402,9 @@ a_{n+1}
             (cond
              ((looking-at "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" )
               (cons (replace-regexp-in-string
-                 "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
-                (replace-regexp-in-string
-                 "\\\\\\(right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
+                     "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
+                    (replace-regexp-in-string
+                     "\\\\\\(right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
              (t (cons (concat "\\left" left-str)
                       (concat "\\right" right-str))))
           (evil-tex--overlay-replace left-over  l)
