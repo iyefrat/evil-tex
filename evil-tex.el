@@ -443,6 +443,25 @@ a_{n+1}
         (evil-tex--overlay-replace right-over "\\)" ))))
     (delete-overlay left-over) (delete-overlay right-over)))
 
+(defun evil-tex-toggle-math-align ()
+  "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
+  (interactive)
+  (let* ((outer-math (ignore-errors (evil-tex-a-math)))
+         (inner-math (when outer-math (evil-tex-inner-math)))
+         (env (unless outer-math (evil-tex--select-env)))
+         (left-over-to-replace (if outer-math
+                                   (make-overlay (nth 0 inner-math) (nth 0 outer-math))
+                                 (make-overlay (nth 0 env) (nth 2 outer-math))))
+         (right-over-to-replace (if outer-math
+                                    (make-overlay (nth 1 inner-math) (nth 1 outer-math))
+                                  (make-overlay (nth 1 env) (nth 3 env))))
+         (replace-by (if outer-math
+                         (evil-tex-get-env-for-surrounding "align*")
+                       '("\\[" . "\\]"))))
+    (evil-tex--overlay-replace left-over-to-replace (car replace-by))
+    (evil-tex--overlay-replace right-over-to-replace (cdr replace-by))
+    (delete-overlay left-over-to-replace) (delete-overlay right-over-to-replace)))
+
 (defun evil-tex-toggle-command ()
   "Toggle command between \\foo and \\foo*."
   (interactive)
@@ -1056,6 +1075,7 @@ until one of them returns non-nil.")
     (define-key keymap "d" #'evil-tex-toggle-delim)
     (define-key keymap "e" #'evil-tex-toggle-env)
     (define-key keymap "m" #'evil-tex-toggle-math)
+    (define-key keymap "M" #'evil-tex-toggle-math-align)
     (define-key keymap "c" #'evil-tex-toggle-command)
     (define-key keymap "S" #'evil-tex-toggle-section)
     keymap)
