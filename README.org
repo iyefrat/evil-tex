@@ -75,7 +75,7 @@ The full text object definitions are as follows:
 
 #+BEGIN_SRC LaTeX
     \foobar{barbaz}     \foobar{barbaz}    \foobar     \foobar    \foobar{}     \foobar{}
-    └─────────────┘             └────┘    └──────┘            ┆   └───────┘             ┆
+    └─────────────┘             └────┘     └─────┘            ┆   └───────┘             ┆
            ac                     ic         ac      ic (empty)      ac            ic (empty)
 
    ┌\begin{foobar}     \begin{foobar}
@@ -88,9 +88,9 @@ The full text object definitions are as follows:
    └────────┘      └────┘
        am            im
 
-   (foobar)    (foobar)    \left(foobar\right)    \left(foobar\right)
-   └──────┘     └────┘     └─────────────────┘          └────┘
-      ad          id               ad                     id
+   (foobar)    (foobar)    \left(foobar\right)    \left(foobar\right)  \Bigl(foobar\Bigr)    \Bigl(foobar\Bigr)
+   └──────┘     └────┘     └─────────────────┘          └────┘         └────────────────┘          └────┘
+      ad          id               ad                     id                   ad                    id
 
     ┌\section{foo}          \section{foo}
     │                      ┌
@@ -105,7 +105,7 @@ The full text object definitions are as follows:
        
     & foobar &    & foobar &    & foobar \\    & foobar \\    
     └───────┘      └──────┘     └───────┘       └──────┘
-        aT            iT            aT            iT
+        aT            iT            aT             iT
 #+END_SRC LaTeX
 /The diagram rendering might bug out on mobile./
 
