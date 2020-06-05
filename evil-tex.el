@@ -145,7 +145,7 @@ doing 'cie' you're placed on a separate line.")
 (defun evil-tex--select-env ()
   "Return (outer-beg outer-end inner-beg inner-end) for enviornment object.
 with the -an- text object beign the first and last ^'s,
- and the -inner- being the inner ones.
+and the -inner- being the inner ones.
 Moves the inner ^'s to before/after the newline if `evil-tex-select-newlines-with-envs' is t.
 \\begin{foo}{bar}[baz]
 ^                    ^
