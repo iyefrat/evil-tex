@@ -283,9 +283,6 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
               (t
                (setq beg (1- (point)))))
            ;; require point to be inside the base bounds
-           (print beg)
-           (print orig-point)
-           (print end)
            (<= beg orig-point end))))
      ;; subsup before point
      (when (progn (goto-char orig-point)
@@ -425,7 +422,6 @@ a_{n+1}
     (save-excursion
       (let ((left-str (buffer-substring-no-properties (overlay-start left-over) (overlay-end left-over)))
             (right-str (buffer-substring-no-properties (overlay-start right-over) (overlay-end right-over))))
-        (print left-str)
         (goto-char (overlay-start left-over))
         (cl-destructuring-bind (l . r)
             (cond
@@ -451,7 +447,6 @@ a_{n+1}
       (skip-chars-forward "^}")
       (backward-char 1)
       (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))
-      (print right-over)
       (goto-char (overlay-start right-over))
       (skip-chars-forward "^}")
       (backward-char 1)
