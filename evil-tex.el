@@ -42,71 +42,71 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
                 res cur))))
     res))
 
-(defun evil-tex--delim-compare (a b)
-  "Receive two cons' A B of structure (LR IA BEG END ...).
+(defun evil-tex--delim-compare (x y)
+  "Receive two cons' X Y of structure (LR IA BEG END ...).
 where LR is t for e.g. \\left( and nil for e.g. (,
  IA is t for -an- text objects and nil for -inner-,
 BEG and END are the coordinates for the begining and end of the potential delim,
 and the _'s are unimportant.
 Compare between the delimiters to find which one has the largest BEG, while
-making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim finds"
-  (let ((a-lr (nth 0 a))
-        (b-lr (nth 0 b))
-        (ia (nth 1 a))
-        (a-beg (nth 2 a))
-        (b-beg (nth 2 b)))
-    (cond
-     ((not a)                       nil)
-     ((not b)                       t)
-     ((and ia (not (or a-lr b-lr))) (> a-beg b-beg))
-     ((and ia (and a-lr b-lr))       (> a-beg b-beg))
-     ((and ia a-lr)                 (if (= (+ a-beg 5) b-beg) t   (> (+ a-beg 5) b-beg)))
-     ((and ia b-lr)                 (if (= a-beg (+ b-beg 5)) nil (> a-beg (+ b-beg 5))))
-     ((not (or a-lr b-lr))          (> a-beg b-beg))
-     ((and a-lr b-lr)                (> a-beg b-beg))
-     (a-lr                          (if (= a-beg b-beg) t (> a-beg b-beg)))
-     (b-lr                          (if (= a-beg b-beg) nil (> a-beg b-beg)))
-     (t                             nil))))
+making sure to choose [[\\left(]] over the \\left[[(]] delimiter evil-tex--delim finds
 
-(defun evil-tex--delim-finder (lr deliml delimr args)
+(outer-beg outer-end inner-beg inner-end)
+TODO update docs"
+  (let ((lax (nth 0 x))
+        (rax (nth 1 x))
+        (lix (nth 2 x))
+        (rix (nth 3 x))
+        (lay (nth 0 y))
+        (ray (nth 1 y))
+        (liy (nth 2 y))
+        (riy (nth 3 y)))
+    ;;(print (append x y))
+    (cond
+     ((not x)                        nil)
+     ((not y)                        t)
+     ((> lix liy)                    t)
+     ((and (= lix liy) (< lax lay))  t)
+     (t nil))))
+
+(defun evil-tex--delim-finder (deliml delimr args)
   "Return delimiter location (and more) for evil-tex--select-delim.
 LR is t for e.g. \\left( and nil for e.g. (.
 DELIML and DELIMR is a string containing the non \\left part of the delimiter.
 ARGS is the information about the text object needed for the functions to work,
 such as whether the delimiter is an \\left( type or a ( type,
-and if the text object is an -an- or an -inner-"
-  (let ((delim-pair-lr (ignore-errors
-                         (apply #'evil-select-paren
-                                (regexp-quote (concat "\\left" deliml))
-                                (regexp-quote (concat "\\right" delimr)) args)))
-        (delim-pair-not-lr (ignore-errors
-                             (apply #'evil-select-paren
-                                    (regexp-quote deliml)
-                                    (regexp-quote delimr) args))))
-
-    (if lr ; checks if there is a delimiter of the searched type. if so returns the needed information, if not returns nil.
-        (when delim-pair-lr
-          (cons t (cons (car (last args))
-                        delim-pair-lr)))
-      (when delim-pair-not-lr
-        (cons nil (cons (car (last args))
-                        delim-pair-not-lr))))))
+and if the text object is an -an- or an -inner- TODO update docs"
+  (let ((delim-pair-outer (ignore-errors
+                            (apply #'evil-select-paren
+                                   (regexp-quote deliml)
+                                   (regexp-quote delimr) (append args '(t)))))
+        (delim-pair-inner (ignore-errors
+                            (apply #'evil-select-paren
+                                   (regexp-quote deliml)
+                                   (regexp-quote delimr) (append args '(nil))))))
+    (when (and delim-pair-outer delim-pair-inner)
+      (append (nbutlast delim-pair-outer 3) (nbutlast delim-pair-inner 3)))))
 
 (defun evil-tex--select-delim (&rest args)
   "Return (start . end) of closes delimiter match.
 
 ARGS passed to evil-select-paren, within evil-tex--delim-finder."
-  (cddr (evil-tex-max-key
-         (cl-loop for (l r) in (list '( "(" ")" ) '( "[" "]" ) '( "\\{" "\\}" ) '( "\\langle" "\\rangle" ))
-                  collect (evil-tex--delim-finder nil l r args)
-                  collect (evil-tex--delim-finder t   l r args)
-                  collect (evil-tex--delim-finder nil (concat "\\bigl" l) (concat "\\bigr" r) args)
-                  collect (evil-tex--delim-finder nil (concat "\\biggl" l) (concat "\\biggr" r) args)
-                  collect (evil-tex--delim-finder nil (concat "\\Bigl" l) (concat "\\Bigr" r) args)
-                  collect (evil-tex--delim-finder nil (concat "\\Biggl" l) (concat "\\Biggr" r) args))
-         (lambda (arg) (when (consp arg) ; check if selection succeeded
-                         arg))
-         #'evil-tex--delim-compare)))
+  (evil-tex-max-key
+   (cl-loop for (l r) in (list '( "(" ")" )
+                               '( "[" "]" )
+                               '( "\\{" "\\}" )
+                               '( "\\langle" "\\rangle" ))
+            append (cl-loop for (pre-l pre-r) in (list '( "" "" )
+                                                       '( "\\left" "\\right"  )
+                                                       '( "\\bigl" "\\bigr"   ) '( "\\big" "\\big"   )
+                                                       '( "\\biggl" "\\biggr" ) '( "\\bigg" "\\bigg" )
+                                                       '( "\\Bigl" "\\Bigr"   ) '( "\\Big" "\\Big"   )
+                                                       '( "\\Biggl" "\\Biggr" ) '( "\\Bigg" "\\Bigg" )
+                                                       )
+                            collect (evil-tex--delim-finder (concat pre-l l) (concat pre-r r) args)
+                            (lambda (arg) (when (consp arg) ; check if selection succeeded
+                                            arg))
+                            #'evil-tex--delim-compare))))
 
 (defvar evil-tex--last-command-empty nil
   "Global to hold if the last command text object used was empty.
@@ -564,12 +564,12 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-a-delim (count &optional beg end type)
   "Select a delimiter, e.g. (foo) or \\left[bar\\right]."
   :extend-selection nil
-  (evil-tex--select-delim beg end type count t))
+  (nbutlast (evil-tex--select-delim beg end type count) 2))
 
 (evil-define-text-object evil-tex-inner-delim (count &optional beg end type)
   "Select inner delimiter, e.g. (foo) or \\left[bar\\right]."
   :extend-selection nil
-  (evil-tex--select-delim beg end type count nil))
+  (last (evil-tex--select-delim beg end type count) 2))
 
 (evil-define-text-object evil-tex-a-command (count &optional beg end type)
   "Select a LaTeX command (macro)."
