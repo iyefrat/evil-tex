@@ -685,16 +685,19 @@ symbol) until any of them succeeds (returns non-nil.)"
 (defun evil-tex-format-env-cons-for-surrounding (env-cons)
   "Format ENV-CONS for surrounding.
 Add newlines if `evil-tex-include-newlines-in-envs' is t"
+  (declare (side-effect-free t))
   (if evil-tex-include-newlines-in-envs
       (cons (concat (car env-cons) "\n")  (concat "\n" (cdr env-cons)))
     (env-cons)))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
   "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
+  (declare (pure t) (side-effect-free t))
   (cons (concat "\\" accent "{") "}"))
 
 (defun evil-tex-format-command-for-surrounding (command)
   "Format COMMAND for surrounding: return a cons of \\COMMAND{ . }."
+  (declare (side-effect-free t))
   (if evil-tex--last-command-empty
       (cons (concat "\\" command "") "")
     (cons (concat "\\" command "{") "}")))
