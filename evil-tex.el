@@ -101,12 +101,11 @@ ARGS passed to evil-select-paren, within evil-tex--delim-finder."
                                                        '( "\\bigl" "\\bigr"   ) '( "\\big" "\\big"   )
                                                        '( "\\biggl" "\\biggr" ) '( "\\bigg" "\\bigg" )
                                                        '( "\\Bigl" "\\Bigr"   ) '( "\\Big" "\\Big"   )
-                                                       '( "\\Biggl" "\\Biggr" ) '( "\\Bigg" "\\Bigg" )
-                                                       )
-                            collect (evil-tex--delim-finder (concat pre-l l) (concat pre-r r) args)
+                                                       '( "\\Biggl" "\\Biggr" ) '( "\\Bigg" "\\Bigg" ))
+                            collect (evil-tex--delim-finder (concat pre-l l) (concat pre-r r) args)))
                             (lambda (arg) (when (consp arg) ; check if selection succeeded
                                             arg))
-                            #'evil-tex--delim-compare))))
+                            #'evil-tex--delim-compare))
 
 (defvar evil-tex--last-command-empty nil
   "Global to hold if the last command text object used was empty.
@@ -406,30 +405,21 @@ a_{n+1}
          (left-over (make-overlay (car outer) (car inner)))
          (right-over (make-overlay (cadr inner) (cadr outer))))
     (save-excursion
-      (goto-char (overlay-start left-over))
-      (cl-destructuring-bind (l . r)
-          (cond
-           ((looking-at (regexp-quote "("))
-            '("\\left(" . "\\right)"))
-           ((looking-at (regexp-quote "\\left("))
-            '("(" . ")"))
-           ((looking-at (regexp-quote "["))
-            '("\\left[" . "\\right]"))
-           ((looking-at (regexp-quote "\\left["))
-            '("[" . "]"))
-           ((looking-at (regexp-quote "\\{"))
-            '("\\left\\{" . "\\right\\}"))
-           ((looking-at (regexp-quote "\\left\\{"))
-            '("\\{" . "\\}"))
-           ((looking-at (regexp-quote "\\langle"))
-            '("\\left\\langle" . "\\right\\rangle"))
-           ((looking-at (regexp-quote "\\left\\langle"))
-            '("\\langle" . "\\rangle"))
-           (t
-            (user-error "No surrounding delimiter found")))
-        (evil-tex--overlay-replace left-over  l)
-        (evil-tex--overlay-replace right-over r)))
-    (delete-overlay left-over) (delete-overlay right-over)))
+      (let ((left-str (buffer-substring-no-properties (overlay-start left-over) (overlay-end left-over)))
+            (right-str (buffer-substring-no-properties (overlay-start right-over) (overlay-end right-over))))
+        (print left-str)
+        (goto-char (overlay-start left-over))
+        (cl-destructuring-bind (l . r)
+            (cond
+             ((looking-at "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" )
+              (cons (replace-regexp-in-string
+                 "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
+                (replace-regexp-in-string
+                 "\\\\\\(right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
+             (t (cons (concat "\\left" left-str) (concat "\\right" right-str))))
+          (evil-tex--overlay-replace left-over  l)
+          (evil-tex--overlay-replace right-over r)))
+      (delete-overlay left-over) (delete-overlay right-over))))
 
 (defun evil-tex-toggle-env ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
