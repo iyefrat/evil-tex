@@ -7,10 +7,10 @@
 ;; Created: February 01, 2020
 ;; Modified: February 01, 2020
 ;; Version: 0.0.1
-;; Keywords: tex, emulation, vi, evil, wp
+;; Keywords:
 ;; Homepage: https://github.com/itai33/evil-tex
 ;; Package-Requires: ((emacs "25.1") (evil "1.0") (auctex "11.88") (cl-lib "0.5"))
-;;
+;; Keywords: tex, emulation, vi, evil, wp
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -743,26 +743,26 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
        '(,(format "\\%s{" math-format) . "}")
      '(,(format "\\%s{" regular-format) . "}")))
 
-(defun evil-tex-cdlatex-accents-rm ()
+(defun evil-tex-cdlatex-accents:rm ()
   "Return the (start . end) that would make text rm style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathrm" "textrm"))
-(defun evil-tex-cdlatex-accents-it ()
+(defun evil-tex-cdlatex-accents:it ()
   "Return the (start . end) that would make text it style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathit" "textit"))
-(defun evil-tex-cdlatex-accents-sl ()
+(defun evil-tex-cdlatex-accents:sl ()
   "Return the (start . end) that would make text sl style if wrapped between start and end."
   (interactive)
   (unless (texmathp) '("\\textsl{" . "}")))
-(defun evil-tex-cdlatex-accents-bold ()
+(defun evil-tex-cdlatex-accents:bold ()
   "Return the (start . end) that would make text bold style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathbf" "textbf"))
-(defun evil-tex-cdlatex-accents-emph ()
+(defun evil-tex-cdlatex-accents:emph ()
   "Return the (start . end) that would make text emph style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathem" "emph"))
-(defun evil-tex-cdlatex-accents-tt ()
+(defun evil-tex-cdlatex-accents:tt ()
   "Return the (start . end) that would make text tt style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathtt" "texttt"))
-(defun evil-tex-cdlatex-accents-sf ()
+(defun evil-tex-cdlatex-accents:sf ()
   "Return the (start . end) that would make text sf style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathsf" "textsf"))
 
@@ -871,13 +871,13 @@ Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
        ("u" . "breve")
        ("m" . "mbox")
        ("c" . "mathcal")
-       ("r" . evil-tex-cdlatex-accents-rm)
-       ("i" . evil-tex-cdlatex-accents-it)
-       ("l" . evil-tex-cdlatex-accents-sl)
-       ("b" . evil-tex-cdlatex-accents-bold)
-       ("e" . evil-tex-cdlatex-accents-emph)
-       ("y" . evil-tex-cdlatex-accents-tt)
-       ("f" . evil-tex-cdlatex-accents-sf)
+       ("r" . evil-tex-cdlatex-accents:rm)
+       ("i" . evil-tex-cdlatex-accents:it)
+       ("l" . evil-tex-cdlatex-accents:sl)
+       ("b" . evil-tex-cdlatex-accents:bold)
+       ("e" . evil-tex-cdlatex-accents:emph)
+       ("y" . evil-tex-cdlatex-accents:tt)
+       ("f" . evil-tex-cdlatex-accents:sf)
        ("0"   "{\\textstyle " . "}")
        ("1"   "{\\displaystyle " . "}")
        ("2"   "{\\scriptstyle " . "}")
