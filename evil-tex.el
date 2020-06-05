@@ -7,10 +7,9 @@
 ;; Created: February 01, 2020
 ;; Modified: February 01, 2020
 ;; Version: 0.0.1
-;; Keywords:
+;; Keywords: tex, emulation, vi, evil, wp
 ;; Homepage: https://github.com/itai33/evil-tex
 ;; Package-Requires: ((emacs "25.1") (evil "1.0") (auctex "11.88") (cl-lib "0.5"))
-;; Keywords: tex, emulation, vi, evil, wp
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
