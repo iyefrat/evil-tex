@@ -451,7 +451,7 @@ a_{n+1}
          (env (unless outer-math (evil-tex--select-env)))
          (left-over-to-replace (if outer-math
                                    (make-overlay (nth 0 inner-math) (nth 0 outer-math))
-                                 (make-overlay (nth 0 env) (nth 2 outer-math))))
+                                 (make-overlay (nth 0 env) (nth 2 env))))
          (right-over-to-replace (if outer-math
                                     (make-overlay (nth 1 inner-math) (nth 1 outer-math))
                                   (make-overlay (nth 1 env) (nth 3 env))))
