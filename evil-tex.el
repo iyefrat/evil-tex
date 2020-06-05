@@ -200,13 +200,20 @@ qux
 (defun evil-tex--section-regexp-higher (str)
   "For heading of type STR, return a regexp for matching headings with an equal or more important level."
   (cond
-   ((string-match "\\\\part\\*?" str)  "\\\\part\\*?")
-   ((string-match "\\\\chapter\\*?" str)   "\\\\\\(part\\|chapter\\)\\*?")
-   ((string-match "\\\\section\\*?" str)   "\\\\\\(part\\|chapter\\|section\\)\\*?")
-   ((string-match "\\\\subsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsection\\|section\\)\\*?")
-   ((string-match "\\\\subsubsection\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
-   ((string-match "\\\\paragraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
-   ((string-match "\\\\subparagraph\\*?" str)   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
+   ((string-match "\\\\part\\*?" str)
+    "\\\\part\\*?")
+   ((string-match "\\\\chapter\\*?" str)
+    "\\\\\\(part\\|chapter\\)\\*?")
+   ((string-match "\\\\section\\*?" str)
+    "\\\\\\(part\\|chapter\\|section\\)\\*?")
+   ((string-match "\\\\subsection\\*?" str)
+    "\\\\\\(part\\|chapter\\|subsection\\|section\\)\\*?")
+   ((string-match "\\\\subsubsection\\*?" str)
+    "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
+   ((string-match "\\\\paragraph\\*?" str)
+    "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
+   ((string-match "\\\\subparagraph\\*?" str)
+    "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 
 (defun evil-tex--select-section ()
   "Return (outer-beg outer-end inner-beg inner-end type) for section object.
