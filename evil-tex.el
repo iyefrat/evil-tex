@@ -447,7 +447,10 @@ a_{n+1}
     (delete-overlay left-over) (delete-overlay right-over)))
 
 (defun evil-tex-toggle-math-align ()
-  "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
+  "Toggle surrounding math between display and align*.
+
+\\(foo\\), \\[foo\\] -> \\begin{align*}foo\\end{align*}
+\\begin{align*}foo\\end{align*} -> \\[foo\\]"
   (interactive)
   (let* ((outer-math (ignore-errors (evil-tex-a-math)))
          (inner-math (when outer-math (evil-tex-inner-math)))
