@@ -61,9 +61,8 @@ This package defines an increasing number of text objects:
 |-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
 | ~c~ | command         | TeX marcos: ~\foo{...}~                                                  | Prompts you for a macro                    |
 | ~e~ | environment     | ~\begin{...}~ ~\end{...}~ blocks                                         | Prompts you with [[#environment-keymap][the env keymap]]            |
-| ~m~ | math            | Both inline ~\( \)~ and display ~\[ \]~.                                 | Surrounds with ~\( \)~                     |
+| ~m~ | math            | Both inline ~\( \)~, display ~\[ \]~, and  ~$~                           | Surrounds with ~\( \)~                     |
 | ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
-| ~$~ | dollar          | Old TeX inline maths. [[https://tex.stackexchange.com/questions/510/are-and-preferable-to-dollar-signs-for-math-mode][Though you should probably use \(\)]].               |                                            |
 | ~d~ | delimiters      | Math delimiters, ~(foo), \left(foo\right), [foo], \left[foo\right]~ etc. | Prompts you with [[#delimiter-keymap][the delim keymap]]          |
 | ~S~ | sections        | LaTeX parts, chapters, (sub)sections, and (sub)paragraphs                |                                            |
 | ~;~ | [[#cdlatex-accent-keymap][CDLaTeX accents]] | N/A                                                                      | Prompts you with [[#cdlatex-accent-keymap][the cdlatex accent keymap]] |

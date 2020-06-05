@@ -544,11 +544,6 @@ Example: (| symbolizes point)
 ;;; Text object definitions
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
 
-(evil-define-text-object evil-tex-a-dollar (count &optional beg end type)
-  "Select a dollar."
-  :extend-selection t
-  (evil-select-paren "QQ" "QQ" beg end type count t))
-
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
   "Select inner \\[ \\] or \\( \\)."
   :extend-selection nil
@@ -1115,7 +1110,6 @@ An overview of the included text objects:
 | e | environment     | \begin{...} \end{...} blocks                                               | Prompts you with the env keymap            |
 | m | math            | Both inline \\( \\) and display \\[ \\].                                   | Surrounds with \\( \\)                     |
 | M | Display math    | N/A                                                                        | Surrounds with \\[ \\]                     |
-| $ | dollar          | Old TeX inline maths.                                                      |                                            |
 | d | delimiters      | Math delimiters, (foo), \\left(foo\\right), [foo], \\left[foo\\right] etc. | Prompts you with the delim keymap          |
 | S | sections        | LaTeX parts, chapters, (sub)sections, and (sub)paragraphs                  |                                            |
 | ; | CDLaTeX accents | N/A                                                                        | Prompts you with the cdlatex accent keymap |
