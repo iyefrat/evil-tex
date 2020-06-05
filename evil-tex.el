@@ -918,7 +918,7 @@ Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
   "Outer text object keymap for `evil-tex-mode'.")
 (if (and (boundp  'evil-surround-local-inner-text-object-map-list)
          (boundp  'evil-surround-local-outer-text-object-map-list))
-    (progn ;; deifines everything on local keymaps if evil-surround is new enough
+    (progn ;; deifine everything on local keymaps if evil-surround is up-to-date
       (define-key evil-tex-inner-text-objects-map "e" #'evil-tex-inner-env)
       (define-key evil-tex-inner-text-objects-map "c" #'evil-tex-inner-command)
       (define-key evil-tex-inner-text-objects-map "m" #'evil-tex-inner-math)
@@ -958,6 +958,7 @@ Format is identical to `evil-tex-bind-to-env-map', see it for explaination."
       (setq evil-surround-local-inner-text-object-map-list (list evil-tex-inner-text-objects-map))
       (setq evil-surround-local-outer-text-object-map-list (list evil-tex-outer-text-objects-map)))
   ;; pollutes the global namespace if evil-surround is too old
+  ;; i.e before https://github.com/emacs-evil/evil-surround/pull/165
   (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
   (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-command)
   (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
