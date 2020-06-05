@@ -252,8 +252,8 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
       (setq inner-beg (point))
       (re-search-forward (concat (evil-tex--section-regexp-higher what-section) "\\|\\\\end{document}"))
       (move-beginning-of-line 1)
-      (setq inner-end (point))
-      (setq outer-end (point))
+      (setq inner-end (point)
+            outer-end (point))
       (list outer-beg outer-end inner-beg inner-end what-section))))
 
 (defun evil-tex--goto-script-prefix (subsup)
@@ -372,19 +372,19 @@ and the inner ones will not include it or surrounding {} if they exist."
   "Return (outer-beg outer-end inner-beg inner-end) for table cell."
   (let ((env (evil-tex--select-env))
         outer-beg outer-end
-       inner-beg inner-end
+        inner-beg inner-end
         env-beg env-end
         (cell-at-line-beg nil)
         (found-beg nil) (found-end nil))
     (save-excursion
-      (setq env-beg (nth 2 env))
-      (setq env-end (nth 3 env))
+      (setq env-beg (nth 2 env)
+            env-end (nth 3 env))
       (when (or (> env-beg (point)) (<= env-end (point))) ;; for when you are on \begin or \end of a sub-env.
         (save-excursion
           (goto-char (1- (nth 0 env)))
-          (setq env (evil-tex--select-env))
-          (setq env-beg (nth 2 env))
-          (setq env-end (nth 3 env))))
+          (setq env (evil-tex--select-env)
+                env-beg (nth 2 env)
+                env-end (nth 3 env))))
       (while (not found-beg)
         (cond
          ((looking-at "&")
