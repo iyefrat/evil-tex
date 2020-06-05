@@ -334,6 +334,40 @@ a_{n+1}
       (forward-char)
       (cons (point) (point))))))
 
+(defun evil-tex--select-script (subsup)
+  "Return (outer-beg outer-end inner-beg inner-end) for script object.
+SUBSUP should be either _ or ^. The outer selections will include SUBSUP,
+and the inner ones will not include it or surrounding {} if they exist."
+  (let (outer-beg outer-end
+                  inner-beg inner-end)
+    (save-excursion
+      (evil-tex--goto-script-prefix subsup)
+      (setq outer-beg (1- (point)))
+      (when (looking-at "{") ; select brace if present
+        (forward-char 1))
+      (setq inner-beg (point)))
+    (save-excursion
+      (evil-tex--goto-script-prefix subsup)
+      (cond
+       ;; a_{something}
+       ((looking-at "{")
+        (forward-sexp)
+        (setq inner-end (1- (point))
+              outer-end (point)))
+       ;; a_\something
+       ((looking-at "\\\\[a-zA-Z@*]+")
+        (goto-char (match-end 0))
+        ;; skip command arguments
+        (while (looking-at "{\\|\\[")
+          (forward-sexp))
+        (setq inner-end (point)
+              outer-end (point)))
+       (t ;; a_1 a_n
+        (forward-char)
+        (setq inner-end (point)
+              outer-end (point)))))
+    (list outer-beg outer-end inner-beg inner-end)))
+
 (defun evil-tex--select-table-cell ()
   "Return (outer-beg outer-end inner-beg inner-end) for table cell."
   (let ((env (evil-tex--select-env))
@@ -629,25 +663,29 @@ Example: (| symbolizes point)
 
 (evil-define-text-object evil-tex-a-subscript (count &optional beg end type)
   "Select a LaTeX subscript."
-  (list (car (evil-tex-script-beginning-begend "_"))
-        (cdr (evil-tex-script-end-begend "_"))))
+                                        ;(list (car (evil-tex-script-beginning-begend "_"))
+                                        ;      (cdr (evil-tex-script-end-begend "_"))))
+  (nbutlast (evil-tex--select-script "_") 2))
 
 (evil-define-text-object evil-tex-inner-subscript (count &optional beg end type)
   "Select inner LaTeX subscript."
   :extend-selection nil
-  (list (cdr (evil-tex-script-beginning-begend "_"))
-        (car (evil-tex-script-end-begend "_"))))
+                                        ;(list (cdr (evil-tex-script-beginning-begend "_"))
+                                        ;      (car (evil-tex-script-end-begend "_"))))
+  (last (evil-tex--select-script "_") 2))
 
 (evil-define-text-object evil-tex-a-superscript (count &optional beg end type)
   "Select a LaTeX superscript."
-  (list (car (evil-tex-script-beginning-begend "^"))
-        (cdr (evil-tex-script-end-begend "^"))))
+                                        ;(list (car (evil-tex-script-beginning-begend "^"))
+                                        ;      (cdr (evil-tex-script-end-begend "^"))))
+  (nbutlast (evil-tex--select-script "^") 2))
 
 (evil-define-text-object evil-tex-inner-superscript (count &optional beg end type)
   "Select inner LaTeX superscript."
   :extend-selection nil
-  (list (cdr (evil-tex-script-beginning-begend "^"))
-        (car (evil-tex-script-end-begend "^"))))
+                                        ;(list (cdr (evil-tex-script-beginning-begend "^"))
+                                        ;      (car (evil-tex-script-end-begend "^"))))
+  (last (evil-tex--select-script "^") 2))
 
 (evil-define-text-object evil-tex-a-table-cell (count &optional beg end type)
   "Select a LaTeX table cell."
