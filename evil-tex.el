@@ -707,7 +707,7 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
   (declare (side-effect-free t))
   (if evil-tex-include-newlines-in-envs
       (cons (concat (car env-cons) "\n")  (concat "\n" (cdr env-cons)))
-    (env-cons)))
+    env-cons))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
   "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
