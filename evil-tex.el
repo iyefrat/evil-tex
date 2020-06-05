@@ -59,13 +59,13 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
 
 (defun evil-tex--delim-compare (x y)
   "Return t if the X delims are closer the point than Y.
+
 X and Y have the format of (left-outer right-outer left-inner right-inner),
- chose [[\\left(]] over \\left[[(]], etc."
+chose [[\\left(]] over \\left[[(]], etc."
   (let ((lax (nth 0 x))
         (lix (nth 2 x))
         (lay (nth 0 y))
         (liy (nth 2 y)))
-    ;;(print (append x y))
     (cond
      ((not x)                        nil)
      ((not y)                        t)
@@ -75,6 +75,7 @@ X and Y have the format of (left-outer right-outer left-inner right-inner),
 
 (defun evil-tex--delim-finder (deliml delimr args)
   "Return delimiter locations for evil-tex--select-delim.
+
 DELIML and DELIMR are strings of the left and right delimiters respectively.
 ARGS is the information about the text object needed for the functions to work"
   (let ((delim-pair-outer (ignore-errors
@@ -117,6 +118,7 @@ For example, \\epsilon is empty, \\dv{x} is not.")
 
 (defun evil-tex--select-command ()
   "Return command (macro) text object boundries.
+
 Inner commmand defined to be what is inside {}'s and []'s,
 or empty if none exist.
 
@@ -256,6 +258,7 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
 
 (defun evil-tex--goto-script-prefix (subsup)
   "Go to end of the found SUBSUP (\"^\" or \"_\").
+
 {(ab)}_c => {(ab)}_c
     ^              ^"
   (let ((orig-point (point))
@@ -293,6 +296,7 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
 
 (defun evil-tex-script-beginning-begend (subsup)
   "Return (start . end) of the sub/superscript that point is in.
+
 SUBSUP should be either \"^\" or \"_\"
 
 a_{n+1}
@@ -307,6 +311,7 @@ a_{n+1}
 
 (defun evil-tex-script-end-begend (subsup)
   "Return (start . end) of the sub/superscript that point is in.
+
 SUBSUP should be either \"^\" or \"_\"
 
 a_{n+1}
@@ -333,7 +338,7 @@ a_{n+1}
   "Return (outer-beg outer-end inner-beg inner-end) for table cell."
   (let ((env (evil-tex--select-env))
         outer-beg outer-end
-        inner-beg inner-end
+       inner-beg inner-end
         env-beg env-end
         (cell-at-line-beg nil)
         (found-beg nil) (found-end nil))
@@ -535,12 +540,14 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
 
 (defun evil-tex-go-back-section (&optional arg)
   "Go back to the closest part/section/subsection etc.
+
 If given, go ARG sections up."
   (interactive)
   (re-search-backward evil-tex--section-regexp nil t arg))
 
 (defun evil-tex-go-forward-section (&optional arg)
   "Go forward to the closest part/section/subsection etc.
+
 If given, go ARG sections down."
   (interactive)
   ;; skip current looked-at section
@@ -656,7 +663,8 @@ Example: (| symbolizes point)
 (defun evil-tex--populate-surround-keymap (keymap generator-alist prefix
                                                   single-strings-fn &optional cons-fn)
   "Populate KEYMAP with keys and callbacks from GENERATOR-ALIST.
-see `evil-tex-env-map-generator-alist' the the alist fromat.
+
+See `evil-tex-env-map-generator-alist' the the alist fromat.
 PREFIX is the prefix to give the generated functions created
 by (lambda () (interactive) (SINGLE-STRINGS-FN env)) if the input is a string,
 and by (lambda () (interactive) (CONS-FN env)) if it's a cons
@@ -734,6 +742,7 @@ Respect the value of `evil-tex-include-newlines-in-envs'."
 
 (defun evil-tex-format-env-cons-for-surrounding (env-cons)
   "Format ENV-CONS for surrounding.
+
 Add newlines if `evil-tex-include-newlines-in-envs' is t"
   (declare (side-effect-free t))
   (if evil-tex-include-newlines-in-envs
@@ -877,8 +886,7 @@ Used in `evil-tex-surround-env-prompt'.")
 
 Bind to `evil-tex-cdlatex-accents-map', or to KEYMAP if given.
 
-Format is identical to `evil-tex-bind-to-env-map', see that for
-explaination."
+Format is identical to `evil-tex-bind-to-env-map', see that for explaination."
   (evil-tex--populate-surround-keymap
    (or keymap evil-tex-cdlatex-accents-map)
    key-generator-alist
