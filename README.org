@@ -133,6 +133,7 @@ provide the ability to map the toggles to =ts= instead of =mt= e.g. instead of
 | mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~          |
 | mtM | math align*  | toggle between align* env and display math                                                |
 | mtS | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
+
 ** Misc.
 *** =M-n=
 The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement, useful
