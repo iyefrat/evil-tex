@@ -131,7 +131,7 @@ provide the ability to map the toggles to =ts= instead of =mt= e.g. instead of
 | mtd | delimiter    | toggle between delimiter autosizing, e.g.  ~(foo)~ \Leftrightarrow ~\Left(foo\right)~     |
 | mte | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~   |
 | mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~          |
-| mtM | math align*  | toggle between align* env and display math                                              |
+| mtM | math align*  | toggle between align* env and display math                                                |
 | mtS | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
 ** Misc.
 *** =M-n=
