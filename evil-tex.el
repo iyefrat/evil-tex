@@ -199,6 +199,35 @@ qux
       (setq inner-end (point))
       (list outer-beg outer-end inner-beg inner-end))))
 
+(defun evil-tex--select-math (&rest args)
+  "Return (outer-beg outer-end inner-beg inner-end) of closest LaTeX math match.
+
+ARGS passed to evil-select-(paren|quote).
+Math includes inline and display math, e.g. \\(foo\\), \\[bar\\], and $baz$"
+
+  (evil-tex-max-key
+   (list
+    (append (nbutlast (ignore-errors (apply #'evil-select-paren
+                                            (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
+            (nbutlast (ignore-errors (apply #'evil-select-paren
+                                            (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3))
+    (append (nbutlast (ignore-errors (apply #'evil-select-paren
+                                            (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
+            (nbutlast (ignore-errors (apply #'evil-select-paren
+                                            (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3))
+    (append (nbutlast (ignore-errors (apply #'evil-select-paren
+                                            (regexp-quote "$") (regexp-quote "$") (append args '(t)))) 3)
+            (nbutlast (ignore-errors (apply #'evil-select-paren
+                                            (regexp-quote "$") (regexp-quote "$") (append args '(nil)))) 3)))
+   (lambda (arg) (if (and (consp arg) ; selection succeeded
+                          ;; Selection is close enough to point.
+                          ;; evil-select-quote can select things further down in
+                          ;; the buffer.
+                          (<= (- (car arg) 2) (point))
+                          (>= (+ (cadr arg) 3) (point)))
+                     (car arg)
+                   most-negative-fixnum))))
+
 (defvar evil-tex--section-regexp
   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?"
   "Regexp for matches for LaTeX heading markup.")
@@ -581,9 +610,12 @@ Example: (| symbolizes point)
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
   "Select a \\[ \\] or \\( \\)."
   :extend-selection nil
-  (evil-select-paren (rx (or "\\(" "\\[" "$"))
-                     (rx (or "\\)" "\\]" "$"))
-                     beg end type count t))
+  (nbutlast (evil-tex--select-math beg end type count) 2))
+
+(evil-define-text-object evil-tex-inner-math (count &optional beg end type)
+  "Select inner \\[ \\] or \\( \\)."
+  :extend-selection nil
+  (last (evil-tex--select-math beg end type count) 2))
 
 (evil-define-text-object evil-tex-a-delim (count &optional beg end type)
   "Select a delimiter, e.g. (foo) or \\left[bar\\right]."
