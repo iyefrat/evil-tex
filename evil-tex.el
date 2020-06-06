@@ -77,7 +77,9 @@ chose [[\\left(]] over \\left[[(]], etc."
   "Return delimiter locations for evil-tex--select-delim.
 
 DELIML and DELIMR are strings of the left and right delimiters respectively.
-ARGS is the information about the text object needed for the functions to work"
+ARGS is the information about the text object needed for the functions to work
+
+The format for the return is (outer-beg outer-end inner-beg inner-end)."
   (let ((delim-pair-outer (ignore-errors
                             (apply #'evil-select-paren
                                    (regexp-quote deliml)
@@ -90,7 +92,7 @@ ARGS is the information about the text object needed for the functions to work"
       (append (nbutlast delim-pair-outer 3) (nbutlast delim-pair-inner 3)))))
 
 (defun evil-tex--select-delim (&rest args)
-  "Return (start . end) of closes delimiter match.
+  "Return (outer-beg outer-end inner-beg inner-end) of closest delimiter object.
 
 ARGS passed to evil-select-paren, within evil-tex--delim-finder."
   (evil-tex-max-key
@@ -117,12 +119,11 @@ ARGS passed to evil-select-paren, within evil-tex--delim-finder."
 For example, \\epsilon is empty, \\dv{x} is not.")
 
 (defun evil-tex--select-command ()
-  "Return command (macro) text object boundries.
+  "Return (outer-beg outer-end inner-beg inner-end) of command (macro) object.
 
 Inner commmand defined to be what is inside {}'s and []'s,
-or empty if none exist.
+or empty if none exist."
 
-Return in format (beg-an end-an beg-inner end-inner)"
   (let ((beg-an (TeX-find-macro-start))
         (end-an (TeX-find-macro-end))
         beg-inner end-inner)
@@ -358,7 +359,7 @@ and the inner ones will not include it or surrounding {} if they exist."
     (list outer-beg outer-end inner-beg inner-end)))
 
 (defun evil-tex--select-table-cell ()
-  "Return (outer-beg outer-end inner-beg inner-end) for table cell."
+  "Return (outer-beg outer-end inner-beg inner-end) for table cell object."
   (let ((env (evil-tex--select-env))
         outer-beg outer-end
         inner-beg inner-end
@@ -599,13 +600,6 @@ Example: (| symbolizes point)
 
 ;;; Text object definitions
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
-
-(evil-define-text-object evil-tex-inner-math (count &optional beg end type)
-  "Select inner \\[ \\] or \\( \\)."
-  :extend-selection nil
-  (evil-select-paren (rx (or "\\(" "\\[" "$"))
-                     (rx (or "\\)" "\\]" "$"))
-                     beg end type count nil))
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
   "Select a \\[ \\] or \\( \\)."
