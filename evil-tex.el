@@ -483,7 +483,7 @@ and the inner ones will not include it or surrounding {} if they exist."
     (delete-overlay left-over) (delete-overlay right-over)))
 
 (defun evil-tex-toggle-math ()
-  "Toggle surrounding math between \\(foo\\) and \\[foo\\]."
+  "Toggle surrounding math between \\(foo\\) and \\=\\[foo\\]."
   (interactive)
   (let* ((outer (evil-tex-a-math)) (inner (evil-tex-inner-math))
          (left-over (make-overlay (car outer) (car inner)))
@@ -504,8 +504,8 @@ and the inner ones will not include it or surrounding {} if they exist."
 
 Respect the value of `evil-tex-include-newlines-in-envs'.
 
-\\(foo\\), \\[foo\\] -> \\begin{align*}foo\\end{align*}
-\\begin{align*}foo\\end{align*} -> \\[foo\\]"
+\\(foo\\), \\=\\[foo\\] -> \\begin{align*}foo\\end{align*}
+\\begin{align*}foo\\end{align*} -> \\=\\[foo\\]"
   (interactive)
   (let* ((outer-math (ignore-errors (evil-tex-a-math)))
          (inner-math (when outer-math (evil-tex-inner-math)))
@@ -602,7 +602,7 @@ Example: (| symbolizes point)
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
-  "Select a \\[ \\] or \\( \\)."
+  "Select a \\=\\[ \\] or \\( \\)."
   :extend-selection nil
   (nbutlast (evil-tex--select-math beg end type count) 2))
 
