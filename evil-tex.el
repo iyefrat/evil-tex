@@ -209,17 +209,17 @@ qux
    ((string-match "\\\\part\\*?" str)
     "\\\\part\\*?")
    ((string-match "\\\\chapter\\*?" str)
-    "\\\\\\(part\\|chapter\\)\\*?")
+    "\\\\\\(?:part\\|chapter\\)\\*?")
    ((string-match "\\\\section\\*?" str)
-    "\\\\\\(part\\|chapter\\|section\\)\\*?")
+    "\\\\\\(?:part\\|chapter\\|section\\)\\*?")
    ((string-match "\\\\subsection\\*?" str)
-    "\\\\\\(part\\|chapter\\|subsection\\|section\\)\\*?")
+    "\\\\\\(?:part\\|chapter\\|subsection\\|section\\)\\*?")
    ((string-match "\\\\subsubsection\\*?" str)
-    "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
+    "\\\\\\(?:part\\|chapter\\|subsubsection\\|subsection\\|section\\)\\*?")
    ((string-match "\\\\paragraph\\*?" str)
-    "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
+    "\\\\\\(?:part\\|chapter\\|subsubsection\\|subsection\\|section\\|paragraph\\)\\*?")
    ((string-match "\\\\subparagraph\\*?" str)
-    "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
+    "\\\\\\(?:part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?")))
 
 (defun evil-tex--select-section ()
   "Return (outer-beg outer-end inner-beg inner-end type) for section object.
@@ -368,7 +368,7 @@ and the inner ones will not include it or surrounding {} if they exist."
                       inner-beg (1+ (point))
                       found-beg t))
                ;; \\ and end of line, with allowence for whitespace and comments
-               ((looking-at "\\\\\\\\\\(\s*\\(%.*\\)?\\)?\n")
+               ((looking-at "\\\\\\\\\\(?:\s*\\(?:%.*\\)?\\)?\n")
                 (setq outer-beg (+ 3 (point))
                       inner-beg (+ 3 (point))
                       cell-at-line-beg t
@@ -424,11 +424,11 @@ and the inner ones will not include it or surrounding {} if they exist."
         (goto-char (overlay-start left-over))
         (cl-destructuring-bind (l . r)
             (cond
-             ((looking-at "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" )
+             ((looking-at "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" )
               (cons (replace-regexp-in-string
-                     "\\\\\\(left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
+                     "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
                     (replace-regexp-in-string
-                     "\\\\\\(right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
+                     "\\\\\\(?:right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
              (t (cons (concat "\\left" left-str)
                       (concat "\\right" right-str))))
           (evil-tex--overlay-replace left-over  l)
