@@ -1107,8 +1107,10 @@ See `evil-surround-pairs-alist' for the format.")
   ;; making use of https://github.com/emacs-evil/evil-surround/pull/165
   (when (and (boundp evil-surround-local-inner-text-object-map-list)
              (boundp evil-surround-local-outer-text-object-map-list))
-    (push evil-tex-inner-text-objects-map evil-surround-local-inner-text-object-map-list)
-    (push evil-tex-outer-text-objects-map evil-surround-local-outer-text-object-map-list)))
+    (add-to-list 'evil-surround-local-inner-text-object-map-list
+                 evil-tex-inner-text-objects-map)
+    (add-to-list 'evil-surround-local-outer-text-object-map-list
+                 evil-tex-outer-text-objects-map)))
 
 (defun evil-tex-set-up-embrace ()
   "Configure evil-embrace not to steal our evil-surround keybinds."
