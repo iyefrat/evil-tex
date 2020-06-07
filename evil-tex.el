@@ -532,11 +532,14 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
   (interactive)
   (save-excursion
     (goto-char (car (evil-tex-inner-command)))
+    ;; now either inside {}[] or after the macro
     (backward-char 1)
-    (when (or (= ?{ (char-after)) (= ?\[ (char-after))) (backward-char 1) )
+    (when (or (= ?{ (char-after)) (= ?\[ (char-after)))
+      (backward-char 1))
     (if (= ?* (char-after))
         (delete-char 1)
-      (progn (forward-char 1) (insert-char ?*)))))
+      (forward-char 1)
+      (insert-char ?*))))
 
 (defvar evil-tex-section-name-history nil
   "History used for changing section names with `evil-tex-toggle-section'.")
