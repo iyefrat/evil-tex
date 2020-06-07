@@ -545,9 +545,11 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
   "Enter new name for surrounding section. Meta-n for original name."
   (interactive)                         ; Sadly can't use interactive for the
                                         ; new name, as we need orig-name first
-  (let ((section-info (evil-tex--select-section)))
+  (cl-destructuring-bind
+      (outer-beg _outer-end _inner-beg _inner-end section-type)
+      (evil-tex--select-section)
     (save-excursion
-      (goto-char (nth 0 section-info))
+      (goto-char outer-beg)
       (skip-chars-forward "^{")
       (when-let ((curly (evil-inner-curly))
                  (orig-name (buffer-substring-no-properties
@@ -555,9 +557,7 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
                  (new-name
                   (minibuffer-with-setup-hook
                       (lambda () (add-hook 'pre-command-hook #'evil-ex-remove-default))
-                    (read-string (concat
-                                  (substring-no-properties (nth 4 section-info) 1)
-                                  ": ")
+                    (read-string (concat (substring section-type 1) ": ")
                                  (propertize orig-name 'face 'shadow)
                                  'evil-tex-section-name-history
                                  orig-name t))))
