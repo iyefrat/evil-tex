@@ -510,18 +510,22 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
   (let* ((outer-math (ignore-errors (evil-tex-a-math)))
          (inner-math (when outer-math (evil-tex-inner-math)))
          (env (unless outer-math (evil-tex--select-env)))
-         (left-over-to-replace (if outer-math
-                                   (make-overlay (nth 0 inner-math) (nth 0 outer-math))
-                                 (make-overlay (nth 0 env) (nth 2 env))))
-         (right-over-to-replace (if outer-math
-                                    (make-overlay (nth 1 inner-math) (nth 1 outer-math))
-                                  (make-overlay (nth 1 env) (nth 3 env))))
-         (replace-by (if outer-math
-                         (evil-tex-get-env-for-surrounding "align*")
-                       '("\\[" . "\\]"))))
-    (evil-tex--overlay-replace left-over-to-replace (car replace-by))
-    (evil-tex--overlay-replace right-over-to-replace (cdr replace-by))
-    (delete-overlay left-over-to-replace) (delete-overlay right-over-to-replace)))
+         (left-ol-to-replace (if outer-math
+                                 (make-overlay (nth 0 inner-math) (nth 0 outer-math))
+                               (make-overlay (nth 0 env) (nth 2 env))))
+         (right-ol-to-replace (if outer-math
+                                  (make-overlay (nth 1 inner-math) (nth 1 outer-math))
+                                (make-overlay (nth 1 env) (nth 3 env))))
+         (replacement (if outer-math
+                          (evil-tex-get-env-for-surrounding "align*")
+                        '("\\[" . "\\]"))))
+    ;; put the \begin on a line of its own
+    (when (and outer-math
+               (= (char-before (overlay-start left-ol-to-replace)) ?\n))
+      (setcar replacement (concat "\n" (car replacement))))
+    (evil-tex--overlay-replace left-ol-to-replace (car replacement))
+    (evil-tex--overlay-replace right-ol-to-replace (cdr replacement))
+    (delete-overlay left-ol-to-replace) (delete-overlay right-ol-to-replace)))
 
 (defun evil-tex-toggle-command ()
   "Toggle command between \\foo and \\foo*."
