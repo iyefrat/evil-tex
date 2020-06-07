@@ -204,7 +204,7 @@ qux
   "Return (outer-beg outer-end inner-beg inner-end) of closest LaTeX math match.
 
 ARGS passed to evil-select-(paren|quote).
-Math includes inline and display math, e.g. \\(foo\\), \\[bar\\], and $baz$"
+Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
 
   (evil-tex-max-key
    (list
@@ -602,12 +602,12 @@ Example: (| symbolizes point)
 ;; some of which stolen from  https://github.com/hpdeifel/evil-latex-textobjects
 
 (evil-define-text-object evil-tex-a-math (count &optional beg end type)
-  "Select a \\=\\[ \\] or \\( \\)."
+  "Select a \\=\\[foo\\], \\(bar\\), or $baz$."
   :extend-selection nil
   (nbutlast (evil-tex--select-math beg end type count) 2))
 
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
-  "Select inner \\[ \\] or \\( \\)."
+  "Select inner \\=\\[foo\\], \\(bar\\), or $baz."
   :extend-selection nil
   (last (evil-tex--select-math beg end type count) 2))
 
