@@ -183,8 +183,8 @@ qux
       (setq outer-beg (point))
       (forward-sexp)
       (while (or
-              (eq (char-after) ?{)
-              (eq (char-after) ?\[))
+              (= (char-after) ?{)
+              (= (char-after) ?\[))
         (forward-sexp))
       (when (and evil-tex-select-newlines-with-envs
                  (looking-at "\n"))
@@ -303,13 +303,13 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
          (when
              (cond
               ;; {}^
-              ((eq (char-before) ?})
+              ((= (char-before) ?})
                (backward-sexp)
                (setq beg (point)))
               ;; \command^
               ((save-excursion (and (search-backward "\\" (line-beginning-position) t)
                                     (looking-at "\\\\[A-Za-z@*]+")
-                                    (eq end (match-end 0))))
+                                    (= end (match-end 0))))
                (search-backward "\\" (line-beginning-position) t)
                (setq beg (match-beginning 0)))
               ;; a^
@@ -475,11 +475,11 @@ and the inner ones will not include it or surrounding {} if they exist."
       (goto-char (overlay-start left-over))
       (skip-chars-forward "^}")
       (backward-char 1)
-      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))
+      (if (= ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))
       (goto-char (overlay-start right-over))
       (skip-chars-forward "^}")
       (backward-char 1)
-      (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
+      (if (= ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*))))
     (delete-overlay left-over) (delete-overlay right-over)))
 
 (defun evil-tex-toggle-math ()
@@ -529,8 +529,8 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
   (save-excursion
     (goto-char (car (evil-tex-inner-command)))
     (backward-char 1)
-    (when (or (eq ?{ (char-after)) (eq ?\[ (char-after))) (backward-char 1) )
-    (if (eq ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))))
+    (when (or (= ?{ (char-after)) (= ?\[ (char-after))) (backward-char 1) )
+    (if (= ?* (char-after)) (delete-char 1) (progn (forward-char 1) (insert-char ?*)))))
 
 (defvar evil-tex-section-name-history nil
   "History used for changing section names with `evil-tex-toggle-section'.")
@@ -736,7 +736,7 @@ symbol) until any of them succeeds (returns non-nil.)"
   `(evil-define-command
      ,(intern (concat "evil-tex-dispath-" (string catch-key))) (count key)
      (interactive "<c><C>")
-     (if (eq key ,catch-key)
+     (if (= key ,catch-key)
          (funcall ,callback)
        (run-hook-with-args-until-success ,fallbacks
                                          count key))))
