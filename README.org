@@ -35,11 +35,11 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 
 =\ti|lde{h}= \to *cic* /(change inside command)/ \to =\tilde{|}=
 
-=\tilde{h|}= \to *cscc* bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
+=\tilde{h|}= \to *cscc bar* /(change surrounding command to =bar=)/ \to =\bar{h}=
 
-=\dv|{}= \to *cscc pdv SPC* /(change surrounding command to =pdv=)/ \to =\pdv{}=
+=\dv|{}= \to *cscc pdv* /(change surrounding command to =pdv=)/ \to =\pdv{}=
 
-=\eps|ilon= \to *cscc mu SPC* /(change surrounding command to =mu=)/ \to =\mu=
+=\eps|ilon= \to *cscc mu* /(change surrounding command to =mu=)/ \to =\mu=
 
 =\(\sum_{i=1}^{n} i^2|\)= \to *cim* /(change inner math)/ \to =\(|\)=
 
