@@ -35,7 +35,8 @@
 ;;; Code:
 
 
-(require 'cl-lib)
+(eval-when-compile
+  (require 'cl-macs))
 (require 'latex) ; from auctex
 (require 'evil)
 
