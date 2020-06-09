@@ -212,8 +212,8 @@ Giving a prefix argument would prompt for options.
 |                           | equation*   | E         |
 |                           | figure      | f         |
 |                           | itemize     | i         |
-| Beamer                    | frame       | b         |
 |                           | enumerate   | I         |
+| Beamer                    | frame       | b         |
 | AmsMath                   | align       | a         |
 |                           | align*      | A         |
 |                           | alignat     | n         |
