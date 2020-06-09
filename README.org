@@ -33,7 +33,7 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 * Incomplete Showcase
 =|= marks point.
 
-=\ti|lde{h}= \to *cic* /(change inner command)/ \to =\tilde{|}=
+=\ti|lde{h}= \to *cic* /(change inside command)/ \to =\tilde{|}=
 
 =\tilde{h|}= \to *cscc* bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
 
