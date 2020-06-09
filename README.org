@@ -53,10 +53,10 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
 
-This package requires =evil= and =auctex=.
+This package requires =evil=, =auctex=, =cl-lib=, and =Emacs 25.1+=
 * Overview
 ** Text Objects
-This package defines an increasing number of text objects:
+This package defines a number of text objects:
 | Key | Abbreviation    | Text Object Target                                                       | Surround behavior                          |
 |-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
 | ~c~ | command         | TeX marcos: ~\foo{...}~                                                  | Prompts you for a macro                    |
@@ -83,9 +83,9 @@ The full text object definitions are as follows:
    │                  └
    └\end{foobar}       \end{foobar}
 
-   \(foobar\)    \(foobar\)
-   └────────┘      └────┘
-       am            im
+   \(foobar\)    \(foobar\)    \[foobar\]    \[foobar\]
+   └────────┘      └────┘      └────────┘      └────┘
+       am            im            am            im
 
    (foobar)    (foobar)    \left(foobar\right)    \left(foobar\right)  \Bigl(foobar\Bigr)    \Bigl(foobar\Bigr)
    └──────┘     └────┘     └─────────────────┘          └────┘         └────────────────┘          └────┘
@@ -112,12 +112,12 @@ The full text object definitions are as follows:
 - The section objects extends up to the next ~\section{}~ type command of equal
   or higher rank to the one closest to the point from above, and does not
   distinguish between named and unnamed sections.
-  - =aT= will always only contain the second delimiter, unless it is the first
-    cell of its line, then it will only contain the right delimiter.
+- =aT= will always only contain the second delimiter, unless it is the first
+  cell of its line, then it will only contain the right delimiter.
 ** Toggles
 There are a few operations one might want to toggle between frequently, without
 pressing too many keys. To this end we provide a few toggles, bound by default
-to =mt*= (for /"magnificent toggle"/), as you have 25 other marks to choose
+to =mt*= (for /\"magnificent toggle\"/), as you have 25 other marks to choose
 from.
 
 For vimtex users, or people who have something against the letter =s=, we also
