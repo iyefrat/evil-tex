@@ -36,7 +36,7 @@
 
 
 (require 'cl-lib)
-(require 'latex)
+(require 'latex) ; from auctex
 (require 'evil)
 
 (defgroup evil-tex nil
@@ -230,8 +230,8 @@ Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
                           ;; Selection is close enough to point.
                           ;; evil-select-quote can select things further down in
                           ;; the buffer.
-                          (<= (- (car arg) 2) (point))
-                          (>= (+ (cadr arg) 3) (point)))
+                          (<= (- (nth 0 arg) 2) (point))
+                          (>= (+ (nth 1 arg) 3) (point)))
                      (car arg)
                    most-negative-fixnum))))
 
