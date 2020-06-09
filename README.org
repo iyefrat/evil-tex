@@ -117,7 +117,7 @@ The full text object definitions are as follows:
 ** Toggles
 There are a few operations one might want to toggle between frequently, without
 pressing too many keys. To this end we provide a few toggles, bound by default
-to =mt*= (for /'magnificent toggle'/), as you have 25 other marks to choose
+to =mt*= (for "/magnificent toggle/"), as you have 25 other marks to choose
 from.
 
 For vimtex users, or people who have something against the letter =s=, we also
