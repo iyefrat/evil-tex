@@ -204,42 +204,42 @@ package and helped us get started with elisp. Lastly, we would like to thank
 ** Keymaps
 *** Environment keymap
 Giving a prefix argument would prompt for options.
-| Category                  | env         | key alias |
-|---------------------------+-------------+-----------|
-| Generic                   | prompt user | ~x~       |
-|---------------------------+-------------+-----------|
-| Built In                  | equation    | ~e~       |
-|                           | equation*   | ~E~       |
-|                           | figure      | ~f~       |
-|                           | itemize     | ~i~       |
-|                           | enumerate   | ~I~       |
-| Beamer                    | frame       | ~b~       |
-| AmsMath                   | align       | ~a~       |
-|                           | align*      | ~A~       |
-|                           | alignat     | ~n~       |
-|                           | alignat*    | ~N~       |
-|                           | eqnarray    | ~r~       |
-|                           | flalign     | ~l~       |
-|                           | flalign*    | ~L~       |
-|                           | gather      | ~g~       |
-|                           | gather*     | ~G~       |
-|                           | multline    | ~m~       |
-|                           | multline*   | ~M~       |
-|                           | cases       | ~c~       |
-| Common Theorems, prefix t | axiom       | ~ta~      |
-|                           | corollary   | ~tc~      |
-|                           | definition  | ~td~      |
-|                           | examples    | ~te~      |
-|                           | exercise    | ~ts~      |
-|                           | lemma       | ~tl~      |
-|                           | proof       | ~tp~      |
-|                           | question    | ~tq~      |
-|                           | remark      | ~tr~      |
-|                           | theorem     | ~tt~      |
+| Key  | Environment | Category                  |
+|------+-------------+---------------------------|
+| ~x~  | prompt user | Generic                   |
+|------+-------------+---------------------------|
+| ~e~  | equation    | Built In                  |
+| ~E~  | equation*   |                           |
+| ~f~  | figure      |                           |
+| ~i~  | itemize     |                           |
+| ~I~  | enumerate   |                           |
+| ~b~  | frame       | Beamer                    |
+| ~a~  | align       | AmsMath                   |
+| ~A~  | align*      |                           |
+| ~n~  | alignat     |                           |
+| ~N~  | alignat*    |                           |
+| ~r~  | eqnarray    |                           |
+| ~l~  | flalign     |                           |
+| ~L~  | flalign*    |                           |
+| ~g~  | gather      |                           |
+| ~G~  | gather*     |                           |
+| ~m~  | multline    |                           |
+| ~M~  | multline*   |                           |
+| ~c~  | cases       |                           |
+| ~ta~ | axiom       | Common Theorems, prefix t |
+| ~tc~ | corollary   |                           |
+| ~td~ | definition  |                           |
+| ~te~ | examples    |                           |
+| ~ts~ | exercise    |                           |
+| ~tl~ | lemma       |                           |
+| ~tp~ | proof       |                           |
+| ~tq~ | question    |                           |
+| ~tr~ | remark      |                           |
+| ~tt~ | theorem     |                           |
 *** cdlatex accent keymap
 See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlatex]]. "style?" implies that the braces come before the macro, e.g
 ={\displaystyle ...}=
-| key | macro             | style? |
+| Key | Accent Macro      | Style? |
 |-----+-------------------+--------|
 | ~.~ | dot               |        |
 | ~:~ | ddot              |        |
