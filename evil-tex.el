@@ -443,7 +443,8 @@ and the inner ones will not include it or surrounding {} if they exist."
   (delete-region (point) (overlay-end over)))
 
 (defun evil-tex-toggle-delim ()
-  "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right) ."
+  "Toggle surrounding delimiters between e.g. (foo) and \\left(foo\\right).
+Also change e.g \\bigl(foo\bigr) to (foo), but this is one way."
   (interactive)
   (let* ((outer (evil-tex-a-delim)) (inner (evil-tex-inner-delim))
          (left-over (make-overlay (car outer) (car inner)))
@@ -621,12 +622,12 @@ Example: (| symbolizes point)
   (last (evil-tex--select-math beg end type count) 2))
 
 (evil-define-text-object evil-tex-a-delim (count &optional beg end type)
-  "Select a delimiter, e.g. (foo) or \\left[bar\\right]."
+  "Select a delimiter, e.g. (foo), \\left[bar\\right] or \\bigl\{baz\bigr\}."
   :extend-selection nil
   (nbutlast (evil-tex--select-delim beg end type count) 2))
 
 (evil-define-text-object evil-tex-inner-delim (count &optional beg end type)
-  "Select inner delimiter, e.g. (foo) or \\left[bar\\right]."
+  "Select inner delimiter, e.g. (foo), \\left[bar\\right] or \\bigl\{baz\bigr\}."
   :extend-selection nil
   (last (evil-tex--select-delim beg end type count) 2))
 
@@ -738,10 +739,10 @@ pressed isn't found."
 
 ;; working code courtesy of @hlissner
 (defmacro evil-tex-dispatch-single-key (catch-key callback &optional fallbacks)
-  "Define a an evil command to execute CALLBACK when given CATCH-KEY.
+  "Define an evil command to execute CALLBACK when given CATCH-KEY.
 
-Otherwise try to call any of the functions in FALLBACKS (a
-symbol) until any of them succeeds (returns non-nil.)"
+Otherwise try to call any of the functions in FALLBACKS (a symbol),
+until any of them succeeds (returns non-nil.)"
   `(evil-define-command
      ,(intern (concat "evil-tex-dispath-" (string catch-key))) (count key)
      (interactive "<c><C>")
@@ -775,12 +776,12 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
     env-cons))
 
 (defun evil-tex-format-cdlatex-accent-for-surrounding (accent)
-  "Format ACCENT for surrounding: return a cons of \\ACCENT{ . }."
+  "Format ACCENT for surrounding: return a cons of ( \\ACCENT{ . } )."
   (declare (pure t) (side-effect-free t))
   (cons (concat "\\" accent "{") "}"))
 
 (defun evil-tex-format-command-for-surrounding (command)
-  "Format COMMAND for surrounding: return a cons of \\COMMAND{ . }."
+  "Format COMMAND for surrounding: return a cons of (\\COMMAND{ . } )."
   (declare (side-effect-free t))
   (if evil-tex--last-command-empty
       (cons (concat "\\" command "") "")
