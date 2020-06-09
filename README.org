@@ -149,8 +149,8 @@ for quick navigation in marco arguments without going to normal mode.
 =]​]= and =[​[= jump between section headings (=\section=, =\subsection*=, etc).
 ** Interaction with other packages
 =evil-tex= does not require, but supports =evil-surround= (using version =1.1.1=
-or newer is preferred, to leverage [[https://github.com/emacs-evil/evil-surround/pull165][#165]]). [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]] is also supported, we
-took the necessary steps to make it leave us alone in case its enabled.
+or newer is preferred, to leverage [[https://github.com/emacs-evil/evil-surround/pull165][#165]]). [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]] is also supported, in the
+sense that it is told to overlook the bindings.
 
 =evil-tex= also supports =which-key= to show the keys in [[#keymaps][keymaps]]. Likewise, the
 toggles under =ts= play with [[https:/github.com/hlissner/evil-snipe][evil-snipe]] as expected.
