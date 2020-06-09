@@ -33,22 +33,22 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 * Incomplete Showcase
 =|= marks point.
 
-=\ti|lde{h}= \to cic /(change inner command)/ \to =\tilde{|}=
+=\ti|lde{h}= \to *cic* /(change inner command)/ \to =\tilde{|}=
 
-=\tilde{h|}= \to cscc bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
+=\tilde{h|}= \to *cscc* bar SPC /(change surrounding command to =bar=)/ \to =\bar{h}=
 
-=\dv|{}= \to cscc pdv SPC /(change surrounding command to =pdv=)/ \to =\pdv{}=
+=\dv|{}= \to *cscc pdv SPC* /(change surrounding command to =pdv=)/ \to =\pdv{}=
 
-=\eps|ilon= \to cscc mu SPC /(change surrounding command to =mu=)/ \to =\mu=
+=\eps|ilon= \to *cscc mu SPC* /(change surrounding command to =mu=)/ \to =\mu=
 
-=\(\sum_{i=1}^{n} i^2|\)= \to cim /(change inner math)/ \to =\(|\)=
+=\(\sum_{i=1}^{n} i^2|\)= \to *cim* /(change inner math)/ \to =\(|\)=
 
-=\(\sum_{i=1}^{n} i^2|\)= \to mtm /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
+=\(\sum_{i=1}^{n} i^2|\)= \to *mtm* /(toggle surrounding math)/ \to =\[\sum_{i=1}^{n} i^2|\]=
 
-=\[a|^2\]= \to csmeA /(change surrounding math to environment =align*=)/ \to
+=\[a|^2\]= \to *csmeA* /(change surrounding math to environment =align*=)/ \to
 =\begin{align*}\n a^2 \n\end{align}=
 
-=(\mu|_\nu)= \to csddP /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
+=(\mu|_\nu)= \to *csddP* /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
 * Installation
 Until this package's on MELPA, clone it and put it in your load path and hook it
 to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
@@ -124,14 +124,14 @@ For vimtex users, or people who have something against the letter =s=, we also
 provide the ability to map the toggles to =ts= instead of =mt= e.g. instead of
 =mtd= toggling delimiters, =tsd= will. See [[#configuration][configuration]]. The toggles are:
 
-| Key | Abbreviation | Behaviour                                                                                 |
-|-----+--------------+-------------------------------------------------------------------------------------------|
-| mtc | command      | toggle asterisk on command, e.g. ~\foo~ \Leftrightarrow ~\foo*~                           |
-| mtd | delimiter    | toggle between delimiter autosizing, e.g.  ~(foo)~ \Leftrightarrow ~\Left(foo\right)~     |
-| mte | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~   |
-| mtm | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~          |
-| mtM | math align*  | toggle between align* env and display math                                                |
-| mtS | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
+| Key | Abbreviation | Behaviour                                                                               |
+|-----+--------------+-----------------------------------------------------------------------------------------|
+| ~mtc~ | command      | toggle asterisk on command, e.g. ~\foo~ \Leftrightarrow ~\foo*~                                           |
+| ~mtd~ | delimiter    | toggle between delimiter autosizing, e.g.  ~(foo)~ \Leftrightarrow ~\Left(foo\right)~                     |
+| ~mte~ | environment  | toggle enviornment asterisk e.g. ~\begin{equation}~ \Leftrightarrow ~\begin{equation*}~                   |
+| ~mtm~ | math         | toggle between inline and display math, i.e. ~\(foo\)~ \Leftrightarrow ~\[foo\]~                          |
+| ~mtM~ | math align*  | toggle between align* env and display math                                              |
+| ~mtS~ | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
 
 ** Misc.
 *** =M-n=
@@ -206,79 +206,78 @@ package and helped us get started with elisp. Lastly, we would like to thank
 Giving a prefix argument would prompt for options.
 | Category                  | env         | key alias |
 |---------------------------+-------------+-----------|
-| Generic                   | prompt user | x         |
+| Generic                   | prompt user | ~x~       |
 |---------------------------+-------------+-----------|
-| Built In                  | equation    | e         |
-|                           | equation*   | E         |
-|                           | figure      | f         |
-|                           | itemize     | i         |
-|                           | enumerate   | I         |
-| Beamer                    | frame       | b         |
-| AmsMath                   | align       | a         |
-|                           | align*      | A         |
-|                           | alignat     | n         |
-|                           | alignat*    | N         |
-|                           | eqnarray    | r         |
-|                           | flalign     | l         |
-|                           | flalign*    | L         |
-|                           | gather      | g         |
-|                           | gather*     | G         |
-|                           | multline    | m         |
-|                           | multline*   | M         |
-|                           | cases       | c         |
-| Common Theorems, prefix t | axiom       | ta        |
-|                           | corollary   | tc        |
-|                           | definition  | td        |
-|                           | examples    | te        |
-|                           | exercise    | ts        |
-|                           | lemma       | tl        |
-|                           | proof       | tp        |
-|                           | question    | tq        |
-|                           | remark      | tr        |
-|                           | theorem     | tt        |
+| Built In                  | equation    | ~e~       |
+|                           | equation*   | ~E~       |
+|                           | figure      | ~f~       |
+|                           | itemize     | ~i~       |
+|                           | enumerate   | ~I~       |
+| Beamer                    | frame       | ~b~       |
+| AmsMath                   | align       | ~a~       |
+|                           | align*      | ~A~       |
+|                           | alignat     | ~n~       |
+|                           | alignat*    | ~N~       |
+|                           | eqnarray    | ~r~       |
+|                           | flalign     | ~l~       |
+|                           | flalign*    | ~L~       |
+|                           | gather      | ~g~       |
+|                           | gather*     | ~G~       |
+|                           | multline    | ~m~       |
+|                           | multline*   | ~M~       |
+|                           | cases       | ~c~       |
+| Common Theorems, prefix t | axiom       | ~ta~      |
+|                           | corollary   | ~tc~      |
+|                           | definition  | ~td~      |
+|                           | examples    | ~te~      |
+|                           | exercise    | ~ts~      |
+|                           | lemma       | ~tl~      |
+|                           | proof       | ~tp~      |
+|                           | question    | ~tq~      |
+|                           | remark      | ~tr~      |
+|                           | theorem     | ~tt~      |
 *** cdlatex accent keymap
 See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlatex]]. "style?" implies that the braces come before the macro, e.g
 ={\displaystyle ...}=
 | key | macro             | style? |
 |-----+-------------------+--------|
-| .   | dot               |        |
-| :   | ddot              |        |
-| ~   | tilde             |        |
-| N   | widetilde         |        |
-| ^   | hat               |        |
-| H   | widehat           |        |
-| -   | bar               |        |
-| T   | overline          |        |
-| _   | underline         |        |
-| {   | overbrace         |        |
-| }   | underbrace        |        |
-| >   | vec               |        |
-| /   | grave             |        |
-| \   | acute             |        |
-| v   | check             |        |
-| u   | breve             |        |
-| m   | mbox              |        |
-| c   | mathcal           |        |
-| r   | mathrm/textrm     |        |
-| i   | mathit/textit     |        |
-| l   | NONE!!/textsl     |        |
-| b   | mathbf/textbf     |        |
-| e   | mathem/emph       |        |
-| y   | mathtt/texttt     |        |
-| f   | mathsf/textsf     |        |
-| 0   | textstyle         |        |
-| 1   | displaystyle      | yes    |
-| 2   | scriptstyle       | yes    |
-| 3   | scriptscriptstyle | yes    |
+| ~.~ | dot               |        |
+| ~:~ | ddot              |        |
+| ~~~ | tilde             |        |
+| ~N~ | widetilde         |        |
+| ~^~ | hat               |        |
+| ~H~ | widehat           |        |
+| ~-~ | bar               |        |
+| ~T~ | overline          |        |
+| ~_~ | underline         |        |
+| ~{~ | overbrace         |        |
+| ~}~ | underbrace        |        |
+| ~>~ | vec               |        |
+| ~/~ | grave             |        |
+| ~\~ | acute             |        |
+| ~v~ | check             |        |
+| ~u~ | breve             |        |
+| ~m~ | mbox              |        |
+| ~c~ | mathcal           |        |
+| ~r~ | mathrm/textrm     |        |
+| ~i~ | mathit/textit     |        |
+| ~l~ | NONE!!/textsl     |        |
+| ~b~ | mathbf/textbf     |        |
+| ~e~ | mathem/emph       |        |
+| ~y~ | mathtt/texttt     |        |
+| ~f~ | mathsf/textsf     |        |
+| ~0~ | textstyle         |        |
+| ~1~ | displaystyle      | yes    |
+| ~2~ | scriptstyle       | yes    |
+| ~3~ | scriptscriptstyle | yes    |
 *** Delimiter keymap
 | key | delimiter                        |
 |-----+----------------------------------|
-| b   | ~[foo]~                          |
-| B   | ~\left[foo\right]~               |
-| c   | ~\{foo\}~                        |
-| C   | ~\left\{foo\right\}~             |
-| r   | ~\langle foo\rangle~             |
-| R   | ~\left\langle foo \right\langle~ |
-| p   | ~(foo)~                          |
-| P   | ~\left(foo\right)~               |
-
+| ~b~ | ~[foo]~                          |
+| ~B~ | ~\left[foo\right]~               |
+| ~c~ | ~\{foo\}~                        |
+| ~C~ | ~\left\{foo\right\}~             |
+| ~r~ | ~\langle foo\rangle~             |
+| ~R~ | ~\left\langle foo \right\langle~ |
+| ~p~ | ~(foo)~                          |
+| ~P~ | ~\left(foo\right)~               |
