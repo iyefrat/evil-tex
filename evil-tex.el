@@ -42,7 +42,6 @@
 
 (defgroup evil-tex nil
   "Advanced `evil' editing shortcuts to (la)tex."
-  :tag "EXWM"
   :version "25.1"
   :group 'applications
   :prefix "evil-tex-")
