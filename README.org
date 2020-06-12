@@ -16,8 +16,8 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
     - [[#notes][Notes]]
   - [[#toggles][Toggles]]
   - [[#misc][Misc.]]
-    - [[#m-n][=M-n=]]
-    - [[#-and-][=]​]= and =[​[=]]
+    - [[#command-argument-movement][Command Argument Movement]]
+    - [[#section-jumping][Section Jumping]]
   - [[#interaction-with-other-packages][Interaction with other packages]]
 - [[#configuration][Configuration]]
   - [[#custom-env-and-accent-surround-insertions][Custom env and accent surround insertions]]
@@ -134,7 +134,7 @@ provide the ability to map the toggles to =ts= instead of =mt= e.g. instead of
 | ~mtS~ | section      | "toggle" section name, by entering a new one from the minibuffer. =M-n= for original name |
 
 ** Misc.
-*** =M-n=
+*** Command Argument Movement
 The binding =M-n= is provided for =cd-latex= =TAB=-like brace movement, useful
 for quick navigation in marco arguments without going to normal mode.
 
@@ -145,7 +145,7 @@ for quick navigation in marco arguments without going to normal mode.
 ~\frac{a|}{b}~ \to =M-n= \to ~\frac{a}{b|}~
 
 ~\frac{a}{b|}~ \to =M-n= \to ~\frac{a}{b}|~
-*** =]​]= and =[​[=
+*** Section Jumping
 =]​]= and =[​[= jump between section headings (=\section=, =\subsection*=, etc).
 ** Interaction with other packages
 =evil-tex= does not require, but supports =evil-surround= (using version =1.1.1=
