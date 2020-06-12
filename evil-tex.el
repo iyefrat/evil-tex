@@ -79,7 +79,7 @@ chose [[\\left(]] over \\left[[(]], etc."
      (t nil))))
 
 (defun evil-tex--delim-finder (deliml delimr args)
-  "Return delimiter locations for evil-tex--select-delim.
+  "Return delimiter locations for `evil-tex--select-delim'.
 
 DELIML and DELIMR are strings of the left and right delimiters respectively.
 ARGS is the information about the text object needed for the functions to work
@@ -99,7 +99,7 @@ The format for the return is (outer-beg outer-end inner-beg inner-end)."
 (defun evil-tex--select-delim (&rest args)
   "Return (outer-beg outer-end inner-beg inner-end) of closest delimiter object.
 
-ARGS passed to evil-select-paren, within evil-tex--delim-finder."
+ARGS passed to `evil-select-paren', within `evil-tex--delim-finder'."
   (evil-tex-max-key
    (cl-loop for (l r)
             in (list '( "(" ")" )
@@ -126,8 +126,7 @@ For example, \\epsilon is empty, \\dv{x} is not.")
 (defun evil-tex--select-command ()
   "Return (outer-beg outer-end inner-beg inner-end) of command (macro) object.
 
-Inner commmand defined to be what is inside {}'s and []'s,
-or empty if none exist."
+Inner commmand defined to be what is inside {}'s and []'s, or empty if none exist."
 
   (let ((beg-an (TeX-find-macro-start))
         (end-an (TeX-find-macro-end))
@@ -208,7 +207,7 @@ qux
 (defun evil-tex--select-math (&rest args)
   "Return (outer-beg outer-end inner-beg inner-end) of closest LaTeX math match.
 
-ARGS passed to evil-select-(paren|quote).
+ARGS passed to `evil-select-paren' or `evil-select-quote'.
 Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
 
   (evil-tex-max-key
@@ -333,8 +332,7 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
   "Return (outer-beg outer-end inner-beg inner-end) for script object.
 SUBSUP should be either _ or ^. The outer selections will include SUBSUP,
 and the inner ones will not include it or surrounding {} if they exist."
-  (let (outer-beg outer-end
-                  inner-beg inner-end)
+  (let (outer-beg outer-end inner-beg inner-end)
     (save-excursion
       (evil-tex--goto-script-prefix subsup)
       (setq outer-beg (1- (point)))
