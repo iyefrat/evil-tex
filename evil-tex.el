@@ -181,9 +181,18 @@ qux
 ^inner-end  ^outer-end"
   (let (outer-beg outer-end inner-beg inner-end)
     (save-excursion
-      (unless (looking-at (regexp-quote "\\begin{"))
+      (cond
+       ;; `LaTeX-find-matching-begin' doesn't like being exactly on the \\begin
+       ((looking-at (regexp-quote "\\begin{"))
+        t)
+       ;; `LaTeX-find-matching-begin' doesn't like being near the } of \\end{}
+       ((or (= (char-before ?}))
+            (= (char-after ?})))
+        (backward-char 2)
         (LaTeX-find-matching-begin))
-      ;; We are at backslash
+       (t
+        (LaTeX-find-matching-begin)))
+      ;; We are at backslash of \\begin
       (setq outer-beg (point))
       (forward-sexp)
       (while (or
