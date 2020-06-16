@@ -200,16 +200,16 @@ qux
               (= (char-after) ?\[))
         (forward-sexp))
       (when (and evil-tex-select-newlines-with-envs
-                 (looking-at "\n"))
-        (forward-char))
+                 (looking-at "\n[ \t]*"))
+        (goto-char (match-end 0)))
       (setq inner-beg (point))
       (goto-char (1+ outer-beg))
       (LaTeX-find-matching-end)        ; we are at closing brace
       (setq outer-end (point))
       (search-backward "\\end")        ; goto backslash
       (when (and evil-tex-select-newlines-with-envs
-                 (looking-back "\n" (1- (point))))
-        (backward-char))
+                 (looking-back "\n[ \t]*" (- (point) 10)))
+        (goto-char (match-beginning 0)))
       (setq inner-end (point))
       (list outer-beg outer-end inner-beg inner-end))))
 
