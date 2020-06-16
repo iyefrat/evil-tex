@@ -892,6 +892,7 @@ cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
        ("b" . "frame")
        ("a" . "align")
        ("A" . "align*")
+       ("y" . "array")
        ("n" . "alignat")
        ("N" . "alignat*")
        ("r" . "eqnarray")

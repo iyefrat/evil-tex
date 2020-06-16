@@ -213,6 +213,7 @@ Giving a prefix argument would prompt for options.
 | ~f~  | figure      |                           |
 | ~i~  | itemize     |                           |
 | ~I~  | enumerate   |                           |
+| ~y~  | array       |                           |
 | ~b~  | frame       | Beamer                    |
 | ~a~  | align       | AmsMath                   |
 | ~A~  | align*      |                           |
