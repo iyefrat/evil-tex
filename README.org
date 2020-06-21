@@ -229,6 +229,7 @@ Giving a prefix argument would prompt for options.
 | ~c~  | cases       |                           |
 | ~ta~ | axiom       | Common Theorems, prefix t |
 | ~tc~ | corollary   |                           |
+| ~tC~ | claim       |                           |
 | ~td~ | definition  |                           |
 | ~te~ | examples    |                           |
 | ~ts~ | exercise    |                           |

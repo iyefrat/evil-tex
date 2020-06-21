@@ -907,6 +907,7 @@ cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
        ;; prefix t - theorems
        ("ta" . "axiom")
        ("tc" . "corollary")
+       ("tC" . "claim")
        ("td" . "definition")
        ("te" . "examples")
        ("ts" . "exercise")
