@@ -2,13 +2,13 @@
 ;;
 ;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
 ;;
-;; Author: Yoav Marco <http://github/yoavm448>, Itai Y. Efrat <http://github/itai33>
+;; Author: Yoav Marco <http://github/ymarco>, Itai Y. Efrat <http://github/iyefrat>
 ;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
 ;; Created: February 01, 2020
 ;; Modified: February 01, 2020
 ;; Version: 0.0.1
 ;; Keywords: tex, emulation, vi, evil, wp
-;; Homepage: https://github.com/itai33/evil-tex
+;; Homepage: https://github.com/iyefrat/evil-tex
 ;; Package-Requires: ((emacs "25.1") (evil "1.0") (auctex "11.88") (cl-lib "0.5"))
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -1198,7 +1198,7 @@ fully utilizing evil-surround, some useful movements, and keymaps
 for quickly entering environments or cdlatex-like accents. And
 useful toggles.
 
-See URL `https://github.com/itai33/evil-tex' for the full feature
+See URL `https://github.com/iyefrat/evil-tex' for the full feature
 list."
   :init-value nil
   :keymap evil-tex-mode-map
