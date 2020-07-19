@@ -48,7 +48,7 @@ returns ~nil~ which ruins the command text object sometimes
 - Send bug report / contribute to auctex
 - Work around, detecting if its nil and and if so go back a few chars
 ** TODO ~tsf~ toggle \frac{a}{b} <-> a/b
-** TODO Final stress test
+** DONE Final stress test
 Take a copy of Itai's =main.tex= and make sure everything works as expected on a
 real document
 ** TODO Tag release as 1.0, upload to MELPA
