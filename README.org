@@ -50,10 +50,9 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 
 =(\mu|_\nu)= \to *csddP* /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
 * Installation
-Until this package's on MELPA, clone it and put it in your load path and hook it
-to ~LaTeX-mode-hook~. Sorry ¯\_(ツ)_/¯
+Until this package's on MELPA (Soon™), clone it and put it in your load path and hook it to ~LaTeX-mode-hook~.
 
-This package requires =evil=, =auctex=, =cl-lib=, and =Emacs 25.1+=
+This package requires =evil=, =auctex=, and =Emacs 25.1+=
 * Overview
 ** Text Objects
 This package defines a number of text objects:
