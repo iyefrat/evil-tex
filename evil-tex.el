@@ -38,6 +38,7 @@
 (require 'cl-lib)
 (require 'latex) ; from auctex
 (require 'evil)
+(require 'subr-x)
 
 (defgroup evil-tex nil
   "Advanced `evil' editing shortcuts to (la)tex."
