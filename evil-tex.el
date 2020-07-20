@@ -94,7 +94,7 @@ The format for the return is (outer-beg outer-end inner-beg inner-end)."
                                    (regexp-quote deliml)
                                    (regexp-quote delimr) (append args '(nil))))))
     (when (and delim-pair-outer delim-pair-inner)
-      (append (nbutlast delim-pair-outer 3) (nbutlast delim-pair-inner 3)))))
+      (nconc (nbutlast delim-pair-outer 3) (nbutlast delim-pair-inner 3)))))
 
 (defun evil-tex--select-delim (&rest args)
   "Return (outer-beg outer-end inner-beg inner-end) of closest delimiter object.
@@ -221,18 +221,18 @@ Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
 
   (evil-tex-max-key
    (list
-    (append (nbutlast (ignore-errors (apply #'evil-select-paren
-                                            (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
-            (nbutlast (ignore-errors (apply #'evil-select-paren
-                                            (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3))
-    (append (nbutlast (ignore-errors (apply #'evil-select-paren
-                                            (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
-            (nbutlast (ignore-errors (apply #'evil-select-paren
-                                            (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3))
-    (append (nbutlast (ignore-errors (apply #'evil-select-paren
-                                            (regexp-quote "$") (regexp-quote "$") (append args '(t)))) 3)
-            (nbutlast (ignore-errors (apply #'evil-select-paren
-                                            (regexp-quote "$") (regexp-quote "$") (append args '(nil)))) 3)))
+    (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                           (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
+           (nbutlast (ignore-errors (apply #'evil-select-paren
+                                           (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3))
+    (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                           (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
+           (nbutlast (ignore-errors (apply #'evil-select-paren
+                                           (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3))
+    (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                           (regexp-quote "$") (regexp-quote "$") (append args '(t)))) 3)
+           (nbutlast (ignore-errors (apply #'evil-select-paren
+                                           (regexp-quote "$") (regexp-quote "$") (append args '(nil)))) 3)))
    (lambda (arg) (if (and (consp arg) ; selection succeeded
                           ;; Selection is close enough to point.
                           ;; evil-select-quote can select things further down in
