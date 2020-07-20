@@ -187,8 +187,8 @@ qux
        ((looking-at (regexp-quote "\\begin{"))
         t)
        ;; `LaTeX-find-matching-begin' doesn't like being near the } of \\end{}
-       ((or (= (char-before ?}))
-            (= (char-after ?})))
+       ((or (= (char-before) ?})
+            (= (char-after) ?}))
         (backward-char 2)
         (LaTeX-find-matching-begin))
        (t
