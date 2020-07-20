@@ -635,12 +635,12 @@ Example: (| symbolizes point)
   (last (evil-tex--select-math beg end type count) 2))
 
 (evil-define-text-object evil-tex-a-delim (count &optional beg end type)
-  "Select a delimiter, e.g. (foo), \\left[bar\\right] or \\bigl\{baz\bigr\}."
+  "Select a delimiter, e.g. (foo), \\left[bar\\right] or \\bigl\\=\\{baz\\bigr\\}."
   :extend-selection nil
   (nbutlast (evil-tex--select-delim beg end type count) 2))
 
 (evil-define-text-object evil-tex-inner-delim (count &optional beg end type)
-  "Select inner delimiter, e.g. (foo), \\left[bar\\right] or \\bigl\{baz\bigr\}."
+  "Select inner delimiter, e.g. (foo), \\left[bar\\right] or \\bigl\\=\\{baz\\bigr\\}."
   :extend-selection nil
   (last (evil-tex--select-delim beg end type count) 2))
 
