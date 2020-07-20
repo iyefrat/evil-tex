@@ -5,8 +5,8 @@
 ;; Authors: Yoav Marco <http://github/ymarco>, Itai Y. Efrat <http://github/iyefrat>
 ;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
 ;; Created: February 01, 2020
-;; Modified: February 01, 2020
-;; Version: 0.0.1
+;; Modified: July 20, 2020
+;; Version: 1.0.0
 ;; Keywords: tex, emulation, vi, evil, wp
 ;; Homepage: https://github.com/iyefrat/evil-tex
 ;; Package-Requires: ((emacs "25.1") (evil "1.0") (auctex "11.88"))
