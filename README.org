@@ -205,7 +205,7 @@ package and helped us get started with elisp. Lastly, we would like to thank
 Giving a prefix argument would prompt for options.
 | Key  | Environment | Category                  |
 |------+-------------+---------------------------|
-| ~x~  | prompt user | Generic                   |
+| ~x~  | prompt user | -                         |
 |------+-------------+---------------------------|
 | ~e~  | equation    | Built In                  |
 | ~E~  | equation*   |                           |

@@ -630,7 +630,7 @@ Example: (| symbolizes point)
   (nbutlast (evil-tex--select-math beg end type count) 2))
 
 (evil-define-text-object evil-tex-inner-math (count &optional beg end type)
-  "Select inner \\=\\[foo\\], \\(bar\\), or $baz."
+  "Select inner \\=\\[foo\\], \\(bar\\), or $baz$."
   :extend-selection nil
   (last (evil-tex--select-math beg end type count) 2))
 
