@@ -842,14 +842,50 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   "Return the (start . end) that would make text sf style if wrapped between start and end."
   (interactive) (evil-tex--texmathp-dispatch "mathsf" "textsf"))
 
+(defvar evil-tex-inner-text-objects-map (make-sparse-keymap)
+  "Inner text object keymap for `evil-tex-mode'.")
+
+(defvar evil-tex-outer-text-objects-map (make-sparse-keymap)
+  "Outer text object keymap for `evil-tex-mode'.")
+
 (defvar evil-tex-mode-map
   (let ((keymap (make-sparse-keymap)))
     (evil-define-key* '(motion normal) keymap
       "[[" #'evil-tex-go-back-section
       "]]" #'evil-tex-go-forward-section)
     (define-key keymap (kbd "M-n") #'evil-tex-brace-movement)
+    (evil-define-key '(visual operator) 'evil-tex-mode
+      "i" evil-tex-inner-text-objects-map
+      "a" evil-tex-outer-text-objects-map)
     keymap)
   "Basic keymap for `evil-tex-mode'.")
+
+(cl-destructuring-bind (inner-map . outer-map)
+    (if (and (boundp  'evil-surround-local-inner-text-object-map-list)
+             (boundp  'evil-surround-local-outer-text-object-map-list))
+        ;; deifine everything on local keymaps if evil-surround is up-to-date
+        ;; i.e before https://github.com/emacs-evil/evil-surround/pull/165
+        (cons evil-tex-inner-text-objects-map evil-tex-outer-text-objects-map)
+      ;; pollute the global namespace if evil-surround is too old
+      (cons evil-inner-text-objects-map evil-outer-text-objects-map))
+
+  (define-key inner-map "e" 'evil-tex-inner-env)
+  (define-key inner-map "c" 'evil-tex-inner-command)
+  (define-key inner-map "m" 'evil-tex-inner-math)
+  (define-key inner-map "d" 'evil-tex-inner-delim)
+  (define-key inner-map "S" 'evil-tex-inner-section)
+  (define-key inner-map "^" 'evil-tex-inner-superscript)
+  (define-key inner-map "_" 'evil-tex-inner-subscript)
+  (define-key inner-map "T" 'evil-tex-inner-table-cell)
+
+  (define-key outer-map "e" 'evil-tex-an-env)
+  (define-key outer-map "c" 'evil-tex-a-command)
+  (define-key outer-map "m" 'evil-tex-a-math)
+  (define-key outer-map "d" 'evil-tex-a-delim)
+  (define-key outer-map "S" 'evil-tex-a-section)
+  (define-key outer-map "^" 'evil-tex-a-superscript)
+  (define-key outer-map "_" 'evil-tex-a-subscript)
+  (define-key outer-map "T" 'evil-tex-a-table-cell))
 
 (defun evil-tex-bind-to-env-map (key-generator-alist &optional keymap)
   "Bind envs from KEY-GENERATOR-ALIST.
@@ -1023,70 +1059,6 @@ explaination."
   (push
    '(("\\`." . "evil-tex-.*:\\(.*\\)") . (nil . "\\1"))
    which-key-replacement-alist))
-
-(defvar evil-tex-inner-text-objects-map (make-sparse-keymap)
-  "Inner text object keymap for `evil-tex-mode'.")
-
-(defvar evil-tex-outer-text-objects-map (make-sparse-keymap)
-  "Outer text object keymap for `evil-tex-mode'.")
-(if (and (boundp  'evil-surround-local-inner-text-object-map-list)
-         (boundp  'evil-surround-local-outer-text-object-map-list))
-    (progn ;; deifine everything on local keymaps if evil-surround is up-to-date
-      (define-key evil-tex-inner-text-objects-map "e" #'evil-tex-inner-env)
-      (define-key evil-tex-inner-text-objects-map "c" #'evil-tex-inner-command)
-      (define-key evil-tex-inner-text-objects-map "m" #'evil-tex-inner-math)
-      (define-key evil-tex-inner-text-objects-map "d" #'evil-tex-inner-delim)
-      (define-key evil-tex-inner-text-objects-map "S" #'evil-tex-inner-section)
-      (define-key evil-tex-inner-text-objects-map "^" #'evil-tex-inner-superscript)
-      (define-key evil-tex-inner-text-objects-map "_" #'evil-tex-inner-subscript)
-      (define-key evil-tex-inner-text-objects-map "T" #'evil-tex-inner-table-cell)
-
-      (define-key evil-tex-outer-text-objects-map "e" #'evil-tex-an-env)
-      (define-key evil-tex-outer-text-objects-map "c" #'evil-tex-a-command)
-      (define-key evil-tex-outer-text-objects-map "m" #'evil-tex-a-math)
-      (define-key evil-tex-outer-text-objects-map "d" #'evil-tex-a-delim)
-      (define-key evil-tex-outer-text-objects-map "S" #'evil-tex-a-section)
-      (define-key evil-tex-outer-text-objects-map "^" #'evil-tex-a-superscript)
-      (define-key evil-tex-outer-text-objects-map "_" #'evil-tex-a-subscript)
-      (define-key evil-tex-outer-text-objects-map "T" #'evil-tex-a-table-cell)
-
-      (evil-define-key '(visual operator) 'evil-tex-mode
-        "ie" #'evil-tex-inner-env
-        "ic" #'evil-tex-inner-command
-        "im" #'evil-tex-inner-math
-        "id" #'evil-tex-inner-delim
-        "iS" #'evil-tex-inner-section
-        "i^" #'evil-tex-inner-superscript
-        "i_" #'evil-tex-inner-subscript
-        "iT" #'evil-tex-inner-table-cell
-        "ae" #'evil-tex-an-env
-        "ac" #'evil-tex-a-command
-        "am" #'evil-tex-a-math
-        "ad" #'evil-tex-a-delim
-        "aS" #'evil-tex-a-section
-        "a^" #'evil-tex-a-superscript
-        "a_" #'evil-tex-a-subscript
-        "aT" #'evil-tex-a-table-cell))
-
-  ;; pollutes the global namespace if evil-surround is too old
-  ;; i.e before https://github.com/emacs-evil/evil-surround/pull/165
-  (define-key evil-inner-text-objects-map "e" 'evil-tex-inner-env)
-  (define-key evil-inner-text-objects-map "c" 'evil-tex-inner-command)
-  (define-key evil-inner-text-objects-map "m" 'evil-tex-inner-math)
-  (define-key evil-inner-text-objects-map "d" 'evil-tex-inner-delim)
-  (define-key evil-inner-text-objects-map "S" 'evil-tex-inner-section)
-  (define-key evil-inner-text-objects-map "^" 'evil-tex-inner-superscript)
-  (define-key evil-inner-text-objects-map "_" 'evil-tex-inner-subscript)
-  (define-key evil-inner-text-objects-map "T" 'evil-tex-inner-table-cell)
-
-  (define-key evil-outer-text-objects-map "e" 'evil-tex-an-env)
-  (define-key evil-outer-text-objects-map "c" 'evil-tex-a-command)
-  (define-key evil-outer-text-objects-map "m" 'evil-tex-a-math)
-  (define-key evil-outer-text-objects-map "d" 'evil-tex-a-delim)
-  (define-key evil-outer-text-objects-map "S" 'evil-tex-a-section)
-  (define-key evil-outer-text-objects-map "^" 'evil-tex-a-superscript)
-  (define-key evil-outer-text-objects-map "_" 'evil-tex-a-subscript)
-  (define-key evil-outer-text-objects-map "T" 'evil-tex-a-table-cell))
 
 
 (defvar evil-tex-surround-delimiters
