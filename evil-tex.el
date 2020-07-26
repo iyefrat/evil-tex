@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
 ;;
-;; Authors: Yoav Marco <http://github/ymarco>, Itai Y. Efrat <http://github/iyefrat>
+;; Authors: Yoav Marco <https://github/ymarco>, Itai Y. Efrat <https://github/iyefrat>
 ;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
 ;; Created: February 01, 2020
 ;; Modified: July 20, 2020
@@ -26,7 +26,7 @@
 ;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
 ;;
