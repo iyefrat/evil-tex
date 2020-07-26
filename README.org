@@ -111,7 +111,7 @@ The full text object definitions are as follows:
 - The section objects extends up to the next ~\section{}~ type command of equal
   or higher rank to the one closest to the point from above, and does not
   distinguish between named and unnamed sections.
-- =aT= will always only contain the second delimiter, unless it is the first
+- =aT= will always only contain the left delimiter, unless it is the first
   cell of its line, then it will only contain the right delimiter.
 ** Toggles
 There are a few operations one might want to toggle between frequently, without
