@@ -739,7 +739,7 @@ pressed isn't found."
        (lambda () (unless key
                     (which-key--show-keymap nil keymap nil nil t)))))
     (setq key (string (read-char)))
-    (when (functionp 'which-key--hide-popup)
+    (when (functionp #'which-key--hide-popup)
       (which-key--hide-popup))
     (setq map-result (lookup-key keymap key))
     (cond
