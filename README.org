@@ -152,7 +152,7 @@ or newer is preferred, to leverage [[https://github.com/emacs-evil/evil-surround
 sense that it is told to overlook the bindings.
 
 =evil-tex= also supports =which-key= to show the keys in [[#keymaps][keymaps]]. Likewise, the
-toggles under =ts= play with [[https:/github.com/hlissner/evil-snipe][evil-snipe]] as expected.
+toggles under =ts= play with [[https://github.com/hlissner/evil-snipe][evil-snipe]] as expected.
 * Configuration
 ** Custom env and accent surround insertions
 Should be done by using ~evil-tex-bind-to-(env|cdlatex-accents|delim)-map~.
