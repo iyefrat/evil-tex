@@ -856,10 +856,10 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   (interactive) (evil-tex--texmathp-dispatch "mathsf" "textsf"))
 
 (defvar evil-tex-inner-text-objects-map (make-sparse-keymap)
-  "Inner text object keymap for `evil-tex-mode'.")
+  "Inner text object keymap for `evil-tex'.")
 
 (defvar evil-tex-outer-text-objects-map (make-sparse-keymap)
-  "Outer text object keymap for `evil-tex-mode'.")
+  "Outer text object keymap for `evil-tex'.")
 
 (defvar evil-tex-mode-map
   (let ((keymap (make-sparse-keymap)))
@@ -871,7 +871,7 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
       "i" evil-tex-inner-text-objects-map
       "a" evil-tex-outer-text-objects-map)
     keymap)
-  "Basic keymap for `evil-tex-mode'.")
+  "Basic keymap for `evil-tex'.")
 
 (cl-destructuring-bind (inner-map . outer-map)
     (if (and (boundp  'evil-surround-local-inner-text-object-map-list)
