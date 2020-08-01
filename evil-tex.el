@@ -46,6 +46,15 @@
   :group 'applications
   :prefix "evil-tex-")
 
+;;; declaring optional external functions used
+(defvar which-key-idle-delay)
+(defvar which-key-replacement-alist)
+(defvar evil-surround-pairs-alist)
+(defvar evil-surround-local-inner-text-object-map-list)
+(defvar evil-surround-local-outer-text-object-map-list)
+(defvar evil-embrace-evil-surround-keys)
+(defvar evil-snipe--last-direction)
+
 ;;; helper functions for text objects
 
 (defun evil-tex-max-key (seq fn &optional compare-fn)
@@ -887,6 +896,9 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   (define-key outer-map "_" 'evil-tex-a-subscript)
   (define-key outer-map "T" 'evil-tex-a-table-cell))
 
+
+(defvar evil-tex-env-map (make-sparse-keymap))
+
 (defun evil-tex-bind-to-env-map (key-generator-alist &optional keymap)
   "Bind envs from KEY-GENERATOR-ALIST.
 
@@ -957,6 +969,8 @@ cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
     keymap)
   "Keymap for surrounding with environments.
 Used in `evil-tex-surround-env-prompt'.")
+
+(defvar evil-tex-cdlatex-accents-map (make-sparse-keymap))
 
 (defun evil-tex-bind-to-cdlatex-accents-map (key-generator-alist &optional keymap)
   "Bind accent macros from KEY-GENERATOR-ALIST.
