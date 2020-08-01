@@ -813,13 +813,13 @@ Add newlines if `evil-tex-include-newlines-in-envs' is t"
       (cons (concat "\\" command "") "")
     (cons (concat "\\" command "{") "}")))
 
-(defvar evil-tex--env-function-prefix "evil-tex-envs:"
+(defvar evil-tex--env-function-prefix "evil-tex-envs---"
   "Prefix used when generating env functions from `evil-tex-env-map-generator-alist'.")
 
-(defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents:"
+(defvar evil-tex--cdlatex-accents-function-prefix "evil-tex-cdlatex-accents---"
   "Prefix used when generating accent functions from `evil-tex-cdlatex-accent-map-generator-alist'.")
 
-(defvar evil-tex--delim-function-prefix "evil-tex-delims:"
+(defvar evil-tex--delim-function-prefix "evil-tex-delims---"
   "Prefix used when generating delimiter functions from `evil-tex-delim-map-generator-alist'.")
 
 
@@ -975,9 +975,7 @@ cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
     keymap))
 
 (defvar evil-tex-cdlatex-accents-map (make-sparse-keymap)
-    "Mappings to be used in evil-surround as an interface to evil-tex.
-
-See `evil-surround-pairs-alist' for the format.")
+  "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
 
 (defun evil-tex-bind-to-cdlatex-accents-map (key-generator-alist &optional keymap)
   "Bind accent macros from KEY-GENERATOR-ALIST.
@@ -991,7 +989,7 @@ Format is identical to `evil-tex-bind-to-env-map', see that for explaination."
    evil-tex--cdlatex-accents-function-prefix
    #'evil-tex-format-cdlatex-accent-for-surrounding))
 
-(defvar evil-tex-cdlatex-accents-map
+(setq evil-tex-cdlatex-accents-map
   (let ((keymap (make-sparse-keymap)))
     (evil-tex-bind-to-cdlatex-accents-map
      '(("." . "dot")
@@ -1024,8 +1022,7 @@ Format is identical to `evil-tex-bind-to-env-map', see that for explaination."
        ("2"   "{\\scriptstyle " . "}")
        ("3"   "{\\scriptscriptstyle " . "}"))
      keymap)
-    keymap)
-  "Keymap for surrounding with environments, usually through `evil-tex-surround-cdlatex-accents-prompt'.")
+    keymap))
 
 (defun evil-tex-bind-to-delim-map (key-generator-alist &optional keymap)
   "Bind delimiters from KEY-GENERATOR-ALIST.
