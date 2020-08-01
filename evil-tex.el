@@ -901,7 +901,9 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   (define-key outer-map "T" 'evil-tex-a-table-cell))
 
 
-(defvar evil-tex-env-map (make-sparse-keymap))
+(defvar evil-tex-env-map (make-sparse-keymap)
+    "Keymap for surrounding with environments.
+Used in `evil-tex-surround-env-prompt'.")
 
 (defun evil-tex-bind-to-env-map (key-generator-alist &optional keymap)
   "Bind envs from KEY-GENERATOR-ALIST.
@@ -933,7 +935,7 @@ cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
    #'evil-tex-get-env-for-surrounding
    #'evil-tex-format-env-cons-for-surrounding))
 
-(defvar evil-tex-env-map
+(setq evil-tex-env-map
   (let ((keymap (make-sparse-keymap)))
     (evil-tex-bind-to-env-map
      '(("x" . evil-tex-get-env-for-surrounding)
@@ -970,11 +972,12 @@ cons. `evil-tex-include-newlines-in-envs' has no effect in this case."
        ("tr" . "remark")
        ("tt" . "theorem"))
      keymap)
-    keymap)
-  "Keymap for surrounding with environments.
-Used in `evil-tex-surround-env-prompt'.")
+    keymap))
 
-(defvar evil-tex-cdlatex-accents-map (make-sparse-keymap))
+(defvar evil-tex-cdlatex-accents-map (make-sparse-keymap)
+    "Mappings to be used in evil-surround as an interface to evil-tex.
+
+See `evil-surround-pairs-alist' for the format.")
 
 (defun evil-tex-bind-to-cdlatex-accents-map (key-generator-alist &optional keymap)
   "Bind accent macros from KEY-GENERATOR-ALIST.
@@ -1079,7 +1082,7 @@ explaination."
    which-key-replacement-alist))
 
 
-(defvar evil-tex-surround-delimiters
+(setq evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
     (?c . ,#'evil-tex-surround-command-prompt)
@@ -1088,10 +1091,7 @@ explaination."
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt)
     (?^ "^{" . "}")
     (?_ "_{" . "}")
-    (?T "&" . "&"))
-  "Mappings to be used in evil-surround as an interface to evil-tex.
-
-See `evil-surround-pairs-alist' for the format.")
+    (?T "&" . "&")))
 
 (defun evil-tex-set-up-surround ()
   "Configure evil-surround so things like 'csm' work."
