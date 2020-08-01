@@ -47,6 +47,7 @@
   :prefix "evil-tex-")
 
 ;;; declaring optional external functions used
+
 (defvar which-key-idle-delay)
 (defvar which-key-replacement-alist)
 (defvar evil-surround-pairs-alist)
@@ -54,6 +55,9 @@
 (defvar evil-surround-local-outer-text-object-map-list)
 (defvar evil-embrace-evil-surround-keys)
 (defvar evil-snipe--last-direction)
+(declare-function evil-snipe-t "ext:evil-snipe")
+(declare-function which-key--hide-popup "ext:which-key")
+(declare-function which-key--show-keymap "ext:which-key")
 
 ;;; helper functions for text objects
 
