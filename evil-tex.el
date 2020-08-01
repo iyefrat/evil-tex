@@ -1082,7 +1082,7 @@ explaination."
    which-key-replacement-alist))
 
 
-(setq evil-tex-surround-delimiters
+(defvar evil-tex-surround-delimiters
   `((?m "\\(" . "\\)")
     (?M "\\[" . "\\]")
     (?c . ,#'evil-tex-surround-command-prompt)
@@ -1091,7 +1091,8 @@ explaination."
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt)
     (?^ "^{" . "}")
     (?_ "_{" . "}")
-    (?T "&" . "&")))
+    (?T "&" . "&"))
+  "Delimiter pairs for `evil-surround'.")
 
 (defun evil-tex-set-up-surround ()
   "Configure evil-surround so things like 'csm' work."
@@ -1196,9 +1197,9 @@ list."
   (when evil-tex-mode
     (evil-normalize-keymaps)
     (when (require 'evil-surround nil t)
-      #'evil-tex-set-up-surround)
+      (evil-tex-set-up-surround))
     (when (require 'evil-embrace nil t)
-      #'evil-tex-set-up-embrace)))
+      (evil-tex-set-up-embrace))))
 
 (provide 'evil-tex)
 ;;; evil-tex.el ends here
