@@ -50,7 +50,12 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 
 =(\mu|_\nu)= \to *csddP* /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
 * Installation
-Until this package's on MELPA (Soon™), clone it and put it in your load path and hook it to ~LaTeX-mode-hook~.
+This package can be installed from MELPA, or by cloning it and put it in the load path. For ease use, hook it to =LaTeX-mode= by adding the following to your configuration:
+#+BEGIN_SRC emacs-lisp
+(add-hook 'LaTeX-mode-hook #'evil-tex-mode)
+#+END_SRC
+
+
 
 This package requires =evil=, =auctex=, and =Emacs 25.1+=
 * Overview
