@@ -1073,7 +1073,7 @@ explaination."
 ;;; Text object keybindings and surround declirations.
 
 ;; Shorten which-key descriptions in auto-generated keymaps
-(with-eval-after-load 'which-key
+(when (require 'which-key nil t)
   (push
    '(("\\`." . "evil-tex-.*:\\(.*\\)") . (nil . "\\1"))
    which-key-replacement-alist))
@@ -1195,9 +1195,9 @@ list."
   :keymap evil-tex-mode-map
   (when evil-tex-mode
     (evil-normalize-keymaps)
-    (eval-after-load 'evil-surround
+    (when (require 'evil-surround nil t)
       #'evil-tex-set-up-surround)
-    (eval-after-load 'evil-embrace
+    (when (require 'evil-embrace nil t)
       #'evil-tex-set-up-embrace)))
 
 (provide 'evil-tex)
