@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
 ;;
-;; Authors: Yoav Marco <https://github/ymarco>, Itai Y. Efrat <https://github/iyefrat>
+;; Authors: Yoav Marco <https://github.com/ymarco>, Itai Y. Efrat <https://github.com/iyefrat>
 ;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
 ;; Created: February 01, 2020
 ;; Modified: August 02, 2020
