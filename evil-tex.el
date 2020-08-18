@@ -30,7 +30,7 @@
 ;;
 ;;; Commentary:
 ;;
-;;  Useful features for editing TeX in evil-mode
+;;  Useful features for editing (La)TeX in evil-mode
 ;;
 ;;; Code:
 
