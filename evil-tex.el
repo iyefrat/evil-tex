@@ -1,4 +1,4 @@
-;;; evil-tex.el --- Useful features for editing TeX in evil-mode -*- lexical-binding: t; -*-
+;;; evil-tex.el --- Useful features for editing LaTeX in evil-mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
 ;;
@@ -30,7 +30,7 @@
 ;;
 ;;; Commentary:
 ;;
-;;  Useful features for editing (La)TeX in evil-mode
+;;  Useful features for editing LaTeX in evil-mode
 ;;
 ;;; Code:
 
