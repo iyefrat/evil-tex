@@ -307,7 +307,7 @@ Asterisk variation (e.g \\section{} and \\section*{}) are treated the same."
                  (looking-at "\n"))
         (forward-line 1))
       (setq inner-beg (point))
-      (re-search-forward (concat (evil-tex--section-regexp-higher what-section) "\\|\\\\end{document}"))
+      (re-search-forward (concat (evil-tex--section-regexp-higher what-section) "\\|\\\\end{document}\\|\\'"))
       (move-beginning-of-line 1)
       (setq inner-end (point)
             outer-end (point))
