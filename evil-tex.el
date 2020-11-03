@@ -1096,8 +1096,8 @@ explaination."
   (setq-local evil-surround-pairs-alist
               (append evil-tex-surround-delimiters evil-surround-pairs-alist))
   ;; making use of https://github.com/emacs-evil/evil-surround/pull/165
-  (when (and (boundp evil-surround-local-inner-text-object-map-list)
-             (boundp evil-surround-local-outer-text-object-map-list))
+  (when (and (boundp 'evil-surround-local-inner-text-object-map-list)
+             (boundp 'evil-surround-local-outer-text-object-map-list))
     (add-to-list 'evil-surround-local-inner-text-object-map-list
                  evil-tex-inner-text-objects-map)
     (add-to-list 'evil-surround-local-outer-text-object-map-list
