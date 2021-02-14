@@ -50,13 +50,15 @@ Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 
 =(\mu|_\nu)= \to *csddP* /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
 * Installation
-This package can be installed from MELPA, or by cloning it and putting it in the load path.
-For ease use, hook it to =LaTeX-mode= by adding the following to your configuration:
+This package can be installed from [[https://melpa.org/#/evil-tex][MELPA]], or by cloning it and putting it in the load path.
+For ease of use, hook it to =LaTeX-mode= by adding the following to your configuration:
 #+BEGIN_SRC emacs-lisp
 (add-hook 'LaTeX-mode-hook #'evil-tex-mode)
 #+END_SRC
 
-This package requires =evil=, =auctex=, and =Emacs 25.1+=
+This package requires =evil=, =auctex=, and =Emacs 25.1+=.
+
+If you are using [[https://github.com/hlissner/doom-emacs][Doom Emacs]], you can just enable =latex= and =(evil +everywhere)= in your =init.el=.
 ** Interaction with other packages
 =evil-tex= does not require, but supports [[https://github.com/emacs-evil/evil-surround][evil-surround]] (using version =1.1.1=
 or newer is preferred, to leverage [[https://github.com/emacs-evil/evil-surround/pull/165][#165]]). [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]] is also supported, in the
