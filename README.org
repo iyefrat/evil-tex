@@ -72,7 +72,7 @@ toggles under =ts= play well with [[https://github.com/hlissner/evil-snipe][evil
 This package defines a number of text objects:
 | Key | Abbreviation    | Text Object Target                                                       | Surround behavior                          |
 |-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
-| ~c~ | command         | TeX marcos: ~\foo{...}~                                                  | Prompts you for a macro                    |
+| ~c~ | command         | TeX macros: ~\foo{...}~                                                  | Prompts you for a macro                    |
 | ~e~ | environment     | ~\begin{...}~ ~\end{...}~ blocks                                         | Prompts you with [[#environment-keymap][the env keymap]]            |
 | ~m~ | math            | Both inline ~\( \)~, display ~\[ \]~, and  ~$~                           | Surrounds with ~\( \)~                     |
 | ~M~ | Display math    | N/A                                                                      | Surrounds with ~\[ \]~                     |
