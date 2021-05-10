@@ -603,18 +603,23 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
 
 If given, go ARG sections up."
   (interactive)
-  (re-search-backward evil-tex--section-regexp nil t arg))
+  (cond
+   ((derived-mode-p 'org-mode) (org-previous-visible-heading (or arg 1)))
+   (t (re-search-backward evil-tex--section-regexp nil t arg))))
 
 (defun evil-tex-go-forward-section (&optional arg)
   "Go forward to the closest part/section/subsection etc.
 
 If given, go ARG sections down."
   (interactive)
-  ;; skip current looked-at section
-  (when (looking-at evil-tex--section-regexp)
-    (goto-char (match-end 0)))
-  (when (re-search-forward evil-tex--section-regexp nil arg)
-    (goto-char (match-beginning 0))))
+  (cond
+   ((derived-mode-p 'org-mode) (org-next-visible-heading (or arg 1)))
+   (t
+    ;; skip current looked-at section
+    (when (looking-at evil-tex--section-regexp)
+      (goto-char (match-end 0)))
+    (when (re-search-forward evil-tex--section-regexp nil arg)
+      (goto-char (match-beginning 0))))))
 
 (defun evil-tex-brace-movement ()
   "Brace movement similar to TAB in cdlatex.
@@ -665,13 +670,33 @@ Example: (| symbolizes point)
   "Select inner LaTeX command (macro)."
   (last (evil-tex--select-command) 2))
 
+(defvar evil-tex-env-fallback-evil-org t
+  "When non-nil, fallback to `evil-org-an-object' and `evil-org-inner-object'
+when `org-mode' and `evil-org-mode' are enabled.")
+
 (evil-define-text-object evil-tex-an-env (count &optional beg end type)
   "Select a LaTeX environment."
-  (nbutlast (evil-tex--select-env) 2))
+  (condition-case err (nbutlast (evil-tex--select-env) 2)
+    (error (cond
+            ;; Fallback to evil-org binding in org-mode
+            ((and evil-tex-env-fallback-evil-org
+                  (derived-mode-p 'org-mode)
+                  (fboundp 'evil-org-an-object))
+             (evil-org-an-object count beg end type))
+            ;; Rethrow error otherwise
+            (t (signal (car err) (cdr (err))))))))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select inner LaTeX environment."
-  (last (evil-tex--select-env) 2))
+  (condition-case err (last (evil-tex--select-env) 2)
+    (error (cond
+            ;; Fallback to evil-org binding in org-mode
+            ((and evil-tex-env-fallback-evil-org
+                  (derived-mode-p 'org-mode)
+                  (fboundp 'evil-org-an-object))
+             (evil-org-inner-object count beg end type))
+            ;; Rethrow error otherwise
+            (t (signal (car err) (cdr err)))))))
 
 (evil-define-text-object evil-tex-a-section (count &optional beg end type)
   "Select a LaTeX section."
