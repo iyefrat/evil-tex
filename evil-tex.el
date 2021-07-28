@@ -1,6 +1,6 @@
 ;;; evil-tex.el --- Useful features for editing LaTeX in evil-mode -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2020 Yoav Marco, Itai Y. Efrat
+;; Copyright (C) 2020-2021 Yoav Marco, Itai Y. Efrat
 ;;
 ;; Authors: Yoav Marco <https://github.com/ymarco>, Itai Y. Efrat <https://github.com/iyefrat>
 ;; Maintainers: Yoav Marco <yoavm448@gmail.com>, Itai Y. Efrat <itai3397@gmail.com>
