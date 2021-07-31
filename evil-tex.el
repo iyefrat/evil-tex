@@ -548,7 +548,7 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
                         '("\\[" . "\\]"))))
     ;; put the \begin on a line of its own
     (when (and outer-math
-               (= (char-before (overlay-start left-ol-to-replace)) ?\n))
+               (/= (char-before (overlay-start left-ol-to-replace)) ?\n))
       (setcar replacement (concat "\n" (car replacement))))
     (evil-tex--overlay-replace left-ol-to-replace (car replacement))
     (evil-tex--overlay-replace right-ol-to-replace (cdr replacement))
