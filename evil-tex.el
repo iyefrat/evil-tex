@@ -598,6 +598,10 @@ Respect the value of `evil-tex-include-newlines-in-envs'.
 
 ;;; Some movement commands
 
+(declare-function org-previous-visible-heading "org")
+(declare-function org-next-visible-heading "org")
+(declare-function evil-org-inner-object "evil-org")
+
 (defun evil-tex-go-back-section (&optional arg)
   "Go back to the closest part/section/subsection etc.
 
