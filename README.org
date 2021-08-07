@@ -2,6 +2,8 @@
 #+DATE:    February 1, 2020
 #+STARTUP: inlineimages nofold
 
+[[https://melpa.org/#/evil-tex][file:https://melpa.org/packages/evil-tex-badge.svg]] [[https://stable.melpa.org/#/evil-tex][file:https://stable.melpa.org/packages/evil-tex-badge.svg]]
+
 [[https://github.com/emacs-evil/evil][evil]] toolbox for LaTeX editing. Provides many text objects fully utilizing
 [[https://github.com/emacs-evil/evil-surround][evil-surround]], some useful movements, and keymaps for quickly entering
 environments or [[https://github.com/cdominik/cdlatex][cdlatex]]-like accents. And useful toggles.
