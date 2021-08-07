@@ -8,7 +8,7 @@
 [[https://github.com/emacs-evil/evil-surround][evil-surround]], some useful movements, and keymaps for quickly entering
 environments or [[https://github.com/cdominik/cdlatex][cdlatex]]-like accents. And useful toggles.
 
-Heavily insipred by [[https://github.com/lervag/vimtex][vimtex]]; successor of [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]].
+Heavily inspired by [[https://github.com/lervag/vimtex][vimtex]]; successor of [[https://github.com/hpdeifel/evil-latex-textobjects][evil-latex-textobjects]].
 
 * Table of Contents :TOC_3:noexport:
 - [[#incomplete-showcase][Incomplete Showcase]]
