@@ -688,7 +688,7 @@ when `org-mode' and `evil-org-mode' are enabled.")
                   (fboundp 'evil-org-an-object))
              (evil-org-an-object count beg end type))
             ;; Rethrow error otherwise
-            (t (signal (car err) (cdr (err))))))))
+            (t (signal (car err) (cdr err)))))))
 
 (evil-define-text-object evil-tex-inner-env (count &optional beg end type)
   "Select inner LaTeX environment."
@@ -1220,6 +1220,7 @@ See URL `https://github.com/iyefrat/evil-tex' for the full feature
 list."
   :init-value nil
   :keymap evil-tex-mode-map
+  :group 'evil-tex
   (when evil-tex-mode
     (evil-normalize-keymaps)
     (when (require 'evil-surround nil t)
