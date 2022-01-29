@@ -51,6 +51,8 @@ Heavily inspired by [[https://github.com/lervag/vimtex][vimtex]]; successor of [
 =\begin{align*}\n a^2 \n\end{align}=
 
 =(\mu|_\nu)= \to *csddP* /(change surrounding delimiter to =\left(=)/ \to =\left(\mu|_\nu\right)=
+
+The =cs= "change surrounding" bindings rely on [[https://github.com/emacs-evil/evil-surround][evil-surround]] being installed and enabled.
 * Installation
 This package can be installed from [[https://melpa.org/#/evil-tex][MELPA]], or by cloning it and putting it in the load path.
 For ease of use, hook it to =LaTeX-mode= by adding the following to your configuration:
@@ -72,7 +74,7 @@ toggles under =ts= play well with [[https://github.com/hlissner/evil-snipe][evil
 * Overview
 ** Text Objects
 This package defines a number of text objects:
-| Key | Abbreviation    | Text Object Target                                                       | Surround behavior                          |
+| Key | Abbreviation    | Text Object Target                                                       | Surround behavior (with [[https://github.com/emacs-evil/evil-surround][evil-surround]])     |
 |-----+-----------------+--------------------------------------------------------------------------+--------------------------------------------|
 | ~c~ | command         | TeX macros: ~\foo{...}~                                                  | Prompts you for a macro                    |
 | ~e~ | environment     | ~\begin{...}~ ~\end{...}~ blocks                                         | Prompts you with [[#environment-keymap][the env keymap]]            |
