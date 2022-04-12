@@ -1035,6 +1035,7 @@ Format is identical to `evil-tex-bind-to-env-map', see that for explaination."
            ("u" . "breve")
            ("m" . "mbox")
            ("c" . "mathcal")
+           ("q" . "sqrt") ; not actually in cdlatex
            ("r" . evil-tex-cdlatex-accents---rm)
            ("i" . evil-tex-cdlatex-accents---it)
            ("l" . "textsl")

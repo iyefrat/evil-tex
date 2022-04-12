@@ -271,6 +271,7 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | ~u~ | breve             |        |
 | ~m~ | mbox              |        |
 | ~c~ | mathcal           |        |
+| ~q~ | sqrt              |        |
 | ~r~ | mathrm/textrm     |        |
 | ~i~ | mathit/textit     |        |
 | ~l~ | textsl            |        |
