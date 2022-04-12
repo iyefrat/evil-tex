@@ -738,6 +738,23 @@ when `org-mode' and `evil-org-mode' are enabled.")
   "Select inner LaTeX table cell."
   (last (evil-tex--select-table-cell) 2))
 
+(evil-define-text-object evil-tex-inner-single-latex-quote (count &optional beg end type)
+  "Select inner LaTeX `single quote'."
+  (evil-select-paren "`" "'" beg end type count nil))
+
+(evil-define-text-object evil-tex-a-single-latex-quote (count &optional beg end type)
+  "Select a LaTeX `single quote'."
+  (evil-select-paren "`" "'" beg end type count t))
+
+(evil-define-text-object evil-tex-inner-double-latex-quote (count &optional beg end type)
+  "Select inner LaTeX ``double quote''."
+  (evil-select-paren "``" "''" beg end type count nil))
+
+(evil-define-text-object evil-tex-a-double-latex-quote (count &optional beg end type)
+  "Select a LaTeX ``double quote''."
+  (evil-select-paren "``" "''" beg end type count t))
+
+
 
 ;;; evil-surround setup
 
@@ -915,6 +932,8 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   (define-key inner-map "^" 'evil-tex-inner-superscript)
   (define-key inner-map "_" 'evil-tex-inner-subscript)
   (define-key inner-map "T" 'evil-tex-inner-table-cell)
+  (define-key inner-map "q" 'evil-tex-inner-single-latex-quote)
+  (define-key inner-map "Q" 'evil-tex-inner-double-latex-quote)
 
   (define-key outer-map "e" 'evil-tex-an-env)
   (define-key outer-map "c" 'evil-tex-a-command)
@@ -923,7 +942,9 @@ Otherwise, with the macro constructed by REGULAR-FORMAT."
   (define-key outer-map "S" 'evil-tex-a-section)
   (define-key outer-map "^" 'evil-tex-a-superscript)
   (define-key outer-map "_" 'evil-tex-a-subscript)
-  (define-key outer-map "T" 'evil-tex-a-table-cell))
+  (define-key outer-map "T" 'evil-tex-a-table-cell)
+  (define-key outer-map "q" 'evil-tex-a-single-latex-quote)
+  (define-key outer-map "Q" 'evil-tex-a-double-latex-quote))
 
 
 (defvar evil-tex-env-map (make-sparse-keymap)
@@ -1112,6 +1133,8 @@ explaination."
     (?e . ,#'evil-tex-surround-env-prompt)
     (?d . ,#'evil-tex-surround-delim-prompt)
     (?\; . ,#'evil-tex-surround-cdlatex-accents-prompt)
+    (?q "`" . "'")
+    (?Q "``" . "''")
     (?^ "^{" . "}")
     (?_ "_{" . "}")
     (?T "&" . "&"))
