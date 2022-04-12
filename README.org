@@ -86,6 +86,8 @@ This package defines a number of text objects:
 | ~^~ | superscript     | ~x^a~ ~x^\alpha~ ~x^{...}~                                               | Surrounds with ~^{ }~                      |
 | ~_~ | subscript       | ~x_a~ ~x_\alpha~ ~x_{...}~                                               | Surrounds with ~_{ }~                      |
 | ~T~ | table cell      | LaTeX table/align cells, e.g. ~&foo&~.                                   | Surrounds with ~& &~                       |
+| ~q~ | single quote    | LaTeX single quote, like `this'                                          | Surrounds with ~` '~                       |
+| ~Q~ | double quote    | LaTeX double quote, like ``this''                                        | Surrounds with ~`` ''~                     |
 
 The full text object definitions are as follows:
 
@@ -122,6 +124,10 @@ The full text object definitions are as follows:
     & foobar &    & foobar &    & foobar \\    & foobar \\    
     └───────┘      └──────┘     └───────┘       └──────┘
         aT            iT            aT             iT
+
+     `foobar'      `foobar'     ``foobar''     ``foobar''
+     └──────┘       └────┘      └────────┘       └────┘
+        aq            iq            aQ             iQ
 #+END_SRC LaTeX
 /The diagram rendering might bug out on mobile./
 
