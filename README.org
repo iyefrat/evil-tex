@@ -300,3 +300,9 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | ~c~ | ~\left\{~      | ~\right\}~      |
 | ~R~ | ~\langle~      | ~\rangle~       |
 | ~r~ | ~\left\langle~ | ~\right\rangle~ |
+| ~v~ | ~\left\lvert~  | ~\right\rvert~  |
+| ~V~ | ~\lvert~       | ~\rvert~        |
+| ~n~ | ~\left\lVert~  | ~\right\rVert~  |
+| ~N~ | ~\lVert~       | ~\rVert~        |
+
+mnemonic: ~n~ is for ~\lVert~ because it's often used to indicate norm
