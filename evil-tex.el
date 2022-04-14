@@ -481,11 +481,11 @@ Also change e.g \\bigl(foo\bigr) to (foo), but this is one way."
         (goto-char (overlay-start left-over))
         (cl-destructuring-bind (l . r)
             (cond
-             ((looking-at "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" )
+             ((looking-at "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" )
               (cons (replace-regexp-in-string
-                     "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)?l?" "" left-str)
+                     "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" "" left-str)
                     (replace-regexp-in-string
-                     "\\\\\\(?:right\\|big\\|bigg\\|Big\\|Bigg\\)?r?" "" right-str)))
+                     "\\\\\\(?:right\\|big\\|bigg\\|Big\\|Bigg\\)" "" right-str)))
              (t (cons (concat "\\left" left-str)
                       (concat "\\right" right-str))))
           (evil-tex--overlay-replace left-over  l)
