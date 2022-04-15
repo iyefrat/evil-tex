@@ -300,7 +300,7 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | ~c~ |             | ~\left\{~      | ~\right\}~      |
 | ~R~ | ??          | ~\langle~      | ~\rangle~       |
 | ~r~ |             | ~\left\langle~ | ~\right\rangle~ |
-| ~v~ | vert        | ~\left\lvert~  | ~\right\rvert~  |
-| ~V~ |             | ~\lvert~       | ~\rvert~        |
-| ~n~ | norm        | ~\left\lVert~  | ~\right\rVert~  |
-| ~N~ |             | ~\lVert~       | ~\rVert~        |
+| ~V~ | vert        | ~\lvert~       | ~\rvert~        |
+| ~v~ |             | ~\left\lvert~  | ~\right\rvert~  |
+| ~N~ | norm        | ~\lVert~       | ~\rVert~        |
+| ~n~ |             | ~\left\lVert~  | ~\right\rVert~  |
