@@ -290,19 +290,17 @@ See [[https://github.com/cdominik/cdlatex/blob/a5cb624ef/cdlatex.el#L141][cdlate
 | ~2~ | scriptstyle       | yes    |
 | ~3~ | scriptscriptstyle | yes    |
 *** Delimiter keymap
-| key | left delimiter | right delimiter |
-|-----+----------------+-----------------|
-| ~P~ | ~(~            | ~)~             |
-| ~p~ | ~\left(~       | ~\right)~       |
-| ~S~ | ~[~            | ~]~             |
-| ~s~ | ~\left[~       | ~\right]~       |
-| ~C~ | ~\{~           | ~\}~            |
-| ~c~ | ~\left\{~      | ~\right\}~      |
-| ~R~ | ~\langle~      | ~\rangle~       |
-| ~r~ | ~\left\langle~ | ~\right\rangle~ |
-| ~v~ | ~\left\lvert~  | ~\right\rvert~  |
-| ~V~ | ~\lvert~       | ~\rvert~        |
-| ~n~ | ~\left\lVert~  | ~\right\rVert~  |
-| ~N~ | ~\lVert~       | ~\rVert~        |
-
-mnemonic: ~n~ is for ~\lVert~ because it's often used to indicate norm
+| key | mnemonic    | left delimiter | right delimiter |
+|-----+-------------+----------------+-----------------|
+| ~P~ | parentheses | ~(~            | ~)~             |
+| ~p~ |             | ~\left(~       | ~\right)~       |
+| ~S~ | square      | ~[~            | ~]~             |
+| ~s~ |             | ~\left[~       | ~\right]~       |
+| ~C~ | curly       | ~\{~           | ~\}~            |
+| ~c~ |             | ~\left\{~      | ~\right\}~      |
+| ~R~ | ??          | ~\langle~      | ~\rangle~       |
+| ~r~ |             | ~\left\langle~ | ~\right\rangle~ |
+| ~v~ | vert        | ~\left\lvert~  | ~\right\rvert~  |
+| ~V~ |             | ~\lvert~       | ~\rvert~        |
+| ~n~ | norm        | ~\left\lVert~  | ~\right\rVert~  |
+| ~N~ |             | ~\lVert~       | ~\rVert~        |
