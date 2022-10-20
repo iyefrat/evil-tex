@@ -131,7 +131,9 @@ ARGS passed to `evil-select-paren', within `evil-tex--delim-finder'."
                           ( "\\Bigl"  "\\Bigr")  ("\\Big"  "\\Big")
                           ( "\\Biggl" "\\Biggr") ("\\Bigg" "\\Bigg"))
                      collect (evil-tex--delim-finder (concat pre-l l) (concat pre-r r) args)))
-   (lambda (arg) (when (consp arg) ; check if selection succeeded
+   (lambda (arg) (when (and (consp arg) ; selection succeeded
+                            ;; selection includes point
+                            (<= (nth 2 arg) (point) (nth 3 arg)))
                    arg))
    #'evil-tex--delim-compare))
 
