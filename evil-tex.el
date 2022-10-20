@@ -238,18 +238,21 @@ Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
 
   (evil-tex-max-key
    (list
-    (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
-                                           (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
-           (nbutlast (ignore-errors (apply #'evil-select-paren
-                                           (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3))
-    (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
-                                           (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
-           (nbutlast (ignore-errors (apply #'evil-select-paren
-                                           (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3))
-    (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
-                                           (regexp-quote "$") (regexp-quote "$") (append args '(t)))) 3)
-           (nbutlast (ignore-errors (apply #'evil-select-paren
-                                           (regexp-quote "$") (regexp-quote "$") (append args '(nil)))) 3)))
+    (save-excursion
+      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
+             (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3)))
+    (save-excursion
+      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
+             (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3)))
+    (save-excursion
+      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "$") (regexp-quote "$") (append args '(t)))) 3)
+             (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "$") (regexp-quote "$") (append args '(nil)))) 3))))
    (lambda (arg) (if (and (consp arg) ; selection succeeded
                           ;; Selection is close enough to point.
                           ;; evil-select-quote can select things further down in
