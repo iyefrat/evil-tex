@@ -100,13 +100,15 @@ ARGS is the information about the text object needed for the functions to work
 
 The format for the return is (outer-beg outer-end inner-beg inner-end)."
   (let ((delim-pair-outer (ignore-errors
-                            (apply #'evil-select-paren
-                                   (regexp-quote deliml)
-                                   (regexp-quote delimr) (append args '(t)))))
+                            (save-excursion
+                              (apply #'evil-select-paren
+                                     (regexp-quote deliml)
+                                     (regexp-quote delimr) (append args '(t))))))
         (delim-pair-inner (ignore-errors
-                            (apply #'evil-select-paren
-                                   (regexp-quote deliml)
-                                   (regexp-quote delimr) (append args '(nil))))))
+                            (save-excursion
+                              (apply #'evil-select-paren
+                                     (regexp-quote deliml)
+                                     (regexp-quote delimr) (append args '(nil)))))))
     (when (and delim-pair-outer delim-pair-inner)
       (nconc (nbutlast delim-pair-outer 3) (nbutlast delim-pair-inner 3)))))
 
