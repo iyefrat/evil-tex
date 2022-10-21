@@ -98,9 +98,6 @@ chose [[\\left(]] over \\left[[(]], etc."
 		     (<= rdax 0)))
 	   (iny (and (>= lday 0)
 		     (<= rday 0))))
-      (message "x: %s y: %s" x y)
-      (message (format "inx: %s, iny: %s" inx iny))
-      (message (format "ldix: %s, ldiy: %s" ldix ldiy))
       (cond
        ;; both in front
        ((and (not inx) (not iny)) (cond
@@ -275,7 +272,6 @@ Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
       (nconc (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(t)))) 3)
 	    (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(nil)))) 3))))
    (lambda (arg) (when (consp arg)  ; check if selection succeeded
-		   (message (format "%s" arg))
                    arg))
    #'evil-tex--delim-compare))
 
