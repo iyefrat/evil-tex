@@ -239,22 +239,22 @@ ARGS passed to `evil-select-paren' or `evil-select-quote'.
 Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
 
   (evil-tex-max-key
-   (list
-    (save-excursion
-      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
-                                             (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
-             (nbutlast (ignore-errors (apply #'evil-select-paren
-                                             (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3)))
-    (save-excursion
-      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
-                                             (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
-             (nbutlast (ignore-errors (apply #'evil-select-paren
-                                             (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3)))
-    (save-excursion
-      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
-                                             (regexp-quote "$") (regexp-quote "$") (append args '(t)))) 3)
-             (nbutlast (ignore-errors (apply #'evil-select-paren
-                                             (regexp-quote "$") (regexp-quote "$") (append args '(nil)))) 3))))
+   ;; run all combination of pairs + outer-or-inner
+   (cl-loop for (l r ) in '(("\\(" "\\)")
+                            ("\\[" "\\]")
+                            ("$"   "$"  ))
+            collect
+            (cl-loop for inner? in '(t nil)
+                     nconc
+                     (save-excursion ; evil-select-paren can be a bad boy and
+                                        ; move point
+                       (nbutlast (ignore-errors
+                                   (apply #'evil-select-paren
+                                          (regexp-quote l)
+                                          (regexp-quote r)
+                                          (append args (list inner?))))
+                                 3))))
+   ;; scoring function: get the range that starts closest to point (i.e just
    (lambda (arg) (if (and (consp arg) ; selection succeeded
                           ;; Selection is close enough to point.
                           ;; evil-select-quote can select things further down in
