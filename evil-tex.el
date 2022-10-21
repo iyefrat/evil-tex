@@ -76,21 +76,60 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
                 res cur))))
     res))
 
+;; (defun evil-tex--delim-compare (x y)
+;;   "Return t if the X delims are closer the point than Y.
+
+;; X and Y have the format of (left-outer right-outer left-inner right-inner),
+;; chose [[\\left(]] over \\left[[(]], etc."
+;;   (let ((lax (nth 0 x))
+;;         (lix (nth 2 x))
+;;         (lay (nth 0 y))
+;;         (liy (nth 2 y))
+;; 	(point (point)))
+;;     (message "x: %s y: %s" x y)
+;;     (cond
+;;      ((not x)                           nil)
+;;      ((not y)                           t)
+;;      ((< (- lix point) (- liy point))   t)
+;;      ((and (= lix liy) (< lax lay))     t)
+;;      (t nil))))
+
 (defun evil-tex--delim-compare (x y)
   "Return t if the X delims are closer the point than Y.
 
 X and Y have the format of (left-outer right-outer left-inner right-inner),
 chose [[\\left(]] over \\left[[(]], etc."
-  (let ((lax (nth 0 x))
-        (lix (nth 2 x))
-        (lay (nth 0 y))
-        (liy (nth 2 y)))
-    (cond
-     ((not x)                        nil)
-     ((not y)                        t)
-     ((> lix liy)                    t)
-     ((and (= lix liy) (< lax lay))  t)
-     (t nil))))
+  (cond
+   ((not x) nil)
+   ((not y)  t) 
+   (t 
+    (let* ((point (point))
+	   (ldix (- point (nth 2 x)))
+	   (ldax (- point (nth 0 x)))
+	   (ldiy (- point (nth 2 y)))
+	   (lday (- point (nth 0 y)))
+	   (rdix (- point (nth 3 x)))
+	   (rdax (- point (nth 1 x)))
+	   (rdiy (- point (nth 3 y)))
+	   (rday (- point (nth 1 y)))
+	   (inx (and (>= ldax 0)
+		     (<= rdax 0)))
+	   (iny (and (>= lday 0)
+		     (<= rday 0))))
+      (message "x: %s y: %s" x y)
+      (message (format "inx: %s, iny: %s" inx iny))
+      (message (format "ldix: %s, ldiy: %s" ldix ldiy))
+      (cond
+       ;; both in front
+       ((and (not inx) (not iny)) (cond
+				   ((< (abs ldix) (abs ldiy)) t)))
+       ;; one in front
+       ((and iny (not inx)) nil)
+       ((and inx (not iny))   t)
+       ;; neither in front (both in)
+       ((and iny inx) (cond
+		       ((> ldix ldiy) nil)
+		       ((and (= ldix ldiy) (> ldax lday)) t))))))))
 
 (defun evil-tex--delim-finder (deliml delimr args)
   "Return delimiter locations for `evil-tex--select-delim'.
@@ -133,6 +172,7 @@ ARGS passed to `evil-select-paren', within `evil-tex--delim-finder'."
                           ( "\\Bigl"  "\\Bigr")  ("\\Big"  "\\Big")
                           ( "\\Biggl" "\\Biggr") ("\\Bigg" "\\Bigg"))
                      collect (evil-tex--delim-finder (concat pre-l l) (concat pre-r r) args)))
+   (lambda (arg) (when (consp arg)  ; check if selection succeeded
                    arg))
    #'evil-tex--delim-compare))
 
@@ -234,34 +274,33 @@ qux
 (defun evil-tex--select-math (&rest args)
   "Return (outer-beg outer-end inner-beg inner-end) of closest LaTeX math match.
 
-ARGS passed to `evil-select-paren' or `evil-select-quote'.
+ARGS passed to `evil-select-paren' or `evil-select-quote-thing'
 Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
 
   (evil-tex-max-key
-   ;; run all combination of pairs + outer-or-inner
-   (cl-loop for (l r ) in '(("\\(" "\\)")
-                            ("\\[" "\\]")
-                            ("$"   "$"  ))
-            collect
-            (cl-loop for inner? in '(t nil)
-                     nconc
-                     (save-excursion ; evil-select-paren can be a bad boy and
-                                        ; move point
-                       (nbutlast (ignore-errors
-                                   (apply #'evil-select-paren
-                                          (regexp-quote l)
-                                          (regexp-quote r)
-                                          (append args (list inner?))))
-                                 3))))
-   ;; scoring function: get the range that starts closest to point (i.e just
-   (lambda (arg) (if (and (consp arg) ; selection succeeded
-                          ;; Selection is close enough to point.
-                          ;; evil-select-quote can select things further down in
-                          ;; the buffer.
-                          (<= (- (nth 0 arg) 2) (point))
-                          (>= (+ (nth 1 arg) 3) (point)))
-                     (car arg)
-                   most-negative-fixnum))))
+   (list
+    (save-excursion
+      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\(") (regexp-quote "\\)") (append args '(t)))) 3)
+             (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\(") (regexp-quote "\\)") (append args '(nil)))) 3)))
+    (save-excursion
+      (nconc (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\[") (regexp-quote "\\]") (append args '(t)))) 3)
+             (nbutlast (ignore-errors (apply #'evil-select-paren
+                                             (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3)))
+    (save-excursion
+      (nconc (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(t)))) 3)
+	    (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(nil)))) 3))
+      ;; (nconc (nbutlast (ignore-errors (let ((evil-forward-quote-char ?$))
+      ;; 					(apply #'evil-select-quote-thing 'evil-quote (append args '(t))))) 3)
+      ;; 	     (nbutlast (ignore-errors (let ((evil-forward-quote-char ?$))
+      ;; 					(apply #'evil-select-quote-thing 'evil-quote (append args '(nil))))) 3))
+      ))
+   (lambda (arg) (when (consp arg)  ; check if selection succeeded
+		   (message (format "%s" arg))
+                   arg))
+   #'evil-tex--delim-compare))
 
 (defvar evil-tex--section-regexp
   "\\\\\\(part\\|chapter\\|subsubsection\\|subsection\\|section\\|subparagraph\\|paragraph\\)\\*?\\>"
@@ -480,24 +519,25 @@ and the inner ones will not include it or surrounding {} if they exist."
 Also change e.g \\bigl(foo\bigr) to (foo), but this is one way."
   (interactive)
   (let* ((outer (evil-tex-a-delim)) (inner (evil-tex-inner-delim))
-         (left-over (make-overlay (car outer) (car inner)))
-         (right-over (make-overlay (cadr inner) (cadr outer))))
-    (save-excursion
-      (let ((left-str (buffer-substring-no-properties (overlay-start left-over) (overlay-end left-over)))
-            (right-str (buffer-substring-no-properties (overlay-start right-over) (overlay-end right-over))))
-        (goto-char (overlay-start left-over))
-        (cl-destructuring-bind (l . r)
-            (cond
-             ((looking-at "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" )
-              (cons (replace-regexp-in-string
-                     "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" "" left-str)
-                    (replace-regexp-in-string
-                     "\\\\\\(?:right\\|big\\|bigg\\|Big\\|Bigg\\)" "" right-str)))
-             (t (cons (concat "\\left" left-str)
-                      (concat "\\right" right-str))))
-          (evil-tex--overlay-replace left-over  l)
-          (evil-tex--overlay-replace right-over r)))
-      (delete-overlay left-over) (delete-overlay right-over))))
+         (left-over (ignore-errors (make-overlay (car outer) (car inner))))
+         (right-over (ignore-errors (make-overlay (cadr inner) (cadr outer)))))
+    (when (and left-over right-over outer inner)
+      (save-excursion
+	(let ((left-str (buffer-substring-no-properties (overlay-start left-over) (overlay-end left-over)))
+              (right-str (buffer-substring-no-properties (overlay-start right-over) (overlay-end right-over))))
+          (goto-char (overlay-start left-over))
+          (cl-destructuring-bind (l . r)
+              (cond
+               ((looking-at "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" )
+		(cons (replace-regexp-in-string
+                       "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" "" left-str)
+                      (replace-regexp-in-string
+                       "\\\\\\(?:right\\|big\\|bigg\\|Big\\|Bigg\\)" "" right-str)))
+               (t (cons (concat "\\left" left-str)
+			(concat "\\right" right-str))))
+            (evil-tex--overlay-replace left-over  l)
+            (evil-tex--overlay-replace right-over r)))
+	(delete-overlay left-over) (delete-overlay right-over)))))
 
 (defun evil-tex-toggle-env ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
@@ -520,18 +560,19 @@ Also change e.g \\bigl(foo\bigr) to (foo), but this is one way."
   "Toggle surrounding math between \\(foo\\) and \\=\\[foo\\]."
   (interactive)
   (let* ((outer (evil-tex-a-math)) (inner (evil-tex-inner-math))
-         (left-over (make-overlay (car outer) (car inner)))
-         (right-over (make-overlay (cadr inner) (cadr outer))))
-    (save-excursion
-      (goto-char (overlay-start left-over))
-      (cond
-       ((looking-at (regexp-quote "\\("))
-        (evil-tex--overlay-replace left-over  "\\[")
-        (evil-tex--overlay-replace right-over "\\]" ))
-       ((looking-at (regexp-quote "\\["))
-        (evil-tex--overlay-replace left-over  "\\(")
-        (evil-tex--overlay-replace right-over "\\)" ))))
-    (delete-overlay left-over) (delete-overlay right-over)))
+         (left-over (ignore-errors (make-overlay (car outer) (car inner))))
+         (right-over (ignore-errors (make-overlay (cadr inner) (cadr outer)))))
+    (when (and left-over right-over outer inner) ;; anticipate failure if no delim found
+      (save-excursion
+	(goto-char (overlay-start left-over))
+	(cond
+	 ((looking-at (regexp-quote "\\("))
+          (evil-tex--overlay-replace left-over  "\\[")
+          (evil-tex--overlay-replace right-over "\\]" ))
+	 ((looking-at (regexp-quote "\\["))
+          (evil-tex--overlay-replace left-over  "\\(")
+          (evil-tex--overlay-replace right-over "\\)" )))
+	(delete-overlay left-over) (delete-overlay right-over)))))
 
 (defun evil-tex-toggle-math-align ()
   "Toggle surrounding math between display and align*.
