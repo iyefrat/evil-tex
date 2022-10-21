@@ -76,24 +76,6 @@ Comparison is done with COMPARE-FN if defined, and with `>' if not.
                 res cur))))
     res))
 
-;; (defun evil-tex--delim-compare (x y)
-;;   "Return t if the X delims are closer the point than Y.
-
-;; X and Y have the format of (left-outer right-outer left-inner right-inner),
-;; chose [[\\left(]] over \\left[[(]], etc."
-;;   (let ((lax (nth 0 x))
-;;         (lix (nth 2 x))
-;;         (lay (nth 0 y))
-;;         (liy (nth 2 y))
-;; 	(point (point)))
-;;     (message "x: %s y: %s" x y)
-;;     (cond
-;;      ((not x)                           nil)
-;;      ((not y)                           t)
-;;      ((< (- lix point) (- liy point))   t)
-;;      ((and (= lix liy) (< lax lay))     t)
-;;      (t nil))))
-
 (defun evil-tex--delim-compare (x y)
   "Return t if the X delims are closer the point than Y.
 
@@ -291,12 +273,7 @@ Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
                                              (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3)))
     (save-excursion
       (nconc (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(t)))) 3)
-	    (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(nil)))) 3))
-      ;; (nconc (nbutlast (ignore-errors (let ((evil-forward-quote-char ?$))
-      ;; 					(apply #'evil-select-quote-thing 'evil-quote (append args '(t))))) 3)
-      ;; 	     (nbutlast (ignore-errors (let ((evil-forward-quote-char ?$))
-      ;; 					(apply #'evil-select-quote-thing 'evil-quote (append args '(nil))))) 3))
-      ))
+	    (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(nil)))) 3))))
    (lambda (arg) (when (consp arg)  ; check if selection succeeded
 		   (message (format "%s" arg))
                    arg))
