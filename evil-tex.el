@@ -86,29 +86,29 @@ chose [[\\left(]] over \\left[[(]], etc."
    ((not y)  t) 
    (t 
     (let* ((point (point))
-	   (ldix (- point (nth 2 x)))
-	   (ldax (- point (nth 0 x)))
-	   (ldiy (- point (nth 2 y)))
-	   (lday (- point (nth 0 y)))
-	   (rdix (- point (nth 3 x)))
-	   (rdax (- point (nth 1 x)))
-	   (rdiy (- point (nth 3 y)))
-	   (rday (- point (nth 1 y)))
-	   (inx (and (>= ldax 0)
-		     (<= rdax 0)))
-	   (iny (and (>= lday 0)
-		     (<= rday 0))))
+           (ldix (- point (nth 2 x)))
+           (ldax (- point (nth 0 x)))
+           (ldiy (- point (nth 2 y)))
+           (lday (- point (nth 0 y)))
+           (rdix (- point (nth 3 x)))
+           (rdax (- point (nth 1 x)))
+           (rdiy (- point (nth 3 y)))
+           (rday (- point (nth 1 y)))
+           (inx (and (>= ldax 0)
+                     (<= rdax 0)))
+           (iny (and (>= lday 0)
+                     (<= rday 0))))
       (cond
        ;; both in front
        ((and (not inx) (not iny)) (cond
-				   ((< (abs ldix) (abs ldiy)) t)))
+                                   ((< (abs ldix) (abs ldiy)) t)))
        ;; one in front
        ((and iny (not inx)) nil)
        ((and inx (not iny))   t)
        ;; neither in front (both in)
        ((and iny inx) (cond
-		       ((> ldix ldiy) nil)
-		       ((and (= ldix ldiy) (> ldax lday)) t))))))))
+                       ((> ldix ldiy) nil)
+                       ((and (= ldix ldiy) (> ldax lday)) t))))))))
 
 (defun evil-tex--delim-finder (deliml delimr args)
   "Return delimiter locations for `evil-tex--select-delim'.
@@ -270,7 +270,7 @@ Math includes inline and display math, e.g. \\(foo\\), \\=\\[bar\\], and $baz$"
                                              (regexp-quote "\\[") (regexp-quote "\\]") (append args '(nil)))) 3)))
     (save-excursion
       (nconc (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(t)))) 3)
-	    (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(nil)))) 3))))
+             (nbutlast (ignore-errors (apply #'evil-select-quote ?$ (append args '(nil)))) 3))))
    (lambda (arg) (when (consp arg)  ; check if selection succeeded
                    arg))
    #'evil-tex--delim-compare))
@@ -496,21 +496,21 @@ Also change e.g \\bigl(foo\bigr) to (foo), but this is one way."
          (right-over (ignore-errors (make-overlay (cadr inner) (cadr outer)))))
     (when (and left-over right-over outer inner)
       (save-excursion
-	(let ((left-str (buffer-substring-no-properties (overlay-start left-over) (overlay-end left-over)))
+        (let ((left-str (buffer-substring-no-properties (overlay-start left-over) (overlay-end left-over)))
               (right-str (buffer-substring-no-properties (overlay-start right-over) (overlay-end right-over))))
           (goto-char (overlay-start left-over))
           (cl-destructuring-bind (l . r)
               (cond
                ((looking-at "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" )
-		(cons (replace-regexp-in-string
+                (cons (replace-regexp-in-string
                        "\\\\\\(?:left\\|big\\|bigg\\|Big\\|Bigg\\)" "" left-str)
                       (replace-regexp-in-string
                        "\\\\\\(?:right\\|big\\|bigg\\|Big\\|Bigg\\)" "" right-str)))
                (t (cons (concat "\\left" left-str)
-			(concat "\\right" right-str))))
+                        (concat "\\right" right-str))))
             (evil-tex--overlay-replace left-over  l)
             (evil-tex--overlay-replace right-over r)))
-	(delete-overlay left-over) (delete-overlay right-over)))))
+        (delete-overlay left-over) (delete-overlay right-over)))))
 
 (defun evil-tex-toggle-env ()
   "Toggle surrounding enviornments between e.g. \\begin{equation} and \\begin{equation*}."
@@ -537,15 +537,15 @@ Also change e.g \\bigl(foo\bigr) to (foo), but this is one way."
          (right-over (ignore-errors (make-overlay (cadr inner) (cadr outer)))))
     (when (and left-over right-over outer inner) ;; anticipate failure if no delim found
       (save-excursion
-	(goto-char (overlay-start left-over))
-	(cond
-	 ((looking-at (regexp-quote "\\("))
+        (goto-char (overlay-start left-over))
+        (cond
+         ((looking-at (regexp-quote "\\("))
           (evil-tex--overlay-replace left-over  "\\[")
           (evil-tex--overlay-replace right-over "\\]" ))
-	 ((looking-at (regexp-quote "\\["))
+         ((looking-at (regexp-quote "\\["))
           (evil-tex--overlay-replace left-over  "\\(")
           (evil-tex--overlay-replace right-over "\\)" )))
-	(delete-overlay left-over) (delete-overlay right-over)))))
+        (delete-overlay left-over) (delete-overlay right-over)))))
 
 (defun evil-tex-toggle-math-align ()
   "Toggle surrounding math between display and align*.
