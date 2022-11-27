@@ -108,6 +108,7 @@ chose [[\\left(]] over \\left[[(]], etc."
        ;; neither in front (both in)
        ((and iny inx) (cond
                        ((> ldix ldiy) nil)
+		       ((< ldix ldiy) t)
                        ((and (= ldix ldiy) (> ldax lday)) t))))))))
 
 (defun evil-tex--delim-finder (deliml delimr args)
