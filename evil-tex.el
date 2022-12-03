@@ -139,6 +139,7 @@ ARGS passed to `evil-select-paren', within `evil-tex--delim-finder'."
    (cl-loop for (l r)
             in '(( "(" ")" )
                  ( "[" "]" )
+                 ( "\{" "\}" )
                  ( "\\{" "\\}" )
                  ( "\\langle" "\\rangle" )
                  ( "\\lvert" "\\rvert" )
