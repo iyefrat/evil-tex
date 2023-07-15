@@ -1101,7 +1101,7 @@ Bind to `evil-tex-delim-map', or to KEYMAP if given.
 Format is identical to `evil-tex-bind-to-env-map', see that for
 explaination."
   (evil-tex--populate-surround-keymap
-   (or keymap evil-tex-cdlatex-accents-map)
+   (or keymap evil-tex-delim-map)
    key-generator-alist
    evil-tex--delim-function-prefix
    #'identity))
