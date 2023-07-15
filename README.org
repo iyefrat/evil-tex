@@ -182,7 +182,7 @@ figures:
 Same for ~evil-tex-bind-to-cdlatex-accents-map~ and ~evil-tex-bind-to-delim-map~
 #+BEGIN_SRC emacs-lisp
 (evil-tex-bind-to-cdlatex-accents-map '(("b" . "fbox")))
-(evil-tex-bind-to-delim-keymap '(("h" "\\huge(" . "\\huge)")))
+(evil-tex-bind-to-delim-map '(("h" "\\huge(" . "\\huge)")))
 #+END_SRC
 Same for ~evil-tex-user-delim-map-generator-alist~. For the complete format take
 a look at the documentation of ~evil-tex-bind-to-env-map~.
